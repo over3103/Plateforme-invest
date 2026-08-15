@@ -1,77 +1,61 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Connexion - InvestPlus</title>
-
+    <title>Invest Africa - Accueil</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <header class="header">
-
-    <div class="logo">
-        Invest<span>Plus</span>
-    </div>
-
+    <div class="logo">INVEST <span>AFRICA</span></div>
     <nav>
         <a href="index.html">Accueil</a>
+        <a href="login.html">Connexion</a>
+        <a href="login.html?register=true" class="btn">Créer un compte</a>
     </nav>
-
 </header>
 
-<div class="form-container">
+<section class="hero">
+    <div class="hero-content">
+        <h1>Construisez votre avenir financier</h1>
+        <p>
+            Une plateforme moderne permettant de gérer vos investissements
+            simplement et en toute transparence.
+        </p>
 
-    <h2>Connexion</h2>
+        <div class="hero-buttons">
+            <a href="login.html?register=true" class="btn">Créer un compte</a>
+            <a href="login.html" class="btn secondary">Se connecter</a>
+        </div>
+    </div>
+</section>
 
-    <form id="loginForm">
+<section class="features">
+    <h2>Une plateforme simple et accessible</h2>
 
-        <div class="form-group">
-
-            <label for="email">
-                Adresse e-mail
-            </label>
-
-            <input
-                type="email"
-                id="email"
-                placeholder="Votre adresse e-mail"
-                required
-            >
-
+    <div class="cards">
+        <div class="card">
+            <h3>💰 Investissement</h3>
+            <p>Choisissez le pack qui correspond à votre budget.</p>
         </div>
 
-        <div class="form-group">
-
-            <label for="password">
-                Mot de passe
-            </label>
-
-            <input
-                type="password"
-                id="password"
-                placeholder="Votre mot de passe"
-                required
-            >
-
+        <div class="card">
+            <h3>📊 Suivi</h3>
+            <p>Consultez facilement vos investissements et vos gains.</p>
         </div>
 
-        <button
-            type="submit"
-            class="form-button"
-        >
-            Se connecter
-        </button>
+        <div class="card">
+            <h3>🔐 Sécurité</h3>
+            <p>Votre espace personnel est séparé de l'espace administrateur.</p>
+        </div>
+    </div>
+</section>
 
-    </form>
-
-</div>
-
-<script src="script.js"></script>
+<footer>
+    <p>© 2026 Invest Africa — Tous droits réservés.</p>
+</footer>
 
 </body>
 </html>
