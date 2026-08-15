@@ -1,137 +1,135 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - Invest Africa</title>
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Connexion - Invest Plus</title>
+
     <link rel="stylesheet" href="style.css">
+
 </head>
+
 <body>
 
-<header class="header">
-    <div class="logo">INVEST <span>AFRICA</span></div>
-    <nav>
-        <a href="index.html">Accueil</a>
-    </nav>
-</header>
+<div class="container">
 
-<div class="form-box">
+    <section class="dashboard-section">
 
-    <h2 id="formTitle">Connexion</h2>
+        <h1>Connexion</h1>
 
-    <form id="authForm">
+        <p>
+            Connectez-vous à votre espace utilisateur.
+        </p>
 
-        <div id="nameField" style="display:none;">
-            <label>Nom complet</label>
-            <input type="text" id="name" placeholder="Votre nom">
-        </div>
+        <br>
 
-        <label>Numéro de téléphone</label>
-        <input type="tel" id="phone" placeholder="Ex : 0700000000" required>
+        <label>Nom</label>
 
-        <label>Mot de passe</label>
-        <input type="password" id="password" placeholder="Mot de passe" required>
+        <input
+            type="text"
+            id="loginName"
+            placeholder="Votre nom"
+        >
 
-        <button class="btn" type="submit" id="submitBtn">
+        <label>Téléphone</label>
+
+        <input
+            type="text"
+            id="loginPhone"
+            placeholder="Votre numéro"
+        >
+
+        <button onclick="login()">
             Se connecter
         </button>
 
-    </form>
+        <p id="loginMessage"></p>
 
-    <p style="margin-top:20px;">
-        <a href="#" id="toggleMode">Créer un compte</a>
-    </p>
+        <br>
+
+        <p>
+            Vous n'avez pas encore de compte ?
+        </p>
+
+        <button onclick="createAccount()">
+            Créer un compte
+        </button>
+
+    </section>
 
 </div>
 
 <script>
-let registerMode = new URLSearchParams(window.location.search).get("register") === "true";
 
-const formTitle = document.getElementById("formTitle");
-const nameField = document.getElementById("nameField");
-const toggleMode = document.getElementById("toggleMode");
-const submitBtn = document.getElementById("submitBtn");
+function login() {
 
-function updateForm() {
-    if (registerMode) {
-        formTitle.textContent = "Créer un compte";
-        nameField.style.display = "block";
-        toggleMode.textContent = "J'ai déjà un compte";
-        submitBtn.textContent = "Créer mon compte";
-    } else {
-        formTitle.textContent = "Connexion";
-        nameField.style.display = "none";
-        toggleMode.textContent = "Créer un compte";
-        submitBtn.textContent = "Se connecter";
+    const name =
+        document.getElementById("loginName").value.trim();
+
+    const phone =
+        document.getElementById("loginPhone").value.trim();
+
+    if (!name || !phone) {
+
+        document.getElementById("loginMessage").textContent =
+            "Veuillez remplir tous les champs.";
+
+        return;
     }
-}
 
-toggleMode.addEventListener("click", function(e) {
-    e.preventDefault();
-    registerMode = !registerMode;
-    updateForm();
-});
+    let user =
+        JSON.parse(localStorage.getItem("investUser"));
 
-document.getElementById("authForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+    if (!user) {
 
-    const phone = document.getElementById("phone").value;
-    const password = document.getElementById("password").value;
-    const name = document.getElementById("name").value;
+        user = {
 
-    if (registerMode) {
-
-        if (!name) {
-            alert("Veuillez entrer votre nom.");
-            return;
-        }
-
-        const newUser = {
             name: name,
+
             phone: phone,
-            password: password,
+
+            email: "",
+
             balance: 0,
-            investment: 0,
-            dailyGain: 0
+
+            earnings: 0,
+
+            investments: [],
+
+            history: []
+
         };
 
-        localStorage.setItem(
-            "investAfricaUser",
-            JSON.stringify(newUser)
-        );
-
-        localStorage.setItem("investAfricaLoggedIn", "true");
-
-        alert("Compte créé avec succès.");
-        window.location.href = "dashboard.html";
-
     } else {
 
-        // Compte administrateur de démonstration
-        if (phone === "admin" && password === "admin123") {
-            localStorage.setItem("investAfricaAdmin", "true");
-            window.location.href = "admin.html";
-            return;
-        }
+        user.name = name;
+        user.phone = phone;
 
-        const savedUser =
-            JSON.parse(localStorage.getItem("investAfricaUser"));
-
-        if (!savedUser ||
-            savedUser.phone !== phone ||
-            savedUser.password !== password) {
-
-            alert("Numéro ou mot de passe incorrect.");
-            return;
-        }
-
-        localStorage.setItem("investAfricaLoggedIn", "true");
-        window.location.href = "dashboard.html";
     }
-});
 
-updateForm();
+    localStorage.setItem(
+        "investUser",
+        JSON.stringify(user)
+    );
+
+    window.location.href = "dashboard.html";
+
+}
+
+
+function createAccount() {
+
+    window.location.href = "index.html";
+
+}
+
 </script>
 
 </body>
+
 </html>
