@@ -3,81 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon espace - Invest Africa</title>
+    <title>Espace utilisateur</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header class="header">
-    <div class="logo">INVEST <span>AFRICA</span></div>
+<header class="topbar">
+    <div class="logo">INVEST PLUS</div>
 
-    <nav>
-        <a href="dashboard.html">Accueil</a>
-        <a href="#" onclick="logout()">Déconnexion</a>
-    </nav>
+    <button onclick="logout()" class="logout-btn">
+        Déconnexion
+    </button>
 </header>
 
-<div class="container">
+<main class="container">
 
-    <h1 class="page-title">
-        Bienvenue, <span id="userName">Utilisateur</span>
-    </h1>
+    <section class="welcome">
+        <h1>Bienvenue, <span id="userName">Utilisateur</span> 👋</h1>
+        <p>Gérez votre compte et vos investissements.</p>
+    </section>
 
-    <div class="dashboard-grid">
+    <!-- STATISTIQUES -->
+    <section class="stats">
 
-        <div class="stat">
+        <div class="stat-card">
             <h3>Solde disponible</h3>
-            <strong id="userBalance">0 FCFA</strong>
+            <strong><span id="balance">0</span> FCFA</strong>
         </div>
 
-        <div class="stat">
-            <h3>Investissement</h3>
-            <strong id="userInvestment">0 FCFA</strong>
+        <div class="stat-card">
+            <h3>Gains</h3>
+            <strong><span id="earnings">0</span> FCFA</strong>
         </div>
 
-        <div class="stat">
-            <h3>Gain quotidien</h3>
-            <strong id="dailyGain">0 FCFA</strong>
+        <div class="stat-card">
+            <h3>Investissements</h3>
+            <strong><span id="investmentCount">0</span></strong>
         </div>
 
-        <div class="stat">
-            <h3>Statut</h3>
-            <strong class="success">Actif</strong>
+    </section>
+
+    <!-- MENU -->
+    <nav class="dashboard-menu">
+        <button onclick="showSection('packs')">💰 Packs</button>
+        <button onclick="showSection('investments')">📊 Mes investissements</button>
+        <button onclick="showSection('deposit')">➕ Dépôt</button>
+        <button onclick="showSection('withdraw')">💸 Retrait</button>
+        <button onclick="showSection('history')">📜 Historique</button>
+        <button onclick="showSection('profile')">👤 Mon profil</button>
+    </nav>
+
+    <!-- PACKS -->
+    <section id="packs" class="dashboard-section">
+
+        <h2>Nos packs d'investissement</h2>
+        <p class="section-description">
+            Choisissez le pack qui correspond à votre budget.
+        </p>
+
+        <div class="packs-grid">
+
+            <div class="pack">
+                <h3>Pack 1</h3>
+                <h2>3 000 FCFA</h2>
+                <p>Gain journalier : <b>800 FCFA</b></p>
+                <button onclick="invest(3000,800)">Investir maintenant</button>
+            </div>
+
+            <div class="pack">
+                <h3>Pack 2</h3>
+                <h2>10 000 FCFA</h2>
+                <p>Gain journalier : <b>3 000 FCFA</b></p>
+                <button onclick="invest(10000,3000)">Investir maintenant</button>
+            </div>
+
+            <div class="pack">
+                <h3>Pack 3</h3>
+                <h2>20 000 FCFA</h2>
+                <p>Gain journalier : <b>6 000 FCFA</b></p>
+                <button onclick="invest(20000,6000)">Investir maintenant</button>
+            </div>
+
+            <div class="pack">
+                <h3>Pack 4</h3>
+                <h2>45 000 FCFA</h2>
+                <p>Gain journalier : <b>14 000 FCFA</b></p>
+                <button onclick="invest(45000,14000)">Investir maintenant</button>
+            </div>
+
+            <div class="pack">
+                <h3>Pack 5</h3>
+                <h2>100 000 FCFA</h2>
+                <p>Gain journalier : <b>30 000 FCFA</b></p>
+                <button onclick="invest(100000,30000)">Investir maintenant</button>
+            </div>
+
+            <div class="pack">
+                <h3>Pack 6</h3>
+                <h2>200 000 FCFA</h2>
+                <p>Gain journalier : <b>65 000 FCFA</b></p>
+                <button onclick="invest(200000,65000)">Investir maintenant</button>
+            </div>
+
+            <div class="pack">
+                <h3>Pack 7</h3>
+                <h2>400 000 FCFA</h2>
+                <p>Gain journalier : <b>140 000 FCFA</b></p>
+                <button onclick="invest(400000,140000)">Investir maintenant</button>
+            </div>
+
+            <div class="pack">
+                <h3>Pack 8</h3>
+                <h2>800 000 FCFA</h2>
+                <p>Gain journalier : <b>290 000 FCFA</b></p>
+                <button onclick="invest(800000,290000)">Investir maintenant</button>
+            </div>
+
+            <div class="pack">
+                <h3>Pack 9</h3>
+                <h2>1 000 000 FCFA</h2>
+                <p>Gain journalier : <b>À définir</b></p>
+                <button onclick="invest(1000000,0)">Investir maintenant</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- INVESTISSEMENTS -->
+    <section id="investments" class="dashboard-section hidden">
+
+        <h2>Mes investissements</h2>
+
+        <div id="investmentList">
+            <p>Aucun investissement pour le moment.</p>
         </div>
 
-    </div>
+    </section>
 
-    <div class="menu">
+    <!-- DEPOT -->
+    <section id="deposit" class="dashboard-section hidden">
 
-        <a href="deposit.html">
-            <h3>💰 Déposer</h3>
-            <p>Faire une demande de dépôt.</p>
-        </a>
+        <h2>Effectuer un dépôt</h2>
 
-        <a href="withdraw.html">
-            <h3>💸 Retirer</h3>
-            <p>Faire une demande de retrait.</p>
-        </a>
+        <input type="number" id="depositAmount"
+               placeholder="Montant en FCFA">
 
-        <a href="history.html">
-            <h3>📋 Mon historique</h3>
-            <p>Consulter mes opérations.</p>
-        </a>
+        <button onclick="makeDeposit()">
+            Confirmer le dépôt
+        </button>
 
-        <a href="#">
-            <h3>📈 Mes investissements</h3>
-            <p>Consulter mes investissements.</p>
-        </a>
+        <p class="notice">
+            Prototype : le dépôt est actuellement simulé.
+        </p>
 
-        <a href="#">
-            <h3>👤 Mon profil</h3>
-            <p>Consulter mes informations.</p>
-        </a>
+    </section>
 
-    </div>
+    <!-- RETRAIT -->
+    <section id="withdraw" class="dashboard-section hidden">
 
-</div>
+        <h2>Effectuer un retrait</h2>
+
+        <input type="number" id="withdrawAmount"
+               placeholder="Montant en FCFA">
+
+        <button onclick="makeWithdrawal()">
+            Demander le retrait
+        </button>
+
+        <p class="notice">
+            Prototype : le retrait est actuellement simulé.
+        </p>
+
+    </section>
+
+    <!-- HISTORIQUE -->
+    <section id="history" class="dashboard-section hidden">
+
+        <h2>Historique</h2>
+
+        <div id="historyList">
+            <p>Aucune opération enregistrée.</p>
+        </div>
+
+    </section>
+
+    <!-- PROFIL -->
+    <section id="profile" class="dashboard-section hidden">
+
+        <h2>Mon profil</h2>
+
+        <label>Nom</label>
+        <input type="text" id="profileName">
+
+        <label>Téléphone</label>
+        <input type="text" id="profilePhone">
+
+        <label>Email</label>
+        <input type="email" id="profileEmail">
+
+        <button onclick="saveProfile()">
+            Enregistrer mon profil
+        </button>
+
+        <p id="profileMessage"></p>
+
+    </section>
+
+</main>
 
 <script src="script.js"></script>
 
