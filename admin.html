@@ -1,99 +1,75 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Administration - InvestPlus</title>
-
+    <title>Administration - Invest Africa</title>
     <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
-<header class="header">
+<header class="header admin-header">
 
     <div class="logo">
-        Invest<span>Plus</span>
+        ADMIN <span>INVEST AFRICA</span>
     </div>
 
     <nav>
-        <a href="index.html">Accueil</a>
-        <a href="dashboard.html">Dashboard</a>
+        <a href="index.html">Site</a>
+        <a href="#" onclick="logoutAdmin()">Déconnexion</a>
     </nav>
 
 </header>
 
-<main class="admin-panel">
+<div class="container">
 
-    <h1>Administration</h1>
+    <h1 class="page-title">Espace administrateur</h1>
 
-    <br>
+    <div class="dashboard-grid">
 
-    <div class="admin-box">
+        <div class="stat">
+            <h3>Utilisateurs</h3>
+            <strong id="usersCount">0</strong>
+        </div>
 
-        <h2>Vue générale</h2>
+        <div class="stat">
+            <h3>Dépôts</h3>
+            <strong id="depositsCount">0</strong>
+        </div>
 
-        <br>
+        <div class="stat">
+            <h3>Retraits</h3>
+            <strong id="withdrawalsCount">0</strong>
+        </div>
 
-        <div class="cards">
-
-            <div class="card">
-                <h3>Utilisateurs</h3>
-                <p>0</p>
-            </div>
-
-            <div class="card">
-                <h3>Investissements</h3>
-                <p>0 FCFA</p>
-            </div>
-
-            <div class="card">
-                <h3>Retraits</h3>
-                <p>0 FCFA</p>
-            </div>
-
-            <div class="card">
-                <h3>Recharges</h3>
-                <p>0 FCFA</p>
-            </div>
-
+        <div class="stat">
+            <h3>Transactions</h3>
+            <strong id="transactionsCount">0</strong>
         </div>
 
     </div>
 
-    <div class="admin-box">
+    <h2 style="margin:30px 0 15px;">
+        Dernières opérations
+    </h2>
 
-        <h2>Dernières opérations</h2>
-
-        <br>
+    <div class="table-box">
 
         <table>
 
             <thead>
-
                 <tr>
-                    <th>Utilisateur</th>
                     <th>Type</th>
                     <th>Montant</th>
+                    <th>Moyen</th>
                     <th>Date</th>
                     <th>Statut</th>
+                    <th>Action</th>
                 </tr>
-
             </thead>
 
-            <tbody>
-
-                <tr>
-                    <td>Aucun utilisateur</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                </tr>
+            <tbody id="adminHistory">
 
             </tbody>
 
@@ -101,18 +77,95 @@
 
     </div>
 
-    <div class="admin-box">
+</div>
 
-        <h2>Gestion des utilisateurs</h2>
+<script>
 
-        <p>
-            Cette partie sera reliée à une véritable base de données
-            lors de la prochaine étape.
-        </p>
+if (localStorage.getItem("investAfricaAdmin") !== "true") {
+    window.location.href = "login.html";
+}
 
-    </div>
+function formatMoney(amount) {
+    return Number(amount || 0).toLocaleString("fr-FR") + " FCFA";
+}
 
-</main>
+function loadAdmin() {
+
+    const history =
+        JSON.parse(localStorage.getItem("investAfricaHistory")) || [];
+
+    const tbody = document.getElementById("adminHistory");
+
+    const deposits =
+        history.filter(x => x.type === "Dépôt");
+
+    const withdrawals =
+        history.filter(x => x.type === "Retrait");
+
+    document.getElementById("usersCount").textContent =
+        localStorage.getItem("investAfricaUser") ? "1" : "0";
+
+    document.getElementById("depositsCount").textContent =
+        deposits.length;
+
+    document.getElementById("withdrawalsCount").textContent =
+        withdrawals.length;
+
+    document.getElementById("transactionsCount").textContent =
+        history.length;
+
+    tbody.innerHTML = "";
+
+    if (history.length === 0) {
+        tbody.innerHTML =
+            '<tr><td colspan="6">Aucune transaction.</td></tr>';
+        return;
+    }
+
+    history.forEach((item, index) => {
+
+        tbody.innerHTML += `
+            <tr>
+                <td>${item.type}</td>
+                <td>${formatMoney(item.amount)}</td>
+                <td>${item.method}</td>
+                <td>${item.date}</td>
+                <td class="pending">${item.status}</td>
+                <td>
+                    <button class="btn"
+                        onclick="validateTransaction(${index})">
+                        Valider
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function validateTransaction(index) {
+
+    let history =
+        JSON.parse(localStorage.getItem("investAfricaHistory")) || [];
+
+    if (history[index]) {
+        history[index].status = "Validé";
+        localStorage.setItem(
+            "investAfricaHistory",
+            JSON.stringify(history)
+        );
+    }
+
+    loadAdmin();
+}
+
+function logoutAdmin() {
+    localStorage.removeItem("investAfricaAdmin");
+    window.location.href = "login.html";
+}
+
+loadAdmin();
+
+</script>
 
 </body>
 </html>
