@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon historique - Invest Africa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="header">
+    <div class="logo">INVEST <span>AFRICA</span></div>
+
+    <nav>
+        <a href="dashboard.html">Mon espace</a>
+        <a href="#" onclick="logout()">Déconnexion</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    <h1 class="page-title">📋 Mon historique</h1>
+
+    <div class="table-box">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Montant</th>
+                    <th>Moyen</th>
+                    <th>Date</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+
+            <tbody id="historyBody"></tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
