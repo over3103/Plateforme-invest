@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retrait - Invest Africa</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header class="header">
+    <div class="logo">INVEST <span>AFRICA</span></div>
+    <nav>
+        <a href="dashboard.html">Mon espace</a>
+    </nav>
+</header>
+
+<div class="form-box">
+
+    <h2>💸 Demander un retrait</h2>
+
+    <p>Indiquez le montant que vous souhaitez retirer.</p>
+
+    <form onsubmit="makeWithdrawal(); return false;">
+
+        <label>Montant (FCFA)</label>
+
+        <input
+            type="number"
+            id="withdrawAmount"
+            placeholder="Ex : 5000"
+            min="1000"
+            required
+        >
+
+        <label>Moyen de réception</label>
+
+        <select id="withdrawMethod" required>
+            <option value="">Choisir</option>
+            <option value="Orange Money">Orange Money</option>
+            <option value="MTN Money">MTN Money</option>
+            <option value="Moov Money">Moov Money</option>
+            <option value="Wave">Wave</option>
+        </select>
+
+        <label>Numéro de réception</label>
+
+        <input
+            type="tel"
+            id="withdrawPhone"
+            placeholder="Ex : 0700000000"
+            required
+        >
+
+        <button class="btn" type="submit">
+            Envoyer la demande
+        </button>
+
+    </form>
+
+</div>
+
+<script src="script.js"></script>
+
+<script>
+function makeWithdrawal() {
+
+    const amount =
+        Number(document.getElementById("withdrawAmount").value);
+
+    const method =
+        document.getElementById("withdrawMethod").value;
+
+    const phone =
+        document.getElementById("withdrawPhone").value;
+
+    if (!amount || amount <= 0 || !method || !phone) {
+        alert("Veuillez remplir tous les champs.");
+        return;
+    }
+
+    const transaction = {
+        type: "Retrait",
+        amount: amount,
+        method: method,
+        phone: phone,
+        date: new Date().toLocaleString("fr-FR"),
+        status: "En attente"
+    };
+
+    let history =
+        JSON.parse(localStorage.getItem("investAfricaHistory")) || [];
+
+    history.push(transaction);
+
+    localStorage.setItem(
+        "investAfricaHistory",
+        JSON.stringify(history)
+    );
+
+    alert("Votre demande de retrait a été enregistrée.");
+
+    window.location.href = "dashboard.html";
+}
+</script>
+
+</body>
+</html>
