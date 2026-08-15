@@ -1,194 +1,83 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Tableau de bord - InvestPlus</title>
-
+    <title>Mon espace - Invest Africa</title>
     <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
 <header class="header">
-
-    <div class="logo">
-        Invest<span>Plus</span>
-    </div>
+    <div class="logo">INVEST <span>AFRICA</span></div>
 
     <nav>
-        <a href="index.html">Accueil</a>
+        <a href="dashboard.html">Accueil</a>
         <a href="#" onclick="logout()">Déconnexion</a>
     </nav>
-
 </header>
 
-<main class="dashboard">
+<div class="container">
 
-    <h1>Tableau de bord</h1>
+    <h1 class="page-title">
+        Bienvenue, <span id="userName">Utilisateur</span>
+    </h1>
 
-    <p>
-        Bienvenue :
-        <strong id="userEmail">Utilisateur</strong>
-    </p>
+    <div class="dashboard-grid">
 
-    <br>
-
-    <div class="cards">
-
-        <div class="card">
+        <div class="stat">
             <h3>Solde disponible</h3>
-            <p>0 FCFA</p>
+            <strong id="userBalance">0 FCFA</strong>
         </div>
 
-        <div class="card">
-            <h3>Gains cumulés</h3>
-            <p>0 FCFA</p>
-        </div>
-
-        <div class="card">
+        <div class="stat">
             <h3>Investissement</h3>
-            <p>0 FCFA</p>
+            <strong id="userInvestment">0 FCFA</strong>
         </div>
 
-        <div class="card">
-            <h3>Retraits</h3>
-            <p>0 FCFA</p>
+        <div class="stat">
+            <h3>Gain quotidien</h3>
+            <strong id="dailyGain">0 FCFA</strong>
+        </div>
+
+        <div class="stat">
+            <h3>Statut</h3>
+            <strong class="success">Actif</strong>
         </div>
 
     </div>
 
-    <div class="table-container">
+    <div class="menu">
 
-        <h2>Nos packs disponibles</h2>
+        <a href="deposit.html">
+            <h3>💰 Déposer</h3>
+            <p>Faire une demande de dépôt.</p>
+        </a>
 
-        <br>
+        <a href="withdraw.html">
+            <h3>💸 Retirer</h3>
+            <p>Faire une demande de retrait.</p>
+        </a>
 
-        <table>
+        <a href="history.html">
+            <h3>📋 Mon historique</h3>
+            <p>Consulter mes opérations.</p>
+        </a>
 
-            <thead>
+        <a href="#">
+            <h3>📈 Mes investissements</h3>
+            <p>Consulter mes investissements.</p>
+        </a>
 
-                <tr>
-                    <th>Pack</th>
-                    <th>Montant</th>
-                    <th>Gain journalier</th>
-                    <th>Action</th>
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                <tr>
-                    <td>Pack 1</td>
-                    <td>3 000 FCFA</td>
-                    <td>800 FCFA</td>
-                    <td>
-                        <button onclick="selectPack('Pack 1', 3000)">
-                            Choisir
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Pack 2</td>
-                    <td>10 000 FCFA</td>
-                    <td>3 000 FCFA</td>
-                    <td>
-                        <button onclick="selectPack('Pack 2', 10000)">
-                            Choisir
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Pack 3</td>
-                    <td>20 000 FCFA</td>
-                    <td>6 000 FCFA</td>
-                    <td>
-                        <button onclick="selectPack('Pack 3', 20000)">
-                            Choisir
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Pack 4</td>
-                    <td>45 000 FCFA</td>
-                    <td>14 000 FCFA</td>
-                    <td>
-                        <button onclick="selectPack('Pack 4', 45000)">
-                            Choisir
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Pack 5</td>
-                    <td>100 000 FCFA</td>
-                    <td>30 000 FCFA</td>
-                    <td>
-                        <button onclick="selectPack('Pack 5', 100000)">
-                            Choisir
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Pack 6</td>
-                    <td>200 000 FCFA</td>
-                    <td>65 000 FCFA</td>
-                    <td>
-                        <button onclick="selectPack('Pack 6', 200000)">
-                            Choisir
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Pack 7</td>
-                    <td>400 000 FCFA</td>
-                    <td>140 000 FCFA</td>
-                    <td>
-                        <button onclick="selectPack('Pack 7', 400000)">
-                            Choisir
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Pack 8</td>
-                    <td>800 000 FCFA</td>
-                    <td>290 000 FCFA</td>
-                    <td>
-                        <button onclick="selectPack('Pack 8', 800000)">
-                            Choisir
-                        </button>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>Pack 9</td>
-                    <td>1 000 000 FCFA</td>
-                    <td>Premium</td>
-                    <td>
-                        <button onclick="selectPack('Pack 9', 1000000)">
-                            Choisir
-                        </button>
-                    </td>
-                </tr>
-
-            </tbody>
-
-        </table>
+        <a href="#">
+            <h3>👤 Mon profil</h3>
+            <p>Consulter mes informations.</p>
+        </a>
 
     </div>
 
-</main>
+</div>
 
 <script src="script.js"></script>
 
