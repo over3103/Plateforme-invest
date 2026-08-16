@@ -5,17 +5,15 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <title>Mon espace - Housing Investment</title>
+    <title>
+        Mon espace | Housing Investment
+    </title>
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+    <link rel="stylesheet"
+          href="style.css">
 
 </head>
 
@@ -23,16 +21,15 @@
 <body>
 
 
-<!-- =========================
-     BARRE DE NAVIGATION
-========================= -->
+<!-- =================================================
+     BARRE SUPERIEURE
+================================================= -->
 
 <header class="topbar">
 
     <div class="logo">
         HOUSING <span>INVESTMENT</span>
     </div>
-
 
     <nav>
 
@@ -41,8 +38,9 @@
         </a>
 
         <button
-            class="logout"
-            onclick="logout()"
+            type="button"
+            class="btn btn-small"
+            onclick="logoutUser()"
         >
             Déconnexion
         </button>
@@ -53,357 +51,731 @@
 
 
 
-<!-- =========================
+<!-- =================================================
      ESPACE UTILISATEUR
-========================= -->
+================================================= -->
 
-<main class="container">
+<main class="dashboard-container">
 
 
-    <!-- BIENVENUE -->
+    <!-- =============================================
+         BIENVENUE
+    ============================================== -->
 
-    <section class="welcome">
+    <section class="dashboard-welcome">
 
         <div>
 
-            <p class="muted">
-                Bienvenue dans votre espace
-            </p>
+            <span class="section-tag">
+                ESPACE UTILISATEUR
+            </span>
 
-            <h1 id="userName">
-                Utilisateur
+            <h1>
+                Bienvenue,
+                <span id="userName">
+                    Utilisateur
+                </span>
             </h1>
 
+            <p>
+                Gérez votre compte et consultez
+                vos investissements depuis votre espace.
+            </p>
+
         </div>
-
-
-        <span class="status">
-            Compte actif
-        </span>
 
     </section>
 
 
 
-    <!-- =========================
-         STATISTIQUES
-    ========================= -->
+    <!-- =============================================
+         CARTES FINANCIERES
+    ============================================== -->
 
-    <section class="stats">
+    <section class="dashboard-stats">
 
 
-        <div class="stat">
+        <div class="dashboard-stat">
 
             <span>
                 Solde disponible
             </span>
 
-            <strong id="balance">
+            <strong id="userBalance">
                 0 FCFA
             </strong>
 
         </div>
 
 
-        <div class="stat">
+        <div class="dashboard-stat">
 
             <span>
                 Total investi
             </span>
 
-            <strong id="invested">
+            <strong id="totalInvested">
                 0 FCFA
             </strong>
 
         </div>
 
 
-        <div class="stat">
+        <div class="dashboard-stat">
 
             <span>
-                Gains
+                Gains cumulés
             </span>
 
-            <strong id="earnings">
+            <strong id="totalGains">
                 0 FCFA
             </strong>
 
         </div>
 
 
+        <div class="dashboard-stat">
+
+            <span>
+                Investissements actifs
+            </span>
+
+            <strong id="activeInvestments">
+                0
+            </strong>
+
+        </div>
+
     </section>
 
 
 
-    <!-- =========================
+    <!-- =============================================
          ACTIONS
-    ========================= -->
+    ============================================== -->
 
-    <section class="panel">
+    <section class="dashboard-actions">
 
-        <h2>
-            Mon compte
-        </h2>
+        <a
+            href="#packs"
+            class="dashboard-action"
+        >
 
+            <span class="action-icon">
+                📦
+            </span>
 
-        <div class="account-grid">
+            <strong>
+                Investir
+            </strong>
 
+            <small>
+                Choisir un pack
+            </small>
 
-            <div>
-
-                <span>
-                    Identifiant
-                </span>
-
-                <strong id="userPhone">
-                    —
-                </strong>
-
-            </div>
-
-
-            <div>
-
-                <span>
-                    Date d'inscription
-                </span>
-
-                <strong id="createdAt">
-                    —
-                </strong>
-
-            </div>
+        </a>
 
 
-        </div>
+        <a
+            href="#depot"
+            class="dashboard-action"
+        >
 
+            <span class="action-icon">
+                💳
+            </span>
+
+            <strong>
+                Déposer
+            </strong>
+
+            <small>
+                Recharger mon solde
+            </small>
+
+        </a>
+
+
+        <a
+            href="#retrait"
+            class="dashboard-action"
+        >
+
+            <span class="action-icon">
+                💸
+            </span>
+
+            <strong>
+                Retirer
+            </strong>
+
+            <small>
+                Demander un retrait
+            </small>
+
+        </a>
+
+
+        <a
+            href="#historique"
+            class="dashboard-action"
+        >
+
+            <span class="action-icon">
+                📜
+            </span>
+
+            <strong>
+                Historique
+            </strong>
+
+            <small>
+                Voir mes opérations
+            </small>
+
+        </a>
 
     </section>
 
 
 
-    <!-- =========================
+    <!-- =============================================
          PACKS
-    ========================= -->
+    ============================================== -->
 
-    <section class="panel">
+    <section
+        class="dashboard-section"
+        id="packs"
+    >
 
-        <div class="panel-heading">
+        <div class="section-heading">
 
-            <div>
+            <span class="section-tag">
+                INVESTISSEMENT
+            </span>
 
-                <p class="section-tag">
-                    INVESTISSEMENT
-                </p>
+            <h2>
+                Choisissez votre niveau
+            </h2>
 
-                <h2>
-                    Choisissez votre niveau
-                </h2>
-
-            </div>
-
-        </div>
-
-
-        <div class="dashboard-packs">
-
-
-            <div class="mini-pack">
-
-                <span>
-                    Niveau 01
-                </span>
-
-                <strong>
-                    3 000 FCFA
-                </strong>
-
-                <button
-                    onclick="selectPack(3000)"
-                >
-                    Choisir
-                </button>
-
-            </div>
-
-
-            <div class="mini-pack">
-
-                <span>
-                    Niveau 02
-                </span>
-
-                <strong>
-                    10 000 FCFA
-                </strong>
-
-                <button
-                    onclick="selectPack(10000)"
-                >
-                    Choisir
-                </button>
-
-            </div>
-
-
-            <div class="mini-pack">
-
-                <span>
-                    Niveau 03
-                </span>
-
-                <strong>
-                    20 000 FCFA
-                </strong>
-
-                <button
-                    onclick="selectPack(20000)"
-                >
-                    Choisir
-                </button>
-
-            </div>
-
-
-            <div class="mini-pack">
-
-                <span>
-                    Niveau 04
-                </span>
-
-                <strong>
-                    45 000 FCFA
-                </strong>
-
-                <button
-                    onclick="selectPack(45000)"
-                >
-                    Choisir
-                </button>
-
-            </div>
-
-
-            <div class="mini-pack">
-
-                <span>
-                    Niveau 05
-                </span>
-
-                <strong>
-                    100 000 FCFA
-                </strong>
-
-                <button
-                    onclick="selectPack(100000)"
-                >
-                    Choisir
-                </button>
-
-            </div>
-
-
-            <div class="mini-pack">
-
-                <span>
-                    Niveau 06
-                </span>
-
-                <strong>
-                    200 000 FCFA
-                </strong>
-
-                <button
-                    onclick="selectPack(200000)"
-                >
-                    Choisir
-                </button>
-
-            </div>
-
-
-            <div class="mini-pack">
-
-                <span>
-                    Niveau 07
-                </span>
-
-                <strong>
-                    400 000 FCFA
-                </strong>
-
-                <button
-                    onclick="selectPack(400000)"
-                >
-                    Choisir
-                </button>
-
-            </div>
-
-
-            <div class="mini-pack premium">
-
-                <span>
-                    Niveau 08 — PREMIUM
-                </span>
-
-                <strong>
-                    800 000 FCFA
-                </strong>
-
-                <button
-                    onclick="selectPack(800000)"
-                >
-                    Choisir
-                </button>
-
-            </div>
-
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =========================
-         HISTORIQUE
-    ========================= -->
-
-    <section class="panel">
-
-        <h2>
-            Historique des opérations
-        </h2>
-
-
-        <div id="history">
-
-            <p class="muted">
-                Aucune opération enregistrée.
+            <p>
+                Sélectionnez le niveau qui correspond
+                à votre capacité de participation.
             </p>
 
         </div>
 
+
+        <div class="packs-grid dashboard-packs">
+
+
+            <!-- 3 000 -->
+
+            <article class="pack-card">
+
+                <div class="pack-content">
+
+                    <span class="pack-number">
+                        NIVEAU 01
+                    </span>
+
+                    <h3>
+                        Maison économique
+                    </h3>
+
+                    <div class="amount">
+                        3 000 FCFA
+                    </div>
+
+                    <p>
+                        Niveau d'entrée.
+                    </p>
+
+                    <button
+                        class="pack-btn"
+                        onclick="selectPack(3000)"
+                    >
+                        Investir
+                    </button>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- 10 000 -->
+
+            <article class="pack-card">
+
+                <div class="pack-content">
+
+                    <span class="pack-number">
+                        NIVEAU 02
+                    </span>
+
+                    <h3>
+                        Petite maison moderne
+                    </h3>
+
+                    <div class="amount">
+                        10 000 FCFA
+                    </div>
+
+                    <p>
+                        Modèle compact et moderne.
+                    </p>
+
+                    <button
+                        class="pack-btn"
+                        onclick="selectPack(10000)"
+                    >
+                        Investir
+                    </button>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- 20 000 -->
+
+            <article class="pack-card">
+
+                <div class="pack-content">
+
+                    <span class="pack-number">
+                        NIVEAU 03
+                    </span>
+
+                    <h3>
+                        Maison familiale
+                    </h3>
+
+                    <div class="amount">
+                        20 000 FCFA
+                    </div>
+
+                    <p>
+                        Adaptée à une famille.
+                    </p>
+
+                    <button
+                        class="pack-btn"
+                        onclick="selectPack(20000)"
+                    >
+                        Investir
+                    </button>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- 45 000 -->
+
+            <article class="pack-card">
+
+                <div class="pack-content">
+
+                    <span class="pack-number">
+                        NIVEAU 04
+                    </span>
+
+                    <h3>
+                        Maison moderne
+                    </h3>
+
+                    <div class="amount">
+                        45 000 FCFA
+                    </div>
+
+                    <p>
+                        Plus de confort et d'espace.
+                    </p>
+
+                    <button
+                        class="pack-btn"
+                        onclick="selectPack(45000)"
+                    >
+                        Investir
+                    </button>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- 100 000 -->
+
+            <article class="pack-card">
+
+                <div class="pack-content">
+
+                    <span class="pack-number">
+                        NIVEAU 05
+                    </span>
+
+                    <h3>
+                        Villa confortable
+                    </h3>
+
+                    <div class="amount">
+                        100 000 FCFA
+                    </div>
+
+                    <p>
+                        Villa plus spacieuse.
+                    </p>
+
+                    <button
+                        class="pack-btn"
+                        onclick="selectPack(100000)"
+                    >
+                        Investir
+                    </button>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- 200 000 -->
+
+            <article class="pack-card">
+
+                <div class="pack-content">
+
+                    <span class="pack-number">
+                        NIVEAU 06
+                    </span>
+
+                    <h3>
+                        Villa moderne
+                    </h3>
+
+                    <div class="amount">
+                        200 000 FCFA
+                    </div>
+
+                    <p>
+                        Architecture moderne.
+                    </p>
+
+                    <button
+                        class="pack-btn"
+                        onclick="selectPack(200000)"
+                    >
+                        Investir
+                    </button>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- 400 000 -->
+
+            <article class="pack-card">
+
+                <div class="pack-content">
+
+                    <span class="pack-number">
+                        NIVEAU 07
+                    </span>
+
+                    <h3>
+                        Grande villa
+                    </h3>
+
+                    <div class="amount">
+                        400 000 FCFA
+                    </div>
+
+                    <p>
+                        Résidence haut de gamme.
+                    </p>
+
+                    <button
+                        class="pack-btn"
+                        onclick="selectPack(400000)"
+                    >
+                        Investir
+                    </button>
+
+                </div>
+
+            </article>
+
+
+
+            <!-- 800 000 -->
+
+            <article class="pack-card featured">
+
+                <div class="pack-content">
+
+                    <span class="pack-number">
+                        NIVEAU 08
+                    </span>
+
+                    <h3>
+                        Villa haut standing
+                    </h3>
+
+                    <div class="amount">
+                        800 000 FCFA
+                    </div>
+
+                    <p>
+                        Notre niveau Premium.
+                    </p>
+
+                    <button
+                        class="pack-btn"
+                        onclick="selectPack(800000)"
+                    >
+                        Investir
+                    </button>
+
+                </div>
+
+            </article>
+
+
+        </div>
+
     </section>
 
 
 
-    <!-- =========================
-         INFORMATIONS
-    ========================= -->
+    <!-- =============================================
+         DEPOT
+    ============================================== -->
 
-    <section class="warning">
+    <section
+        class="dashboard-section dashboard-box"
+        id="depot"
+    >
 
-        <strong>
-            Information
-        </strong>
+        <span class="section-tag">
+            DEPOT
+        </span>
+
+        <h2>
+            Alimenter mon compte
+        </h2>
 
         <p>
-            Cette version est actuellement un prototype.
-            Les opérations financières réelles ne sont pas
-            exécutées depuis cette interface.
+            Effectuez votre dépôt afin de disposer
+            d'un solde pour vos investissements.
         </p>
+
+
+        <form
+            id="depositForm"
+            onsubmit="handleDeposit(event)"
+        >
+
+            <label for="depositAmount">
+                Montant du dépôt
+            </label>
+
+            <input
+                type="number"
+                id="depositAmount"
+                min="1000"
+                step="500"
+                placeholder="Ex : 10 000"
+                required
+            >
+
+
+            <button
+                type="submit"
+                class="btn"
+            >
+                Continuer le dépôt
+            </button>
+
+        </form>
+
+    </section>
+
+
+
+    <!-- =============================================
+         RETRAIT
+    ============================================== -->
+
+    <section
+        class="dashboard-section dashboard-box"
+        id="retrait"
+    >
+
+        <span class="section-tag">
+            RETRAIT
+        </span>
+
+        <h2>
+            Demander un retrait
+        </h2>
+
+        <p>
+            Indiquez le montant que vous souhaitez
+            retirer de votre solde disponible.
+        </p>
+
+
+        <form
+            id="withdrawForm"
+            onsubmit="handleWithdraw(event)"
+        >
+
+            <label for="withdrawAmount">
+                Montant du retrait
+            </label>
+
+            <input
+                type="number"
+                id="withdrawAmount"
+                min="1000"
+                step="500"
+                placeholder="Ex : 5 000"
+                required
+            >
+
+
+            <button
+                type="submit"
+                class="btn"
+            >
+                Demander le retrait
+            </button>
+
+        </form>
+
+    </section>
+
+
+
+    <!-- =============================================
+         INVESTISSEMENTS ACTIFS
+    ============================================== -->
+
+    <section class="dashboard-section">
+
+        <div class="section-heading">
+
+            <span class="section-tag">
+                MES INVESTISSEMENTS
+            </span>
+
+            <h2>
+                Investissements actifs
+            </h2>
+
+        </div>
+
+
+        <div
+            id="investmentList"
+            class="investment-list"
+        >
+
+            <div class="empty-state">
+
+                <strong>
+                    Aucun investissement actif
+                </strong>
+
+                <p>
+                    Choisissez un niveau ci-dessus
+                    pour commencer.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =============================================
+         HISTORIQUE
+    ============================================== -->
+
+    <section
+        class="dashboard-section"
+        id="historique"
+    >
+
+        <div class="section-heading">
+
+            <span class="section-tag">
+                HISTORIQUE
+            </span>
+
+            <h2>
+                Historique des opérations
+            </h2>
+
+        </div>
+
+
+        <div class="history-table-wrapper">
+
+            <table class="history-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Opération
+                        </th>
+
+                        <th>
+                            Montant
+                        </th>
+
+                        <th>
+                            Statut
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="historyBody">
+
+                    <tr>
+
+                        <td colspan="4">
+
+                            Aucune opération
+                            enregistrée.
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     </section>
 
@@ -412,20 +784,204 @@
 
 
 
-<!-- =========================
-     SCRIPT
-========================= -->
+<!-- =================================================
+     FOOTER
+================================================= -->
 
-<script src="script.js"></script>
+<footer>
 
+    <div class="footer-logo">
+        HOUSING INVESTMENT
+    </div>
+
+    <p>
+        © 2026 Housing Investment.
+        Tous droits réservés.
+    </p>
+
+</footer>
+
+
+
+<!-- =================================================
+     JAVASCRIPT
+================================================= -->
 
 <script>
 
-if (requireUser()) {
+function getCurrentUser() {
 
-    loadDashboard();
+    try {
+
+        return JSON.parse(
+            localStorage.getItem("currentUser")
+        );
+
+    } catch (error) {
+
+        return null;
+
+    }
 
 }
+
+
+
+function displayUser() {
+
+    const user =
+        getCurrentUser();
+
+    if (!user) {
+        return;
+    }
+
+
+    const name =
+        user.name ||
+        user.nom ||
+        user.username ||
+        "Utilisateur";
+
+
+    const userName =
+        document.getElementById("userName");
+
+
+    if (userName) {
+        userName.textContent = name;
+    }
+
+
+    const balance =
+        Number(
+            localStorage.getItem("userBalance") || 0
+        );
+
+
+    const balanceElement =
+        document.getElementById("userBalance");
+
+
+    if (balanceElement) {
+
+        balanceElement.textContent =
+            balance.toLocaleString("fr-FR")
+            + " FCFA";
+
+    }
+
+}
+
+
+
+function selectPack(amount) {
+
+    localStorage.setItem(
+        "selectedPack",
+        amount
+    );
+
+
+    alert(
+        "Pack sélectionné : "
+        +
+        amount.toLocaleString("fr-FR")
+        +
+        " FCFA."
+    );
+
+}
+
+
+
+function handleDeposit(event) {
+
+    event.preventDefault();
+
+
+    const amount =
+        Number(
+            document.getElementById(
+                "depositAmount"
+            ).value
+        );
+
+
+    if (!amount || amount < 1000) {
+
+        alert(
+            "Veuillez entrer un montant valide."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Votre demande de dépôt de "
+        +
+        amount.toLocaleString("fr-FR")
+        +
+        " FCFA a été enregistrée."
+    );
+
+}
+
+
+
+function handleWithdraw(event) {
+
+    event.preventDefault();
+
+
+    const amount =
+        Number(
+            document.getElementById(
+                "withdrawAmount"
+            ).value
+        );
+
+
+    if (!amount || amount < 1000) {
+
+        alert(
+            "Veuillez entrer un montant valide."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Votre demande de retrait de "
+        +
+        amount.toLocaleString("fr-FR")
+        +
+        " FCFA a été enregistrée."
+    );
+
+}
+
+
+
+function logoutUser() {
+
+    localStorage.removeItem(
+        "currentUser"
+    );
+
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+
+displayUser();
 
 </script>
 
