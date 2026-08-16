@@ -1,171 +1,137 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administration - Invest Africa</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<body>
+  <title>Administration | Votre Plateforme</title>
 
-<header class="header admin-header">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin">
 
-    <div class="logo">
-        ADMIN <span>INVEST AFRICA</span>
-    </div>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
 
-    <nav>
-        <a href="index.html">Site</a>
-        <a href="#" onclick="logoutAdmin()">Déconnexion</a>
-    </nav>
+  <style>
 
-</header>
-
-<div class="container">
-
-    <h1 class="page-title">Espace administrateur</h1>
-
-    <div class="dashboard-grid">
-
-        <div class="stat">
-            <h3>Utilisateurs</h3>
-            <strong id="usersCount">0</strong>
-        </div>
-
-        <div class="stat">
-            <h3>Dépôts</h3>
-            <strong id="depositsCount">0</strong>
-        </div>
-
-        <div class="stat">
-            <h3>Retraits</h3>
-            <strong id="withdrawalsCount">0</strong>
-        </div>
-
-        <div class="stat">
-            <h3>Transactions</h3>
-            <strong id="transactionsCount">0</strong>
-        </div>
-
-    </div>
-
-    <h2 style="margin:30px 0 15px;">
-        Dernières opérations
-    </h2>
-
-    <div class="table-box">
-
-        <table>
-
-            <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Montant</th>
-                    <th>Moyen</th>
-                    <th>Date</th>
-                    <th>Statut</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-
-            <tbody id="adminHistory">
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</div>
-
-<script>
-
-if (localStorage.getItem("investAfricaAdmin") !== "true") {
-    window.location.href = "login.html";
-}
-
-function formatMoney(amount) {
-    return Number(amount || 0).toLocaleString("fr-FR") + " FCFA";
-}
-
-function loadAdmin() {
-
-    const history =
-        JSON.parse(localStorage.getItem("investAfricaHistory")) || [];
-
-    const tbody = document.getElementById("adminHistory");
-
-    const deposits =
-        history.filter(x => x.type === "Dépôt");
-
-    const withdrawals =
-        history.filter(x => x.type === "Retrait");
-
-    document.getElementById("usersCount").textContent =
-        localStorage.getItem("investAfricaUser") ? "1" : "0";
-
-    document.getElementById("depositsCount").textContent =
-        deposits.length;
-
-    document.getElementById("withdrawalsCount").textContent =
-        withdrawals.length;
-
-    document.getElementById("transactionsCount").textContent =
-        history.length;
-
-    tbody.innerHTML = "";
-
-    if (history.length === 0) {
-        tbody.innerHTML =
-            '<tr><td colspan="6">Aucune transaction.</td></tr>';
-        return;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    history.forEach((item, index) => {
-
-        tbody.innerHTML += `
-            <tr>
-                <td>${item.type}</td>
-                <td>${formatMoney(item.amount)}</td>
-                <td>${item.method}</td>
-                <td>${item.date}</td>
-                <td class="pending">${item.status}</td>
-                <td>
-                    <button class="btn"
-                        onclick="validateTransaction(${index})">
-                        Valider
-                    </button>
-                </td>
-            </tr>
-        `;
-    });
-}
-
-function validateTransaction(index) {
-
-    let history =
-        JSON.parse(localStorage.getItem("investAfricaHistory")) || [];
-
-    if (history[index]) {
-        history[index].status = "Validé";
-        localStorage.setItem(
-            "investAfricaHistory",
-            JSON.stringify(history)
-        );
+    body {
+      font-family: "Inter", sans-serif;
+      background: #07110d;
+      color: white;
+      min-height: 100vh;
     }
 
-    loadAdmin();
-}
+    button,
+    input {
+      font-family: inherit;
+    }
 
-function logoutAdmin() {
-    localStorage.removeItem("investAfricaAdmin");
-    window.location.href = "login.html";
-}
+    /* =========================
+       SIDEBAR
+    ========================= */
 
-loadAdmin();
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
 
-</script>
+      width: 245px;
 
-</body>
-</html>
+      padding: 25px 18px;
+
+      background: #050c08;
+
+      border-right: 1px solid rgba(255,255,255,0.07);
+
+      z-index: 100;
+    }
+
+    .logo {
+      display: block;
+
+      padding: 5px 12px 35px;
+
+      color: white;
+
+      text-decoration: none;
+
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .logo span {
+      color: #55e58a;
+    }
+
+    .admin-badge {
+      margin: -20px 12px 30px;
+
+      padding: 6px 9px;
+
+      width: fit-content;
+
+      border-radius: 5px;
+
+      background: rgba(85,229,138,0.10);
+
+      color: #55e58a;
+
+      font-size: 9px;
+
+      font-weight: 800;
+
+      letter-spacing: 1px;
+
+      text-transform: uppercase;
+    }
+
+    .menu-title {
+      padding: 0 12px;
+
+      margin-bottom: 12px;
+
+      color: #65746b;
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+      letter-spacing: 1.5px;
+
+      text-transform: uppercase;
+    }
+
+    .menu {
+      display: grid;
+
+      gap: 5px;
+    }
+
+    .menu button,
+    .menu a {
+      width: 100%;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      padding: 13px 12px;
+
+      border: none;
+
+      border-radius: 9px;
+
+      background: transparent;
+
+      color: #899990;
