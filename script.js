@@ -1,15 +1,63 @@
-/* =========================================
+/* =====================================================
    HOUSING INVESTMENT
-   SYSTÈME PRINCIPAL
-========================================= */
+   SCRIPT PRINCIPAL
+===================================================== */
 
 const USERS_KEY = "housing_investment_users";
 const SESSION_KEY = "housing_investment_session";
 
 
-/* =========================================
+/* =====================================================
+   PACKS
+===================================================== */
+
+const PACKS = [
+    {
+        level: 1,
+        amount: 3000,
+        house: "Maison économique"
+    },
+    {
+        level: 2,
+        amount: 10000,
+        house: "Petite maison moderne"
+    },
+    {
+        level: 3,
+        amount: 20000,
+        house: "Maison familiale"
+    },
+    {
+        level: 4,
+        amount: 45000,
+        house: "Maison moderne"
+    },
+    {
+        level: 5,
+        amount: 100000,
+        house: "Villa confortable"
+    },
+    {
+        level: 6,
+        amount: 200000,
+        house: "Villa moderne"
+    },
+    {
+        level: 7,
+        amount: 400000,
+        house: "Grande villa"
+    },
+    {
+        level: 8,
+        amount: 800000,
+        house: "Villa haut standing"
+    }
+];
+
+
+/* =====================================================
    UTILISATEURS
-========================================= */
+===================================================== */
 
 function getUsers() {
 
@@ -24,6 +72,7 @@ function getUsers() {
         return [];
 
     }
+
 }
 
 
@@ -37,9 +86,9 @@ function saveUsers(users) {
 }
 
 
-/* =========================================
+/* =====================================================
    SESSION
-========================================= */
+===================================================== */
 
 function getSession() {
 
@@ -75,17 +124,16 @@ function clearSession() {
 }
 
 
-/* =========================================
+/* =====================================================
    MESSAGES
-========================================= */
+===================================================== */
 
 function showMessage(message, type = "error") {
 
-    const box = document.getElementById("message");
+    const box =
+        document.getElementById("message");
 
-    if (!box) {
-        return;
-    }
+    if (!box) return;
 
     box.textContent = message;
 
@@ -95,14 +143,13 @@ function showMessage(message, type = "error") {
 }
 
 
-/* =========================================
+/* =====================================================
    INSCRIPTION
-========================================= */
+===================================================== */
 
 function registerUser(event) {
 
     event.preventDefault();
-
 
     const nameElement =
         document.getElementById("name");
@@ -146,8 +193,6 @@ function registerUser(event) {
         confirmElement.value;
 
 
-    /* Vérification des champs */
-
     if (
         !name ||
         !phone ||
@@ -163,8 +208,6 @@ function registerUser(event) {
 
     }
 
-
-    /* Mot de passe */
 
     if (password.length < 6) {
 
@@ -188,14 +231,13 @@ function registerUser(event) {
     }
 
 
-    /* Recherche d'un compte existant */
-
     const users = getUsers();
+
 
     const existingUser =
         users.find(
             user =>
-                user.phone.toLowerCase() ===
+                String(user.phone).toLowerCase() ===
                 phone.toLowerCase()
         );
 
@@ -203,15 +245,13 @@ function registerUser(event) {
     if (existingUser) {
 
         showMessage(
-            "Ce numéro ou identifiant existe déjà. Connectez-vous."
+            "Cet identifiant existe déjà. Connectez-vous."
         );
 
         return;
 
     }
 
-
-    /* Création du compte */
 
     const user = {
 
@@ -236,6 +276,8 @@ function registerUser(event) {
 
         earnings: 0,
 
+        selectedPack: null,
+
         history: []
 
     };
@@ -245,8 +287,6 @@ function registerUser(event) {
 
     saveUsers(users);
 
-
-    /* Connexion automatique */
 
     saveSession({
 
@@ -263,27 +303,19 @@ function registerUser(event) {
     );
 
 
-    /*
-       Petite pause pour permettre
-       au message de s'afficher.
-    */
+    setTimeout(function () {
 
-    setTimeout(
-        function () {
+        window.location.href =
+            "dashboard.html";
 
-            window.location.href =
-                "dashboard.html";
-
-        },
-        700
-    );
+    }, 700);
 
 }
 
 
-/* =========================================
+/* =====================================================
    CONNEXION
-========================================= */
+===================================================== */
 
 function loginUser(event) {
 
@@ -303,7 +335,7 @@ function loginUser(event) {
     ) {
 
         showMessage(
-            "Erreur : formulaire de connexion incomplet."
+            "Erreur : formulaire incomplet."
         );
 
         return;
@@ -329,9 +361,7 @@ function loginUser(event) {
     }
 
 
-    /* =====================================
-       COMPTE ADMINISTRATEUR
-    ===================================== */
+    /* ADMIN */
 
     if (
         phone === "admin" &&
@@ -339,11 +369,8 @@ function loginUser(event) {
     ) {
 
         saveSession({
-
             type: "admin"
-
         });
-
 
         window.location.href =
             "admin.html";
@@ -353,9 +380,7 @@ function loginUser(event) {
     }
 
 
-    /* =====================================
-       RECHERCHE UTILISATEUR
-    ===================================== */
+    /* UTILISATEUR */
 
     const users = getUsers();
 
@@ -363,7 +388,7 @@ function loginUser(event) {
     const user =
         users.find(
             item =>
-                item.phone.toLowerCase() ===
+                String(item.phone).toLowerCase() ===
                 phone.toLowerCase()
         );
 
@@ -390,8 +415,6 @@ function loginUser(event) {
     }
 
 
-    /* Connexion réussie */
-
     saveSession({
 
         type: "user",
@@ -407,9 +430,43 @@ function loginUser(event) {
 }
 
 
-/* =========================================
-   VÉRIFICATION UTILISATEUR
-========================================= */
+/* =====================================================
+   UTILISATEUR CONNECTÉ
+===================================================== */
+
+function getCurrentUser() {
+
+    const session =
+        getSession();
+
+
+    if (
+        !session ||
+        session.type !== "user"
+    ) {
+
+        return null;
+
+    }
+
+
+    const users =
+        getUsers();
+
+
+    return (
+        users.find(
+            user =>
+                user.id === session.userId
+        ) || null
+    );
+
+}
+
+
+/* =====================================================
+   PROTECTION UTILISATEUR
+===================================================== */
 
 function requireUser() {
 
@@ -430,14 +487,26 @@ function requireUser() {
     }
 
 
+    if (!getCurrentUser()) {
+
+        clearSession();
+
+        window.location.href =
+            "login.html";
+
+        return false;
+
+    }
+
+
     return true;
 
 }
 
 
-/* =========================================
-   VÉRIFICATION ADMIN
-========================================= */
+/* =====================================================
+   PROTECTION ADMIN
+===================================================== */
 
 function requireAdmin() {
 
@@ -463,9 +532,9 @@ function requireAdmin() {
 }
 
 
-/* =========================================
+/* =====================================================
    DÉCONNEXION
-========================================= */
+===================================================== */
 
 function logout() {
 
@@ -477,41 +546,9 @@ function logout() {
 }
 
 
-/* =========================================
-   UTILISATEUR CONNECTÉ
-========================================= */
-
-function getCurrentUser() {
-
-    const session =
-        getSession();
-
-
-    if (
-        !session ||
-        session.type !== "user"
-    ) {
-
-        return null;
-
-    }
-
-
-    const users =
-        getUsers();
-
-
-    return users.find(
-        user =>
-            user.id === session.userId
-    ) || null;
-
-}
-
-
-/* =========================================
-   TABLEAU DE BORD
-========================================= */
+/* =====================================================
+   TABLEAU DE BORD UTILISATEUR
+===================================================== */
 
 function loadDashboard() {
 
@@ -547,52 +584,31 @@ function loadDashboard() {
         document.getElementById("earnings");
 
 
-    if (name) {
-
-        name.textContent =
-            user.name;
-
-    }
+    if (name)
+        name.textContent = user.name;
 
 
-    if (phone) {
-
-        phone.textContent =
-            user.phone;
-
-    }
+    if (phone)
+        phone.textContent = user.phone;
 
 
-    if (createdAt) {
-
-        createdAt.textContent =
-            user.createdAt;
-
-    }
+    if (createdAt)
+        createdAt.textContent = user.createdAt;
 
 
-    if (balance) {
-
+    if (balance)
         balance.textContent =
             formatMoney(user.balance);
 
-    }
 
-
-    if (invested) {
-
+    if (invested)
         invested.textContent =
             formatMoney(user.invested);
 
-    }
 
-
-    if (earnings) {
-
+    if (earnings)
         earnings.textContent =
             formatMoney(user.earnings);
-
-    }
 
 
     loadHistory(user);
@@ -600,9 +616,96 @@ function loadDashboard() {
 }
 
 
-/* =========================================
+/* =====================================================
+   SÉLECTION D'UN PACK
+===================================================== */
+
+function selectPack(amount) {
+
+    const pack =
+        PACKS.find(
+            item =>
+                item.amount === Number(amount)
+        );
+
+
+    if (!pack) {
+
+        alert(
+            "Ce pack n'existe pas."
+        );
+
+        return;
+
+    }
+
+
+    const user =
+        getCurrentUser();
+
+
+    if (!user) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+
+    /*
+       Pour le moment, la sélection
+       n'effectue aucun paiement réel.
+    */
+
+    user.selectedPack = {
+
+        level: pack.level,
+
+        amount: pack.amount,
+
+        house: pack.house
+
+    };
+
+
+    const users =
+        getUsers();
+
+
+    const index =
+        users.findIndex(
+            item =>
+                item.id === user.id
+        );
+
+
+    if (index !== -1) {
+
+        users[index] = user;
+
+        saveUsers(users);
+
+    }
+
+
+    alert(
+        "Pack sélectionné : " +
+        formatMoney(pack.amount) +
+        " — " +
+        pack.house
+    );
+
+
+    loadDashboard();
+
+}
+
+
+/* =====================================================
    HISTORIQUE
-========================================= */
+===================================================== */
 
 function loadHistory(user) {
 
@@ -610,11 +713,7 @@ function loadHistory(user) {
         document.getElementById("history");
 
 
-    if (!historyElement) {
-
-        return;
-
-    }
+    if (!historyElement) return;
 
 
     const history =
@@ -638,6 +737,7 @@ function loadHistory(user) {
             .map(
                 item => `
                     <div class="history-item">
+
                         <strong>
                             ${escapeHtml(item.type)}
                         </strong>
@@ -649,6 +749,7 @@ function loadHistory(user) {
                         <small>
                             ${escapeHtml(item.date)}
                         </small>
+
                     </div>
                 `
             )
@@ -657,37 +758,82 @@ function loadHistory(user) {
 }
 
 
-/* =========================================
+/* =====================================================
    ADMINISTRATION
-========================================= */
+===================================================== */
 
-function loadUsers() {
-
-    const table =
-        document.getElementById("usersTable");
-
-
-    if (!table) {
-
-        return;
-
-    }
-
+function loadAdminDashboard() {
 
     const users =
         getUsers();
 
 
+    const totalUsers =
+        document.getElementById("totalUsers");
+
+    const totalInvested =
+        document.getElementById("totalInvested");
+
+    const totalBalance =
+        document.getElementById("totalBalance");
+
+
+    let investedTotal = 0;
+
+    let balanceTotal = 0;
+
+
+    users.forEach(user => {
+
+        investedTotal +=
+            Number(user.invested || 0);
+
+        balanceTotal +=
+            Number(user.balance || 0);
+
+    });
+
+
+    if (totalUsers) {
+
+        totalUsers.textContent =
+            users.length;
+
+    }
+
+
+    if (totalInvested) {
+
+        totalInvested.textContent =
+            formatMoney(investedTotal);
+
+    }
+
+
+    if (totalBalance) {
+
+        totalBalance.textContent =
+            formatMoney(balanceTotal);
+
+    }
+
+
+    const table =
+        document.getElementById("usersTable");
+
+
+    if (!table) return;
+
+
     if (users.length === 0) {
 
-        table.innerHTML =
-            `
+        table.innerHTML = `
             <tr>
-                <td colspan="4">
+                <td colspan="5">
                     Aucun utilisateur inscrit.
                 </td>
             </tr>
-            `;
+        `;
 
         return;
 
@@ -716,6 +862,10 @@ function loadUsers() {
                             ${formatMoney(user.balance)}
                         </td>
 
+                        <td>
+                            ${formatMoney(user.invested)}
+                        </td>
+
                     </tr>
                 `
             )
@@ -724,9 +874,9 @@ function loadUsers() {
 }
 
 
-/* =========================================
-   FORMATAGE ARGENT
-========================================= */
+/* =====================================================
+   FORMATAGE FCFA
+===================================================== */
 
 function formatMoney(amount) {
 
@@ -739,27 +889,23 @@ function formatMoney(amount) {
 }
 
 
-/* =========================================
-   PROTECTION CONTRE HTML
-========================================= */
+/* =====================================================
+   PROTECTION HTML
+===================================================== */
 
 function escapeHtml(value) {
 
     return String(value)
         .replace(
             /[&<>"']/g,
-            function (character) {
+            function(character) {
 
                 const entities = {
 
                     "&": "&amp;",
-
                     "<": "&lt;",
-
                     ">": "&gt;",
-
                     '"': "&quot;",
-
                     "'": "&#039;"
 
                 };
