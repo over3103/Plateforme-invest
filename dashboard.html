@@ -1,218 +1,350 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Espace utilisateur</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<body>
+  <title>Tableau de bord | Votre Plateforme</title>
 
-<header class="topbar">
-    <div class="logo">INVEST PLUS</div>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <button onclick="logout()" class="logout-btn">
-        Déconnexion
-    </button>
-</header>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
 
-<main class="container">
+  <style>
 
-    <section class="welcome">
-        <h1>Bienvenue, <span id="userName">Utilisateur</span> 👋</h1>
-        <p>Gérez votre compte et vos investissements.</p>
-    </section>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    <!-- STATISTIQUES -->
-    <section class="stats">
+    body {
+      font-family: "Inter", sans-serif;
+      background: #07110d;
+      color: white;
+      min-height: 100vh;
+    }
 
-        <div class="stat-card">
-            <h3>Solde disponible</h3>
-            <strong><span id="balance">0</span> FCFA</strong>
-        </div>
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-        <div class="stat-card">
-            <h3>Gains</h3>
-            <strong><span id="earnings">0</span> FCFA</strong>
-        </div>
+    button {
+      font-family: inherit;
+    }
 
-        <div class="stat-card">
-            <h3>Investissements</h3>
-            <strong><span id="investmentCount">0</span></strong>
-        </div>
+    /* =========================
+       SIDEBAR
+    ========================= */
 
-    </section>
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
 
-    <!-- MENU -->
-    <nav class="dashboard-menu">
-        <button onclick="showSection('packs')">💰 Packs</button>
-        <button onclick="showSection('investments')">📊 Mes investissements</button>
-        <button onclick="showSection('deposit')">➕ Dépôt</button>
-        <button onclick="showSection('withdraw')">💸 Retrait</button>
-        <button onclick="showSection('history')">📜 Historique</button>
-        <button onclick="showSection('profile')">👤 Mon profil</button>
-    </nav>
+      width: 245px;
 
-    <!-- PACKS -->
-    <section id="packs" class="dashboard-section">
+      padding: 25px 18px;
 
-        <h2>Nos packs d'investissement</h2>
-        <p class="section-description">
-            Choisissez le pack qui correspond à votre budget.
-        </p>
+      background: #050c08;
 
-        <div class="packs-grid">
+      border-right: 1px solid rgba(255,255,255,0.07);
 
-            <div class="pack">
-                <h3>Pack 1</h3>
-                <h2>3 000 FCFA</h2>
-                <p>Gain journalier : <b>800 FCFA</b></p>
-                <button onclick="invest(3000,800)">Investir maintenant</button>
-            </div>
+      z-index: 100;
+    }
 
-            <div class="pack">
-                <h3>Pack 2</h3>
-                <h2>10 000 FCFA</h2>
-                <p>Gain journalier : <b>3 000 FCFA</b></p>
-                <button onclick="invest(10000,3000)">Investir maintenant</button>
-            </div>
+    .logo {
+      display: block;
 
-            <div class="pack">
-                <h3>Pack 3</h3>
-                <h2>20 000 FCFA</h2>
-                <p>Gain journalier : <b>6 000 FCFA</b></p>
-                <button onclick="invest(20000,6000)">Investir maintenant</button>
-            </div>
+      padding: 5px 12px 35px;
 
-            <div class="pack">
-                <h3>Pack 4</h3>
-                <h2>45 000 FCFA</h2>
-                <p>Gain journalier : <b>14 000 FCFA</b></p>
-                <button onclick="invest(45000,14000)">Investir maintenant</button>
-            </div>
+      font-size: 20px;
+      font-weight: 800;
+    }
 
-            <div class="pack">
-                <h3>Pack 5</h3>
-                <h2>100 000 FCFA</h2>
-                <p>Gain journalier : <b>30 000 FCFA</b></p>
-                <button onclick="invest(100000,30000)">Investir maintenant</button>
-            </div>
+    .logo span {
+      color: #55e58a;
+    }
 
-            <div class="pack">
-                <h3>Pack 6</h3>
-                <h2>200 000 FCFA</h2>
-                <p>Gain journalier : <b>65 000 FCFA</b></p>
-                <button onclick="invest(200000,65000)">Investir maintenant</button>
-            </div>
+    .menu-title {
+      padding: 0 12px;
 
-            <div class="pack">
-                <h3>Pack 7</h3>
-                <h2>400 000 FCFA</h2>
-                <p>Gain journalier : <b>140 000 FCFA</b></p>
-                <button onclick="invest(400000,140000)">Investir maintenant</button>
-            </div>
+      margin-bottom: 12px;
 
-            <div class="pack">
-                <h3>Pack 8</h3>
-                <h2>800 000 FCFA</h2>
-                <p>Gain journalier : <b>290 000 FCFA</b></p>
-                <button onclick="invest(800000,290000)">Investir maintenant</button>
-            </div>
+      color: #65746b;
 
-            <div class="pack">
-                <h3>Pack 9</h3>
-                <h2>1 000 000 FCFA</h2>
-                <p>Gain journalier : <b>À définir</b></p>
-                <button onclick="invest(1000000,0)">Investir maintenant</button>
-            </div>
+      font-size: 10px;
 
-        </div>
-    </section>
+      text-transform: uppercase;
 
-    <!-- INVESTISSEMENTS -->
-    <section id="investments" class="dashboard-section hidden">
+      letter-spacing: 1.5px;
 
-        <h2>Mes investissements</h2>
+      font-weight: 800;
+    }
 
-        <div id="investmentList">
-            <p>Aucun investissement pour le moment.</p>
-        </div>
+    .menu {
+      display: grid;
+      gap: 5px;
+    }
 
-    </section>
+    .menu a {
+      display: flex;
 
-    <!-- DEPOT -->
-    <section id="deposit" class="dashboard-section hidden">
+      align-items: center;
 
-        <h2>Effectuer un dépôt</h2>
+      gap: 12px;
 
-        <input type="number" id="depositAmount"
-               placeholder="Montant en FCFA">
+      padding: 13px 12px;
 
-        <button onclick="makeDeposit()">
-            Confirmer le dépôt
-        </button>
+      border-radius: 9px;
 
-        <p class="notice">
-            Prototype : le dépôt est actuellement simulé.
-        </p>
+      color: #899990;
 
-    </section>
+      font-size: 13px;
 
-    <!-- RETRAIT -->
-    <section id="withdraw" class="dashboard-section hidden">
+      transition: 0.25s;
+    }
 
-        <h2>Effectuer un retrait</h2>
+    .menu a:hover,
+    .menu a.active {
+      background: rgba(85,229,138,0.10);
 
-        <input type="number" id="withdrawAmount"
-               placeholder="Montant en FCFA">
+      color: #55e58a;
+    }
 
-        <button onclick="makeWithdrawal()">
-            Demander le retrait
-        </button>
+    .menu-icon {
+      width: 22px;
 
-        <p class="notice">
-            Prototype : le retrait est actuellement simulé.
-        </p>
+      text-align: center;
 
-    </section>
+      font-size: 16px;
+    }
 
-    <!-- HISTORIQUE -->
-    <section id="history" class="dashboard-section hidden">
+    .logout {
+      position: absolute;
 
-        <h2>Historique</h2>
+      bottom: 25px;
 
-        <div id="historyList">
-            <p>Aucune opération enregistrée.</p>
-        </div>
+      left: 18px;
+      right: 18px;
 
-    </section>
+      display: flex;
 
-    <!-- PROFIL -->
-    <section id="profile" class="dashboard-section hidden">
+      align-items: center;
 
-        <h2>Mon profil</h2>
+      gap: 12px;
 
-        <label>Nom</label>
-        <input type="text" id="profileName">
+      padding: 13px 12px;
 
-        <label>Téléphone</label>
-        <input type="text" id="profilePhone">
+      border-radius: 9px;
 
-        <label>Email</label>
-        <input type="email" id="profileEmail">
+      color: #899990;
 
-        <button onclick="saveProfile()">
-            Enregistrer mon profil
-        </button>
+      font-size: 13px;
+    }
 
-        <p id="profileMessage"></p>
+    .logout:hover {
+      color: #ff7d7d;
 
-    </section>
+      background: rgba(255,80,80,0.07);
+    }
 
-</main>
+    /* =========================
+       MAIN
+    ========================= */
 
-<script src="script.js"></script>
+    .main {
+      margin-left: 245px;
 
-</body>
-</html>
+      min-height: 100vh;
+
+      padding: 30px 4%;
+    }
+
+    /* =========================
+       TOPBAR
+    ========================= */
+
+    .topbar {
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      margin-bottom: 35px;
+    }
+
+    .welcome h1 {
+      font-size: 27px;
+
+      letter-spacing: -1px;
+    }
+
+    .welcome p {
+      margin-top: 5px;
+
+      color: #74837b;
+
+      font-size: 13px;
+    }
+
+    .user-area {
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+    }
+
+    .notification {
+      width: 40px;
+      height: 40px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 10px;
+
+      border: 1px solid rgba(255,255,255,0.08);
+
+      background: rgba(255,255,255,0.03);
+
+      color: #9aa9a0;
+
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background: #55e58a;
+
+      color: #041008;
+
+      font-size: 13px;
+
+      font-weight: 800;
+    }
+
+    /* =========================
+       BALANCE
+    ========================= */
+
+    .balance-grid {
+      display: grid;
+
+      grid-template-columns: 1.6fr 1fr 1fr;
+
+      gap: 17px;
+
+      margin-bottom: 25px;
+    }
+
+    .card {
+      padding: 25px;
+
+      border-radius: 16px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,0.065),
+          rgba(255,255,255,0.025)
+        );
+
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .balance-card {
+      position: relative;
+
+      overflow: hidden;
+
+      background:
+        radial-gradient(
+          circle at 85% 15%,
+          rgba(85,229,138,0.20),
+          transparent 35%
+        ),
+        linear-gradient(
+          145deg,
+          #10251a,
+          #0a1710
+        );
+    }
+
+    .balance-card::after {
+      content: "";
+
+      position: absolute;
+
+      width: 170px;
+      height: 170px;
+
+      right: -70px;
+      bottom: -100px;
+
+      border-radius: 50%;
+
+      background: rgba(85,229,138,0.07);
+    }
+
+    .card-label {
+      color: #899990;
+
+      font-size: 11px;
+
+      text-transform: uppercase;
+
+      letter-spacing: 1px;
+
+      font-weight: 700;
+    }
+
+    .balance {
+      margin-top: 10px;
+
+      font-size: 37px;
+
+      font-weight: 800;
+
+      letter-spacing: -1px;
+    }
+
+    .balance small {
+      font-size: 16px;
+
+      color: #a0afa7;
+
+      font-weight: 600;
+    }
+
+    .balance-change {
+      margin-top: 12px;
+
+      color: #55e58a;
+
+      font-size: 12px;
+    }
+
+    .stat-value {
+      margin-top: 12px;
+
+      font-size:
