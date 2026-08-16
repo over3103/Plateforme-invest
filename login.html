@@ -1,135 +1,155 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta charset="UTF-8">
+  <title>Connexion | Votre Plateforme</title>
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <title>Connexion - Invest Plus</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
 
-    <link rel="stylesheet" href="style.css">
+  <style>
 
-</head>
-
-<body>
-
-<div class="container">
-
-    <section class="dashboard-section">
-
-        <h1>Connexion</h1>
-
-        <p>
-            Connectez-vous à votre espace utilisateur.
-        </p>
-
-        <br>
-
-        <label>Nom</label>
-
-        <input
-            type="text"
-            id="loginName"
-            placeholder="Votre nom"
-        >
-
-        <label>Téléphone</label>
-
-        <input
-            type="text"
-            id="loginPhone"
-            placeholder="Votre numéro"
-        >
-
-        <button onclick="login()">
-            Se connecter
-        </button>
-
-        <p id="loginMessage"></p>
-
-        <br>
-
-        <p>
-            Vous n'avez pas encore de compte ?
-        </p>
-
-        <button onclick="createAccount()">
-            Créer un compte
-        </button>
-
-    </section>
-
-</div>
-
-<script>
-
-function login() {
-
-    const name =
-        document.getElementById("loginName").value.trim();
-
-    const phone =
-        document.getElementById("loginPhone").value.trim();
-
-    if (!name || !phone) {
-
-        document.getElementById("loginMessage").textContent =
-            "Veuillez remplir tous les champs.";
-
-        return;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    let user =
-        JSON.parse(localStorage.getItem("investUser"));
+    body {
+      font-family: "Inter", sans-serif;
+      min-height: 100vh;
+      background:
+        radial-gradient(
+          circle at 80% 20%,
+          rgba(85,229,138,0.16),
+          transparent 30%
+        ),
+        linear-gradient(135deg, #041008, #0b1d13);
 
-    if (!user) {
-
-        user = {
-
-            name: name,
-
-            phone: phone,
-
-            email: "",
-
-            balance: 0,
-
-            earnings: 0,
-
-            investments: [],
-
-            history: []
-
-        };
-
-    } else {
-
-        user.name = name;
-        user.phone = phone;
-
+      color: white;
     }
 
-    localStorage.setItem(
-        "investUser",
-        JSON.stringify(user)
-    );
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-    window.location.href = "dashboard.html";
+    /* =========================
+       NAVIGATION
+    ========================= */
 
-}
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
 
+      padding: 20px 6%;
 
-function createAccount() {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
-    window.location.href = "index.html";
+      background: rgba(4,16,8,0.72);
+      backdrop-filter: blur(18px);
 
-}
+      border-bottom: 1px solid rgba(255,255,255,0.08);
 
-</script>
+      z-index: 10;
+    }
 
-</body>
+    .logo {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
 
-</html>
+    .logo span {
+      color: #55e58a;
+    }
+
+    .back {
+      color: #a8b8ae;
+      font-size: 14px;
+    }
+
+    .back:hover {
+      color: #55e58a;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    main {
+      min-height: 100vh;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      padding: 120px 20px 50px;
+    }
+
+    .auth-container {
+      width: 100%;
+      max-width: 1050px;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+
+      background: rgba(255,255,255,0.045);
+
+      border: 1px solid rgba(255,255,255,0.09);
+
+      border-radius: 25px;
+
+      overflow: hidden;
+
+      box-shadow:
+        0 30px 100px rgba(0,0,0,0.35);
+
+      backdrop-filter: blur(20px);
+    }
+
+    /* =========================
+       PRESENTATION
+    ========================= */
+
+    .presentation {
+      padding: 60px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      background:
+        radial-gradient(
+          circle at 70% 30%,
+          rgba(85,229,138,0.20),
+          transparent 35%
+        ),
+        linear-gradient(
+          145deg,
+          rgba(85,229,138,0.08),
+          rgba(255,255,255,0.015)
+        );
+    }
+
+    .badge {
+      display: inline-block;
+
+      width: fit-content;
+
+      padding: 8px 13px;
+
+      border-radius: 50px;
+
+      background: rgba(85,229,
