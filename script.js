@@ -1,71 +1,268 @@
-/* =====================================================
-   HOUSING INVESTMENT
-   SCRIPT PRINCIPAL
-===================================================== */
-
-const USERS_KEY = "housing_investment_users";
-const SESSION_KEY = "housing_investment_session";
+// ============================================================
+// HOUSING INVESTMENT
+// SCRIPT PRINCIPAL
+// ============================================================
 
 
-/* =====================================================
-   PACKS
-===================================================== */
+// ============================================================
+// CONFIGURATION DES PACKS
+// ============================================================
 
 const PACKS = [
+
     {
-        level: 1,
+        id: 1,
         amount: 3000,
-        house: "Maison économique"
+        name: "Maison économique",
+        dailyGain: 800,
+        duration: 180
     },
+
     {
-        level: 2,
+        id: 2,
         amount: 10000,
-        house: "Petite maison moderne"
+        name: "Petite maison moderne",
+        dailyGain: 3000,
+        duration: 180
     },
+
     {
-        level: 3,
+        id: 3,
         amount: 20000,
-        house: "Maison familiale"
+        name: "Maison familiale",
+        dailyGain: 6000,
+        duration: 180
     },
+
     {
-        level: 4,
+        id: 4,
         amount: 45000,
-        house: "Maison moderne"
+        name: "Maison moderne",
+        dailyGain: 14000,
+        duration: 180
     },
+
     {
-        level: 5,
+        id: 5,
         amount: 100000,
-        house: "Villa confortable"
+        name: "Villa confortable",
+        dailyGain: 30000,
+        duration: 180
     },
+
     {
-        level: 6,
+        id: 6,
         amount: 200000,
-        house: "Villa moderne"
+        name: "Villa moderne",
+        dailyGain: 65000,
+        duration: 180
     },
+
     {
-        level: 7,
+        id: 7,
         amount: 400000,
-        house: "Grande villa"
+        name: "Grande villa",
+        dailyGain: 140000,
+        duration: 180
     },
+
     {
-        level: 8,
+        id: 8,
         amount: 800000,
-        house: "Villa haut standing"
+        name: "Villa haut standing",
+        dailyGain: 290000,
+        duration: 180
     }
+
 ];
 
 
-/* =====================================================
-   UTILISATEURS
-===================================================== */
 
-function getUsers() {
+// ============================================================
+// UTILITAIRES
+// ============================================================
+
+
+function formatMoney(amount) {
+
+    return Number(amount || 0)
+        .toLocaleString("fr-FR")
+        + " FCFA";
+
+}
+
+
+
+function getCurrentUser() {
 
     try {
 
         return JSON.parse(
-            localStorage.getItem(USERS_KEY) || "[]"
+            localStorage.getItem("currentUser")
         );
+
+    } catch (error) {
+
+        return null;
+
+    }
+
+}
+
+
+
+function getRegisteredUser() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem("registeredUser")
+        );
+
+    } catch (error) {
+
+        return null;
+
+    }
+
+}
+
+
+
+function saveCurrentUser(user) {
+
+    localStorage.setItem(
+        "currentUser",
+        JSON.stringify(user)
+    );
+
+}
+
+
+
+function getNumber(key) {
+
+    return Number(
+        localStorage.getItem(key) || 0
+    );
+
+}
+
+
+
+function setNumber(key, value) {
+
+    localStorage.setItem(
+        key,
+        String(Number(value) || 0)
+    );
+
+}
+
+
+
+// ============================================================
+// INITIALISATION DU COMPTE
+// ============================================================
+
+
+function initializeAccount() {
+
+    if (
+        localStorage.getItem("userBalance")
+        === null
+    ) {
+
+        setNumber(
+            "userBalance",
+            0
+        );
+
+    }
+
+
+    if (
+        localStorage.getItem("totalInvested")
+        === null
+    ) {
+
+        setNumber(
+            "totalInvested",
+            0
+        );
+
+    }
+
+
+    if (
+        localStorage.getItem("totalGains")
+        === null
+    ) {
+
+        setNumber(
+            "totalGains",
+            0
+        );
+
+    }
+
+
+    if (
+        localStorage.getItem("activeInvestments")
+        === null
+    ) {
+
+        setNumber(
+            "activeInvestments",
+            0
+        );
+
+    }
+
+
+    if (
+        localStorage.getItem("investments")
+        === null
+    ) {
+
+        localStorage.setItem(
+            "investments",
+            JSON.stringify([])
+        );
+
+    }
+
+
+    if (
+        localStorage.getItem("transactions")
+        === null
+    ) {
+
+        localStorage.setItem(
+            "transactions",
+            JSON.stringify([])
+        );
+
+    }
+
+}
+
+
+
+// ============================================================
+// INVESTISSEMENTS
+// ============================================================
+
+
+function getInvestments() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                "investments"
+            )
+        ) || [];
 
     } catch (error) {
 
@@ -76,549 +273,98 @@ function getUsers() {
 }
 
 
-function saveUsers(users) {
+
+function saveInvestments(investments) {
 
     localStorage.setItem(
-        USERS_KEY,
-        JSON.stringify(users)
+        "investments",
+        JSON.stringify(investments)
     );
 
 }
 
 
-/* =====================================================
-   SESSION
-===================================================== */
 
-function getSession() {
+function getTransactions() {
 
     try {
 
         return JSON.parse(
-            localStorage.getItem(SESSION_KEY) || "null"
-        );
+            localStorage.getItem(
+                "transactions"
+            )
+        ) || [];
 
     } catch (error) {
 
-        return null;
+        return [];
 
     }
 
 }
 
 
-function saveSession(session) {
+
+function saveTransactions(transactions) {
 
     localStorage.setItem(
-        SESSION_KEY,
-        JSON.stringify(session)
+        "transactions",
+        JSON.stringify(transactions)
     );
 
 }
 
 
-function clearSession() {
 
-    localStorage.removeItem(SESSION_KEY);
-
-}
-
-
-/* =====================================================
-   MESSAGES
-===================================================== */
-
-function showMessage(message, type = "error") {
-
-    const box =
-        document.getElementById("message");
-
-    if (!box) return;
-
-    box.textContent = message;
-
-    box.className =
-        "message " + type;
-
-}
+// ============================================================
+// AJOUTER UNE TRANSACTION
+// ============================================================
 
 
-/* =====================================================
-   INSCRIPTION
-===================================================== */
+function addTransaction(
+    type,
+    amount,
+    status = "En attente"
+) {
 
-function registerUser(event) {
-
-    event.preventDefault();
-
-    const nameElement =
-        document.getElementById("name");
-
-    const phoneElement =
-        document.getElementById("phone");
-
-    const passwordElement =
-        document.getElementById("password");
-
-    const confirmElement =
-        document.getElementById("confirmPassword");
+    const transactions =
+        getTransactions();
 
 
-    if (
-        !nameElement ||
-        !phoneElement ||
-        !passwordElement ||
-        !confirmElement
-    ) {
-
-        showMessage(
-            "Erreur : formulaire incomplet."
-        );
-
-        return;
-
-    }
-
-
-    const name =
-        nameElement.value.trim();
-
-    const phone =
-        phoneElement.value.trim();
-
-    const password =
-        passwordElement.value;
-
-    const confirmPassword =
-        confirmElement.value;
-
-
-    if (
-        !name ||
-        !phone ||
-        !password ||
-        !confirmPassword
-    ) {
-
-        showMessage(
-            "Veuillez remplir tous les champs."
-        );
-
-        return;
-
-    }
-
-
-    if (password.length < 6) {
-
-        showMessage(
-            "Le mot de passe doit contenir au moins 6 caractères."
-        );
-
-        return;
-
-    }
-
-
-    if (password !== confirmPassword) {
-
-        showMessage(
-            "Les deux mots de passe ne correspondent pas."
-        );
-
-        return;
-
-    }
-
-
-    const users = getUsers();
-
-
-    const existingUser =
-        users.find(
-            user =>
-                String(user.phone).toLowerCase() ===
-                phone.toLowerCase()
-        );
-
-
-    if (existingUser) {
-
-        showMessage(
-            "Cet identifiant existe déjà. Connectez-vous."
-        );
-
-        return;
-
-    }
-
-
-    const user = {
+    transactions.unshift({
 
         id:
-            Date.now().toString() +
-            Math.random()
-                .toString(36)
-                .substring(2),
+            Date.now(),
 
-        name: name,
+        date:
+            new Date().toLocaleString(
+                "fr-FR"
+            ),
 
-        phone: phone,
+        type:
+            type,
 
-        password: password,
+        amount:
+            Number(amount),
 
-        createdAt:
-            new Date().toLocaleString("fr-FR"),
-
-        balance: 0,
-
-        invested: 0,
-
-        earnings: 0,
-
-        selectedPack: null,
-
-        history: []
-
-    };
-
-
-    users.push(user);
-
-    saveUsers(users);
-
-
-    saveSession({
-
-        type: "user",
-
-        userId: user.id
+        status:
+            status
 
     });
 
 
-    showMessage(
-        "Inscription réussie. Ouverture de votre espace...",
-        "success"
-    );
-
-
-    setTimeout(function () {
-
-        window.location.href =
-            "dashboard.html";
-
-    }, 700);
-
-}
-
-
-/* =====================================================
-   CONNEXION
-===================================================== */
-
-function loginUser(event) {
-
-    event.preventDefault();
-
-
-    const phoneElement =
-        document.getElementById("phone");
-
-    const passwordElement =
-        document.getElementById("password");
-
-
-    if (
-        !phoneElement ||
-        !passwordElement
-    ) {
-
-        showMessage(
-            "Erreur : formulaire incomplet."
-        );
-
-        return;
-
-    }
-
-
-    const phone =
-        phoneElement.value.trim();
-
-    const password =
-        passwordElement.value;
-
-
-    if (!phone || !password) {
-
-        showMessage(
-            "Veuillez remplir tous les champs."
-        );
-
-        return;
-
-    }
-
-
-    /* ADMIN */
-
-    if (
-        phone === "admin" &&
-        password === "admin123"
-    ) {
-
-        saveSession({
-            type: "admin"
-        });
-
-        window.location.href =
-            "admin.html";
-
-        return;
-
-    }
-
-
-    /* UTILISATEUR */
-
-    const users = getUsers();
-
-
-    const user =
-        users.find(
-            item =>
-                String(item.phone).toLowerCase() ===
-                phone.toLowerCase()
-        );
-
-
-    if (!user) {
-
-        showMessage(
-            "Aucun compte ne correspond à cet identifiant."
-        );
-
-        return;
-
-    }
-
-
-    if (user.password !== password) {
-
-        showMessage(
-            "Mot de passe incorrect."
-        );
-
-        return;
-
-    }
-
-
-    saveSession({
-
-        type: "user",
-
-        userId: user.id
-
-    });
-
-
-    window.location.href =
-        "dashboard.html";
-
-}
-
-
-/* =====================================================
-   UTILISATEUR CONNECTÉ
-===================================================== */
-
-function getCurrentUser() {
-
-    const session =
-        getSession();
-
-
-    if (
-        !session ||
-        session.type !== "user"
-    ) {
-
-        return null;
-
-    }
-
-
-    const users =
-        getUsers();
-
-
-    return (
-        users.find(
-            user =>
-                user.id === session.userId
-        ) || null
+    saveTransactions(
+        transactions
     );
 
 }
 
 
-/* =====================================================
-   PROTECTION UTILISATEUR
-===================================================== */
 
-function requireUser() {
+// ============================================================
+// SELECTION D'UN PACK
+// ============================================================
 
-    const session =
-        getSession();
-
-
-    if (
-        !session ||
-        session.type !== "user"
-    ) {
-
-        window.location.href =
-            "login.html";
-
-        return false;
-
-    }
-
-
-    if (!getCurrentUser()) {
-
-        clearSession();
-
-        window.location.href =
-            "login.html";
-
-        return false;
-
-    }
-
-
-    return true;
-
-}
-
-
-/* =====================================================
-   PROTECTION ADMIN
-===================================================== */
-
-function requireAdmin() {
-
-    const session =
-        getSession();
-
-
-    if (
-        !session ||
-        session.type !== "admin"
-    ) {
-
-        window.location.href =
-            "login.html";
-
-        return false;
-
-    }
-
-
-    return true;
-
-}
-
-
-/* =====================================================
-   DÉCONNEXION
-===================================================== */
-
-function logout() {
-
-    clearSession();
-
-    window.location.href =
-        "index.html";
-
-}
-
-
-/* =====================================================
-   TABLEAU DE BORD UTILISATEUR
-===================================================== */
-
-function loadDashboard() {
-
-    const user =
-        getCurrentUser();
-
-
-    if (!user) {
-
-        logout();
-
-        return;
-
-    }
-
-
-    const name =
-        document.getElementById("userName");
-
-    const phone =
-        document.getElementById("userPhone");
-
-    const createdAt =
-        document.getElementById("createdAt");
-
-    const balance =
-        document.getElementById("balance");
-
-    const invested =
-        document.getElementById("invested");
-
-    const earnings =
-        document.getElementById("earnings");
-
-
-    if (name)
-        name.textContent = user.name;
-
-
-    if (phone)
-        phone.textContent = user.phone;
-
-
-    if (createdAt)
-        createdAt.textContent = user.createdAt;
-
-
-    if (balance)
-        balance.textContent =
-            formatMoney(user.balance);
-
-
-    if (invested)
-        invested.textContent =
-            formatMoney(user.invested);
-
-
-    if (earnings)
-        earnings.textContent =
-            formatMoney(user.earnings);
-
-
-    loadHistory(user);
-
-}
-
-
-/* =====================================================
-   SÉLECTION D'UN PACK
-===================================================== */
 
 function selectPack(amount) {
 
@@ -632,13 +378,23 @@ function selectPack(amount) {
     if (!pack) {
 
         alert(
-            "Ce pack n'existe pas."
+            "Pack introuvable."
         );
 
         return;
 
     }
 
+
+    localStorage.setItem(
+        "selectedPack",
+        JSON.stringify(pack)
+    );
+
+
+    /*
+     * Vérification de la connexion
+     */
 
     const user =
         getCurrentUser();
@@ -646,8 +402,14 @@ function selectPack(amount) {
 
     if (!user) {
 
+        alert(
+            "Veuillez vous connecter avant d'investir."
+        );
+
+
         window.location.href =
             "login.html";
+
 
         return;
 
@@ -655,264 +417,918 @@ function selectPack(amount) {
 
 
     /*
-       Pour le moment, la sélection
-       n'effectue aucun paiement réel.
-    */
+     * Vérification du solde
+     */
 
-    user.selectedPack = {
+    const balance =
+        getNumber("userBalance");
 
-        level: pack.level,
 
-        amount: pack.amount,
+    if (balance < pack.amount) {
 
-        house: pack.house
+        alert(
+            "Votre solde disponible est insuffisant pour ce niveau."
+        );
+
+
+        /*
+         * On place l'utilisateur
+         * sur la partie dépôt.
+         */
+
+        const depositSection =
+            document.getElementById(
+                "depot"
+            );
+
+
+        if (depositSection) {
+
+            depositSection.scrollIntoView({
+                behavior: "smooth"
+            });
+
+        }
+
+
+        return;
+
+    }
+
+
+    /*
+     * Confirmation
+     */
+
+    const confirmation =
+        confirm(
+
+            "Vous avez sélectionné : "
+            +
+            pack.name
+            +
+            "\n\nMontant : "
+            +
+            formatMoney(pack.amount)
+            +
+            "\nGain quotidien prévu : "
+            +
+            formatMoney(pack.dailyGain)
+            +
+            "\n\nConfirmez-vous cet investissement ?"
+
+        );
+
+
+    if (!confirmation) {
+
+        return;
+
+    }
+
+
+    createInvestment(
+        pack
+    );
+
+}
+
+
+
+// ============================================================
+// CREATION D'UN INVESTISSEMENT
+// ============================================================
+
+
+function createInvestment(pack) {
+
+    const balance =
+        getNumber("userBalance");
+
+
+    if (balance < pack.amount) {
+
+        alert(
+            "Solde insuffisant."
+        );
+
+        return;
+
+    }
+
+
+    const investments =
+        getInvestments();
+
+
+    const investment = {
+
+        id:
+            Date.now(),
+
+        packId:
+            pack.id,
+
+        packName:
+            pack.name,
+
+        amount:
+            pack.amount,
+
+        dailyGain:
+            pack.dailyGain,
+
+        duration:
+            pack.duration,
+
+        startDate:
+            new Date().toISOString(),
+
+        lastGainDate:
+            null,
+
+        earned:
+            0,
+
+        status:
+            "Actif"
 
     };
 
 
-    const users =
-        getUsers();
+    investments.push(
+        investment
+    );
 
 
-    const index =
-        users.findIndex(
+    saveInvestments(
+        investments
+    );
+
+
+    /*
+     * Déduction du solde
+     */
+
+    setNumber(
+        "userBalance",
+        balance - pack.amount
+    );
+
+
+    /*
+     * Mise à jour du total investi
+     */
+
+    setNumber(
+        "totalInvested",
+        getNumber("totalInvested")
+        +
+        pack.amount
+    );
+
+
+    /*
+     * Nombre d'investissements actifs
+     */
+
+    setNumber(
+        "activeInvestments",
+        investments.filter(
             item =>
-                item.id === user.id
-        );
+                item.status === "Actif"
+        ).length
+    );
 
 
-    if (index !== -1) {
+    /*
+     * Historique
+     */
 
-        users[index] = user;
-
-        saveUsers(users);
-
-    }
+    addTransaction(
+        "Investissement",
+        pack.amount,
+        "Actif"
+    );
 
 
     alert(
-        "Pack sélectionné : " +
-        formatMoney(pack.amount) +
-        " — " +
-        pack.house
+        "Votre investissement de "
+        +
+        formatMoney(pack.amount)
+        +
+        " a été enregistré."
     );
 
 
-    loadDashboard();
+    updateDashboard();
+
+
+    renderInvestments();
+
+
+    renderTransactions();
 
 }
 
 
-/* =====================================================
-   HISTORIQUE
-===================================================== */
 
-function loadHistory(user) {
+// ============================================================
+// MISE A JOUR DU DASHBOARD
+// ============================================================
 
-    const historyElement =
-        document.getElementById("history");
 
+function updateDashboard() {
 
-    if (!historyElement) return;
-
-
-    const history =
-        user.history || [];
-
-
-    if (history.length === 0) {
-
-        historyElement.innerHTML =
-            '<p class="muted">Aucune opération enregistrée.</p>';
-
-        return;
-
-    }
-
-
-    historyElement.innerHTML =
-        history
-            .slice()
-            .reverse()
-            .map(
-                item => `
-                    <div class="history-item">
-
-                        <strong>
-                            ${escapeHtml(item.type)}
-                        </strong>
-
-                        <span>
-                            ${formatMoney(item.amount)}
-                        </span>
-
-                        <small>
-                            ${escapeHtml(item.date)}
-                        </small>
-
-                    </div>
-                `
-            )
-            .join("");
-
-}
-
-
-/* =====================================================
-   ADMINISTRATION
-===================================================== */
-
-function loadAdminDashboard() {
-
-    const users =
-        getUsers();
-
-
-    const totalUsers =
-        document.getElementById("totalUsers");
-
-    const totalInvested =
-        document.getElementById("totalInvested");
-
-    const totalBalance =
-        document.getElementById("totalBalance");
-
-
-    let investedTotal = 0;
-
-    let balanceTotal = 0;
-
-
-    users.forEach(user => {
-
-        investedTotal +=
-            Number(user.invested || 0);
-
-        balanceTotal +=
-            Number(user.balance || 0);
-
-    });
-
-
-    if (totalUsers) {
-
-        totalUsers.textContent =
-            users.length;
-
-    }
-
-
-    if (totalInvested) {
-
-        totalInvested.textContent =
-            formatMoney(investedTotal);
-
-    }
-
-
-    if (totalBalance) {
-
-        totalBalance.textContent =
-            formatMoney(balanceTotal);
-
-    }
-
-
-    const table =
-        document.getElementById("usersTable");
-
-
-    if (!table) return;
-
-
-    if (users.length === 0) {
-
-        table.innerHTML = `
-            <tr>
-                <td colspan="5">
-                    Aucun utilisateur inscrit.
-                </td>
-            </tr>
-        `;
-
-        return;
-
-    }
-
-
-    table.innerHTML =
-        users
-            .map(
-                user => `
-                    <tr>
-
-                        <td>
-                            ${escapeHtml(user.name)}
-                        </td>
-
-                        <td>
-                            ${escapeHtml(user.phone)}
-                        </td>
-
-                        <td>
-                            ${escapeHtml(user.createdAt)}
-                        </td>
-
-                        <td>
-                            ${formatMoney(user.balance)}
-                        </td>
-
-                        <td>
-                            ${formatMoney(user.invested)}
-                        </td>
-
-                    </tr>
-                `
-            )
-            .join("");
-
-}
-
-
-/* =====================================================
-   FORMATAGE FCFA
-===================================================== */
-
-function formatMoney(amount) {
-
-    return (
-        Number(amount || 0)
-            .toLocaleString("fr-FR")
-        + " FCFA"
-    );
-
-}
-
-
-/* =====================================================
-   PROTECTION HTML
-===================================================== */
-
-function escapeHtml(value) {
-
-    return String(value)
-        .replace(
-            /[&<>"']/g,
-            function(character) {
-
-                const entities = {
-
-                    "&": "&amp;",
-                    "<": "&lt;",
-                    ">": "&gt;",
-                    '"': "&quot;",
-                    "'": "&#039;"
-
-                };
-
-                return entities[character];
-
-            }
+    const balanceElement =
+        document.getElementById(
+            "userBalance"
         );
 
+
+    const investedElement =
+        document.getElementById(
+            "totalInvested"
+        );
+
+
+    const gainsElement =
+        document.getElementById(
+            "totalGains"
+        );
+
+
+    const activeElement =
+        document.getElementById(
+            "activeInvestments"
+        );
+
+
+    if (balanceElement) {
+
+        balanceElement.textContent =
+            formatMoney(
+                getNumber(
+                    "userBalance"
+                )
+            );
+
+    }
+
+
+    if (investedElement) {
+
+        investedElement.textContent =
+            formatMoney(
+                getNumber(
+                    "totalInvested"
+                )
+            );
+
+    }
+
+
+    if (gainsElement) {
+
+        gainsElement.textContent =
+            formatMoney(
+                getNumber(
+                    "totalGains"
+                )
+            );
+
+    }
+
+
+    if (activeElement) {
+
+        activeElement.textContent =
+            getNumber(
+                "activeInvestments"
+            );
+
+    }
+
+
+
+    /*
+     * Nom de l'utilisateur
+     */
+
+    const user =
+        getCurrentUser();
+
+
+    const nameElement =
+        document.getElementById(
+            "userName"
+        );
+
+
+    if (
+        user &&
+        nameElement
+    ) {
+
+        nameElement.textContent =
+            user.name
+            ||
+            user.nom
+            ||
+            user.username
+            ||
+            "Utilisateur";
+
+    }
+
 }
+
+
+
+// ============================================================
+// AFFICHAGE DES INVESTISSEMENTS
+// ============================================================
+
+
+function renderInvestments() {
+
+    const container =
+        document.getElementById(
+            "investmentList"
+        );
+
+
+    if (!container) {
+
+        return;
+
+    }
+
+
+    const investments =
+        getInvestments();
+
+
+    if (
+        investments.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <strong>
+                    Aucun investissement actif
+                </strong>
+
+                <p>
+                    Choisissez un niveau
+                    pour commencer.
+                </p>
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        investments.map(
+            investment => `
+
+                <div class="investment-item">
+
+                    <div>
+
+                        <strong>
+                            ${investment.packName}
+                        </strong>
+
+                        <p>
+                            Montant :
+                            ${formatMoney(investment.amount)}
+                        </p>
+
+                        <p>
+                            Gain quotidien :
+                            ${formatMoney(investment.dailyGain)}
+                        </p>
+
+                        <p>
+                            Gains accumulés :
+                            ${formatMoney(investment.earned)}
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            ${investment.status}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            `
+        )
+        .join("");
+
+}
+
+
+
+// ============================================================
+// AFFICHAGE DE L'HISTORIQUE
+// ============================================================
+
+
+function renderTransactions() {
+
+    const body =
+        document.getElementById(
+            "historyBody"
+        );
+
+
+    if (!body) {
+
+        return;
+
+    }
+
+
+    const transactions =
+        getTransactions();
+
+
+    if (
+        transactions.length === 0
+    ) {
+
+        body.innerHTML = `
+
+            <tr>
+
+                <td colspan="4">
+                    Aucune opération enregistrée.
+                </td>
+
+            </tr>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    body.innerHTML =
+        transactions.map(
+            transaction => `
+
+                <tr>
+
+                    <td>
+                        ${transaction.date}
+                    </td>
+
+                    <td>
+                        ${transaction.type}
+                    </td>
+
+                    <td>
+                        ${formatMoney(transaction.amount)}
+                    </td>
+
+                    <td>
+                        ${transaction.status}
+                    </td>
+
+                </tr>
+
+            `
+        )
+        .join("");
+
+}
+
+
+
+// ============================================================
+// DEPOT
+// ============================================================
+
+
+function handleDeposit(event) {
+
+    event.preventDefault();
+
+
+    const input =
+        document.getElementById(
+            "depositAmount"
+        );
+
+
+    if (!input) {
+
+        return;
+
+    }
+
+
+    const amount =
+        Number(
+            input.value
+        );
+
+
+    if (
+        !amount ||
+        amount < 1000
+    ) {
+
+        alert(
+            "Veuillez entrer un montant valide."
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * IMPORTANT :
+     * Le prototype n'ajoute pas automatiquement
+     * l'argent au solde.
+     *
+     * Le dépôt doit être vérifié par
+     * l'administration avant crédit.
+     */
+
+
+    addTransaction(
+        "Demande de dépôt",
+        amount,
+        "En attente"
+    );
+
+
+    input.value = "";
+
+
+    renderTransactions();
+
+
+    alert(
+        "Votre demande de dépôt de "
+        +
+        formatMoney(amount)
+        +
+        " a été enregistrée et est en attente de vérification."
+    );
+
+}
+
+
+
+// ============================================================
+// RETRAIT
+// ============================================================
+
+
+function handleWithdraw(event) {
+
+    event.preventDefault();
+
+
+    const input =
+        document.getElementById(
+            "withdrawAmount"
+        );
+
+
+    if (!input) {
+
+        return;
+
+    }
+
+
+    const amount =
+        Number(
+            input.value
+        );
+
+
+    const balance =
+        getNumber(
+            "userBalance"
+        );
+
+
+    if (
+        !amount ||
+        amount < 1000
+    ) {
+
+        alert(
+            "Veuillez entrer un montant valide."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        amount > balance
+    ) {
+
+        alert(
+            "Votre solde disponible est insuffisant."
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * Le retrait est soumis à validation.
+     */
+
+    addTransaction(
+        "Demande de retrait",
+        amount,
+        "En attente"
+    );
+
+
+    input.value = "";
+
+
+    renderTransactions();
+
+
+    alert(
+        "Votre demande de retrait de "
+        +
+        formatMoney(amount)
+        +
+        " a été enregistrée et est en attente de vérification."
+    );
+
+}
+
+
+
+// ============================================================
+// DECONNEXION
+// ============================================================
+
+
+function logoutUser() {
+
+    localStorage.removeItem(
+        "currentUser"
+    );
+
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+
+// ============================================================
+// CALCUL DES GAINS
+// ============================================================
+
+
+function processDailyGains() {
+
+    const investments =
+        getInvestments();
+
+
+    if (
+        investments.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    let totalNewGains =
+        0;
+
+
+    const now =
+        new Date();
+
+
+    investments.forEach(
+        investment => {
+
+            if (
+                investment.status
+                !==
+                "Actif"
+            ) {
+
+                return;
+
+            }
+
+
+            const start =
+                new Date(
+                    investment.startDate
+                );
+
+
+            const elapsed =
+                now.getTime()
+                -
+                start.getTime();
+
+
+            const elapsedDays =
+                Math.floor(
+                    elapsed
+                    /
+                    (
+                        1000
+                        *
+                        60
+                        *
+                        60
+                        *
+                        24
+                    )
+                );
+
+
+            const creditedDays =
+                investment.lastGainDate
+                    ?
+                    Math.floor(
+                        (
+                            now.getTime()
+                            -
+                            new Date(
+                                investment.lastGainDate
+                            ).getTime()
+                        )
+                        /
+                        (
+                            1000
+                            *
+                            60
+                            *
+                            60
+                            *
+                            24
+                        )
+                    )
+                    :
+                    0;
+
+
+            if (
+                elapsedDays > 0
+                &&
+                creditedDays > 0
+            ) {
+
+                const daysToCredit =
+                    Math.min(
+                        creditedDays,
+                        investment.duration
+                    );
+
+
+                const gain =
+                    daysToCredit
+                    *
+                    investment.dailyGain;
+
+
+                investment.earned +=
+                    gain;
+
+
+                totalNewGains +=
+                    gain;
+
+
+                investment.lastGainDate =
+                    now.toISOString();
+
+            }
+
+
+            /*
+             * Initialisation de la date
+             * de calcul des gains.
+             */
+
+            if (
+                !investment.lastGainDate
+                &&
+                elapsedDays >= 1
+            ) {
+
+                investment.lastGainDate =
+                    now.toISOString();
+
+            }
+
+        }
+    );
+
+
+    if (
+        totalNewGains > 0
+    ) {
+
+        setNumber(
+            "userBalance",
+            getNumber("userBalance")
+            +
+            totalNewGains
+        );
+
+
+        setNumber(
+            "totalGains",
+            getNumber("totalGains")
+            +
+            totalNewGains
+        );
+
+
+        addTransaction(
+            "Gain",
+            totalNewGains,
+            "Crédité"
+        );
+
+    }
+
+
+    saveInvestments(
+        investments
+    );
+
+
+    updateDashboard();
+
+
+    renderInvestments();
+
+
+    renderTransactions();
+
+}
+
+
+
+// ============================================================
+// INITIALISATION
+// ============================================================
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        initializeAccount();
+
+        updateDashboard();
+
+        renderInvestments();
+
+        renderTransactions();
+
+        processDailyGains();
+
+    }
+);
+
+
+
+// ============================================================
+// FIN DU SCRIPT
+// ============================================================
