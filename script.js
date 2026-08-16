@@ -1,46 +1,52 @@
-/* =====================================================
-   VOTRE PLATEFORME
-   SCRIPT PRINCIPAL
-   ===================================================== */
+/* =========================================
+   HOUSING INVESTMENT
+   SYSTÈME PRINCIPAL
+========================================= */
+
+const USERS_KEY = "housing_investment_users";
+const SESSION_KEY = "housing_investment_session";
 
 
-/* =====================================================
-   STOCKAGE
-   ===================================================== */
+/* =========================================
+   UTILISATEURS
+========================================= */
 
 function getUsers() {
 
     try {
 
         return JSON.parse(
-            localStorage.getItem("users")
-        ) || [];
+            localStorage.getItem(USERS_KEY) || "[]"
+        );
 
     } catch (error) {
 
         return [];
 
     }
-
 }
 
 
 function saveUsers(users) {
 
     localStorage.setItem(
-        "users",
+        USERS_KEY,
         JSON.stringify(users)
     );
 
 }
 
 
-function getCurrentUser() {
+/* =========================================
+   SESSION
+========================================= */
+
+function getSession() {
 
     try {
 
         return JSON.parse(
-            localStorage.getItem("currentUser")
+            localStorage.getItem(SESSION_KEY) || "null"
         );
 
     } catch (error) {
@@ -52,511 +58,462 @@ function getCurrentUser() {
 }
 
 
-function saveCurrentUser(user) {
+function saveSession(session) {
 
     localStorage.setItem(
-        "currentUser",
-        JSON.stringify(user)
+        SESSION_KEY,
+        JSON.stringify(session)
     );
 
 }
 
 
-/* =====================================================
-   NUMERO DE TELEPHONE
-   Toujours enregistré sous +225XXXXXXXXXX
-   ===================================================== */
+function clearSession() {
 
-function normalizePhone(phone) {
-
-    let value = String(phone || "")
-        .trim()
-        .replace(/\s+/g, "");
-
-    /* enlever le +225 s'il existe */
-
-    if (value.startsWith("+225")) {
-
-        value = value.substring(4);
-
-    }
-
-    /* enlever 225 s'il a été écrit sans + */
-
-    if (
-        value.startsWith("225") &&
-        value.length === 13
-    ) {
-
-        value = value.substring(3);
-
-    }
-
-    /* conserver uniquement les chiffres */
-
-    value = value.replace(/\D/g, "");
-
-    /* garder les 10 chiffres ivoiriens */
-
-    if (value.length > 10) {
-
-        value = value.substring(
-            value.length - 10
-        );
-
-    }
-
-    return "+225" + value;
+    localStorage.removeItem(SESSION_KEY);
 
 }
 
 
-/* =====================================================
-   DECONNEXION
-   ===================================================== */
+/* =========================================
+   MESSAGES
+========================================= */
 
-function logout() {
+function showMessage(message, type = "error") {
 
-    localStorage.removeItem(
-        "currentUser"
-    );
+    const box = document.getElementById("message");
 
-    window.location.href =
-        "login.html";
+    if (!box) {
+        return;
+    }
+
+    box.textContent = message;
+
+    box.className =
+        "message " + type;
 
 }
 
 
-/* =====================================================
+/* =========================================
    INSCRIPTION
-   ===================================================== */
+========================================= */
 
 function registerUser(event) {
 
-    if (event) {
-
-        event.preventDefault();
-
-    }
+    event.preventDefault();
 
 
     const nameElement =
-        document.getElementById(
-            "registerName"
-        );
+        document.getElementById("name");
 
     const phoneElement =
-        document.getElementById(
-            "registerPhone"
-        );
+        document.getElementById("phone");
 
     const passwordElement =
-        document.getElementById(
-            "registerPassword"
-        );
+        document.getElementById("password");
 
     const confirmElement =
-        document.getElementById(
-            "confirmPassword"
+        document.getElementById("confirmPassword");
+
+
+    if (
+        !nameElement ||
+        !phoneElement ||
+        !passwordElement ||
+        !confirmElement
+    ) {
+
+        showMessage(
+            "Erreur : formulaire incomplet."
         );
 
-    const invitationElement =
-        document.getElementById(
-            "invitationCode"
-        );
+        return;
+
+    }
 
 
     const name =
-        nameElement
-            ? nameElement.value.trim()
-            : "";
-
-
-    const rawPhone =
-        phoneElement
-            ? phoneElement.value.trim()
-            : "";
-
-
-    const password =
-        passwordElement
-            ? passwordElement.value
-            : "";
-
-
-    const confirmPassword =
-        confirmElement
-            ? confirmElement.value
-            : "";
-
-
-    const invitationCode =
-        invitationElement
-            ? invitationElement.value.trim()
-            : "";
-
-
-    /* =========================
-       VERIFICATIONS
-       ========================= */
-
-    if (!name) {
-
-        alert(
-            "Veuillez entrer votre nom complet."
-        );
-
-        return false;
-
-    }
-
+        nameElement.value.trim();
 
     const phone =
-        normalizePhone(rawPhone);
+        phoneElement.value.trim();
+
+    const password =
+        passwordElement.value;
+
+    const confirmPassword =
+        confirmElement.value;
 
 
-    /* Vérification du numéro ivoirien */
+    /* Vérification des champs */
 
     if (
-        !/^\+225\d{10}$/.test(phone)
+        !name ||
+        !phone ||
+        !password ||
+        !confirmPassword
     ) {
 
-        alert(
-            "Veuillez entrer un numéro ivoirien valide de 10 chiffres."
+        showMessage(
+            "Veuillez remplir tous les champs."
         );
 
-        return false;
+        return;
 
     }
 
+
+    /* Mot de passe */
 
     if (password.length < 6) {
 
-        alert(
+        showMessage(
             "Le mot de passe doit contenir au moins 6 caractères."
         );
 
-        return false;
+        return;
 
     }
 
 
-    if (
-        password !== confirmPassword
-    ) {
+    if (password !== confirmPassword) {
 
-        alert(
+        showMessage(
             "Les deux mots de passe ne correspondent pas."
         );
 
-        return false;
+        return;
 
     }
 
 
-    const users =
-        getUsers();
+    /* Recherche d'un compte existant */
 
-
-    /* =========================
-       UTILISATEUR EXISTANT
-       ========================= */
+    const users = getUsers();
 
     const existingUser =
         users.find(
             user =>
-                normalizePhone(user.phone) ===
-                phone
+                user.phone.toLowerCase() ===
+                phone.toLowerCase()
         );
 
 
     if (existingUser) {
 
-        alert(
-            "Ce numéro possède déjà un compte."
+        showMessage(
+            "Ce numéro ou identifiant existe déjà. Connectez-vous."
         );
 
-        return false;
+        return;
 
     }
 
 
-    /* =========================
-       CREATION
-       ========================= */
+    /* Création du compte */
 
-    const newUser = {
+    const user = {
 
         id:
-            "USER-" +
-            Date.now(),
+            Date.now().toString() +
+            Math.random()
+                .toString(36)
+                .substring(2),
 
-        name:
-            name,
+        name: name,
 
-        phone:
-            phone,
+        phone: phone,
 
-        password:
-            password,
-
-        invitationCode:
-            invitationCode,
-
-        balance:
-            0,
-
-        invested:
-            0,
-
-        earnings:
-            0,
+        password: password,
 
         createdAt:
-            new Date().toISOString()
+            new Date().toLocaleString("fr-FR"),
+
+        balance: 0,
+
+        invested: 0,
+
+        earnings: 0,
+
+        history: []
 
     };
 
 
-    users.push(
-        newUser
+    users.push(user);
+
+    saveUsers(users);
+
+
+    /* Connexion automatique */
+
+    saveSession({
+
+        type: "user",
+
+        userId: user.id
+
+    });
+
+
+    showMessage(
+        "Inscription réussie. Ouverture de votre espace...",
+        "success"
     );
 
 
-    saveUsers(
-        users
+    /*
+       Petite pause pour permettre
+       au message de s'afficher.
+    */
+
+    setTimeout(
+        function () {
+
+            window.location.href =
+                "dashboard.html";
+
+        },
+        700
     );
-
-
-    saveCurrentUser(
-        newUser
-    );
-
-
-    /* =========================
-       CONFIRMATION
-       ========================= */
-
-    alert(
-        "Compte créé avec succès !"
-    );
-
-
-    /* =========================
-       REDIRECTION
-       ========================= */
-
-    window.location.replace(
-        "dashboard.html"
-    );
-
-
-    return false;
 
 }
 
 
-/* =====================================================
+/* =========================================
    CONNEXION
-   ===================================================== */
+========================================= */
 
 function loginUser(event) {
 
-    if (event) {
-
-        event.preventDefault();
-
-    }
+    event.preventDefault();
 
 
     const phoneElement =
-        document.getElementById(
-            "loginPhone"
-        );
+        document.getElementById("phone");
 
     const passwordElement =
-        document.getElementById(
-            "loginPassword"
+        document.getElementById("password");
+
+
+    if (
+        !phoneElement ||
+        !passwordElement
+    ) {
+
+        showMessage(
+            "Erreur : formulaire de connexion incomplet."
         );
 
-
-    const rawPhone =
-        phoneElement
-            ? phoneElement.value.trim()
-            : "";
-
-
-    const password =
-        passwordElement
-            ? passwordElement.value
-            : "";
-
-
-    if (!rawPhone || !password) {
-
-        alert(
-            "Veuillez remplir tous les champs."
-        );
-
-        return false;
+        return;
 
     }
 
 
     const phone =
-        normalizePhone(rawPhone);
+        phoneElement.value.trim();
+
+    const password =
+        passwordElement.value;
 
 
-    /* =========================
-       ADMINISTRATION
-       ========================= */
+    if (!phone || !password) {
 
-    if (
-        rawPhone === "admin" &&
-        password === "admin123"
-    ) {
-
-        localStorage.setItem(
-            "adminLogged",
-            "true"
+        showMessage(
+            "Veuillez remplir tous les champs."
         );
 
-        window.location.replace(
-            "admin.html"
-        );
-
-        return false;
+        return;
 
     }
 
 
-    /* =========================
-       RECHERCHE UTILISATEUR
-       ========================= */
+    /* =====================================
+       COMPTE ADMINISTRATEUR
+    ===================================== */
 
-    const users =
-        getUsers();
+    if (
+        phone === "admin" &&
+        password === "admin123"
+    ) {
+
+        saveSession({
+
+            type: "admin"
+
+        });
+
+
+        window.location.href =
+            "admin.html";
+
+        return;
+
+    }
+
+
+    /* =====================================
+       RECHERCHE UTILISATEUR
+    ===================================== */
+
+    const users = getUsers();
 
 
     const user =
         users.find(
             item =>
-                normalizePhone(item.phone) ===
-                phone &&
-                item.password ===
-                password
+                item.phone.toLowerCase() ===
+                phone.toLowerCase()
         );
 
 
     if (!user) {
 
-        alert(
-            "Numéro de téléphone ou mot de passe incorrect."
+        showMessage(
+            "Aucun compte ne correspond à cet identifiant."
         );
+
+        return;
+
+    }
+
+
+    if (user.password !== password) {
+
+        showMessage(
+            "Mot de passe incorrect."
+        );
+
+        return;
+
+    }
+
+
+    /* Connexion réussie */
+
+    saveSession({
+
+        type: "user",
+
+        userId: user.id
+
+    });
+
+
+    window.location.href =
+        "dashboard.html";
+
+}
+
+
+/* =========================================
+   VÉRIFICATION UTILISATEUR
+========================================= */
+
+function requireUser() {
+
+    const session =
+        getSession();
+
+
+    if (
+        !session ||
+        session.type !== "user"
+    ) {
+
+        window.location.href =
+            "login.html";
 
         return false;
 
     }
 
 
-    /* =========================
-       CONNEXION REUSSIE
-       ========================= */
-
-    saveCurrentUser(
-        user
-    );
-
-
-    window.location.replace(
-        "dashboard.html"
-    );
-
-
-    return false;
+    return true;
 
 }
 
 
-/* =====================================================
-   PROTECTION DASHBOARD
-   ===================================================== */
+/* =========================================
+   VÉRIFICATION ADMIN
+========================================= */
 
-function protectDashboard() {
+function requireAdmin() {
 
-    const page =
-        window.location.pathname;
+    const session =
+        getSession();
 
 
     if (
-        page.includes(
-            "dashboard.html"
-        )
+        !session ||
+        session.type !== "admin"
     ) {
 
-        const user =
-            getCurrentUser();
+        window.location.href =
+            "login.html";
 
-
-        if (!user) {
-
-            window.location.replace(
-                "login.html"
-            );
-
-            return false;
-
-        }
+        return false;
 
     }
+
+
+    return true;
 
 }
 
 
-/* =====================================================
-   PROTECTION ADMIN
-   ===================================================== */
+/* =========================================
+   DÉCONNEXION
+========================================= */
 
-function protectAdmin() {
+function logout() {
 
-    const page =
-        window.location.pathname;
+    clearSession();
+
+    window.location.href =
+        "index.html";
+
+}
+
+
+/* =========================================
+   UTILISATEUR CONNECTÉ
+========================================= */
+
+function getCurrentUser() {
+
+    const session =
+        getSession();
 
 
     if (
-        page.includes(
-            "admin.html"
-        )
+        !session ||
+        session.type !== "user"
     ) {
 
-        const adminLogged =
-            localStorage.getItem(
-                "adminLogged"
-            );
-
-
-        if (
-            adminLogged !== "true"
-        ) {
-
-            window.location.replace(
-                "login.html"
-            );
-
-            return false;
-
-        }
+        return null;
 
     }
+
+
+    const users =
+        getUsers();
+
+
+    return users.find(
+        user =>
+            user.id === session.userId
+    ) || null;
 
 }
 
 
-/* =====================================================
-   INFORMATIONS UTILISATEUR
-   ===================================================== */
+/* =========================================
+   TABLEAU DE BORD
+========================================= */
 
-function displayUserInformation() {
+function loadDashboard() {
 
     const user =
         getCurrentUser();
@@ -564,111 +521,212 @@ function displayUserInformation() {
 
     if (!user) {
 
-        return;
-
-    }
-
-
-    document
-        .querySelectorAll(
-            "[data-user-name]"
-        )
-        .forEach(
-            element => {
-
-                element.textContent =
-                    user.name;
-
-            }
-        );
-
-
-    document
-        .querySelectorAll(
-            "[data-user-phone]"
-        )
-        .forEach(
-            element => {
-
-                element.textContent =
-                    user.phone;
-
-            }
-        );
-
-}
-
-
-/* =====================================================
-   SOLDE
-   ===================================================== */
-
-function displayBalance() {
-
-    const user =
-        getCurrentUser();
-
-
-    if (!user) {
+        logout();
 
         return;
 
     }
 
 
-    document
-        .querySelectorAll(
-            "[data-balance]"
-        )
-        .forEach(
-            element => {
+    const name =
+        document.getElementById("userName");
 
-                element.textContent =
-                    formatMoney(
-                        user.balance
-                    );
+    const phone =
+        document.getElementById("userPhone");
 
-            }
-        );
+    const createdAt =
+        document.getElementById("createdAt");
 
+    const balance =
+        document.getElementById("balance");
 
-    document
-        .querySelectorAll(
-            "[data-invested]"
-        )
-        .forEach(
-            element => {
+    const invested =
+        document.getElementById("invested");
 
-                element.textContent =
-                    formatMoney(
-                        user.invested
-                    );
-
-            }
-        );
+    const earnings =
+        document.getElementById("earnings");
 
 
-    document
-        .querySelectorAll(
-            "[data-earnings]"
-        )
-        .forEach(
-            element => {
+    if (name) {
 
-                element.textContent =
-                    formatMoney(
-                        user.earnings
-                    );
+        name.textContent =
+            user.name;
 
-            }
-        );
+    }
+
+
+    if (phone) {
+
+        phone.textContent =
+            user.phone;
+
+    }
+
+
+    if (createdAt) {
+
+        createdAt.textContent =
+            user.createdAt;
+
+    }
+
+
+    if (balance) {
+
+        balance.textContent =
+            formatMoney(user.balance);
+
+    }
+
+
+    if (invested) {
+
+        invested.textContent =
+            formatMoney(user.invested);
+
+    }
+
+
+    if (earnings) {
+
+        earnings.textContent =
+            formatMoney(user.earnings);
+
+    }
+
+
+    loadHistory(user);
 
 }
 
 
-/* =====================================================
-   FORMAT FCFA
-   ===================================================== */
+/* =========================================
+   HISTORIQUE
+========================================= */
+
+function loadHistory(user) {
+
+    const historyElement =
+        document.getElementById("history");
+
+
+    if (!historyElement) {
+
+        return;
+
+    }
+
+
+    const history =
+        user.history || [];
+
+
+    if (history.length === 0) {
+
+        historyElement.innerHTML =
+            '<p class="muted">Aucune opération enregistrée.</p>';
+
+        return;
+
+    }
+
+
+    historyElement.innerHTML =
+        history
+            .slice()
+            .reverse()
+            .map(
+                item => `
+                    <div class="history-item">
+                        <strong>
+                            ${escapeHtml(item.type)}
+                        </strong>
+
+                        <span>
+                            ${formatMoney(item.amount)}
+                        </span>
+
+                        <small>
+                            ${escapeHtml(item.date)}
+                        </small>
+                    </div>
+                `
+            )
+            .join("");
+
+}
+
+
+/* =========================================
+   ADMINISTRATION
+========================================= */
+
+function loadUsers() {
+
+    const table =
+        document.getElementById("usersTable");
+
+
+    if (!table) {
+
+        return;
+
+    }
+
+
+    const users =
+        getUsers();
+
+
+    if (users.length === 0) {
+
+        table.innerHTML =
+            `
+            <tr>
+                <td colspan="4">
+                    Aucun utilisateur inscrit.
+                </td>
+            </tr>
+            `;
+
+        return;
+
+    }
+
+
+    table.innerHTML =
+        users
+            .map(
+                user => `
+                    <tr>
+
+                        <td>
+                            ${escapeHtml(user.name)}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(user.phone)}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(user.createdAt)}
+                        </td>
+
+                        <td>
+                            ${formatMoney(user.balance)}
+                        </td>
+
+                    </tr>
+                `
+            )
+            .join("");
+
+}
+
+
+/* =========================================
+   FORMATAGE ARGENT
+========================================= */
 
 function formatMoney(amount) {
 
@@ -681,207 +739,34 @@ function formatMoney(amount) {
 }
 
 
-/* =====================================================
-   DEPOT — PROTOTYPE
-   ===================================================== */
+/* =========================================
+   PROTECTION CONTRE HTML
+========================================= */
 
-function makeDeposit(amount) {
+function escapeHtml(value) {
 
-    const user =
-        getCurrentUser();
+    return String(value)
+        .replace(
+            /[&<>"']/g,
+            function (character) {
 
+                const entities = {
 
-    if (!user) {
+                    "&": "&amp;",
 
-        window.location.replace(
-            "login.html"
+                    "<": "&lt;",
+
+                    ">": "&gt;",
+
+                    '"': "&quot;",
+
+                    "'": "&#039;"
+
+                };
+
+                return entities[character];
+
+            }
         );
-
-        return;
-
-    }
-
-
-    amount =
-        Number(amount);
-
-
-    if (
-        !amount ||
-        amount <= 0
-    ) {
-
-        alert(
-            "Montant invalide."
-        );
-
-        return;
-
-    }
-
-
-    alert(
-        "Demande de dépôt préparée pour " +
-        formatMoney(amount) +
-        "."
-    );
 
 }
-
-
-/* =====================================================
-   RETRAIT — PROTOTYPE
-   ===================================================== */
-
-function makeWithdrawal(amount) {
-
-    const user =
-        getCurrentUser();
-
-
-    if (!user) {
-
-        window.location.replace(
-            "login.html"
-        );
-
-        return;
-
-    }
-
-
-    amount =
-        Number(amount);
-
-
-    if (
-        !amount ||
-        amount <= 0
-    ) {
-
-        alert(
-            "Montant invalide."
-        );
-
-        return;
-
-    }
-
-
-    if (
-        amount >
-        Number(user.balance || 0)
-    ) {
-
-        alert(
-            "Solde insuffisant."
-        );
-
-        return;
-
-    }
-
-
-    alert(
-        "Votre demande de retrait est prête."
-    );
-
-}
-
-
-/* =====================================================
-   INVESTISSEMENT — PROTOTYPE
-   ===================================================== */
-
-function selectPack(amount) {
-
-    const user =
-        getCurrentUser();
-
-
-    if (!user) {
-
-        window.location.replace(
-            "login.html"
-        );
-
-        return;
-
-    }
-
-
-    amount =
-        Number(amount);
-
-
-    if (
-        !amount ||
-        amount <= 0
-    ) {
-
-        alert(
-            "Montant incorrect."
-        );
-
-        return;
-
-    }
-
-
-    if (
-        amount >
-        Number(user.balance || 0)
-    ) {
-
-        alert(
-            "Solde disponible insuffisant."
-        );
-
-        return;
-
-    }
-
-
-    alert(
-        "Pack sélectionné : " +
-        formatMoney(amount)
-    );
-
-}
-
-
-/* =====================================================
-   ADMIN
-   ===================================================== */
-
-function logoutAdmin() {
-
-    localStorage.removeItem(
-        "adminLogged"
-    );
-
-    window.location.replace(
-        "login.html"
-    );
-
-}
-
-
-/* =====================================================
-   INITIALISATION
-   ===================================================== */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        protectDashboard();
-
-        protectAdmin();
-
-        displayUserInformation();
-
-        displayBalance();
-
-    }
-);
