@@ -1,813 +1,215 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
 
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>Créer un compte | Votre Plateforme</title>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
-
-  <style>
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      min-height: 100vh;
-
-      font-family: "Inter", Arial, sans-serif;
-
-      color: white;
-
-      background:
-        radial-gradient(
-          circle at 80% 15%,
-          rgba(85,229,138,0.12),
-          transparent 30%
-        ),
-        radial-gradient(
-          circle at 10% 90%,
-          rgba(85,229,138,0.06),
-          transparent 30%
-        ),
-        #06100b;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      padding: 25px;
-    }
-
-    .page {
-      width: 100%;
-      max-width: 1050px;
-      min-height: 650px;
-
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-
-      overflow: hidden;
-
-      border-radius: 24px;
-
-      border:
-        1px solid rgba(255,255,255,0.09);
-
-      background:
-        rgba(8,20,13,0.96);
-
-      box-shadow:
-        0 35px 100px rgba(0,0,0,0.45);
-    }
-
-    /* =========================
-       PARTIE GAUCHE
-    ========================= */
-
-    .presentation {
-      position: relative;
-
-      padding: 55px;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-
-      overflow: hidden;
-
-      background:
-        linear-gradient(
-          145deg,
-          #0d2617,
-          #07140d
-        );
-    }
-
-    .presentation::before {
-      content: "";
-
-      position: absolute;
-
-      width: 350px;
-      height: 350px;
-
-      right: -120px;
-      top: -100px;
-
-      border-radius: 50%;
-
-      background:
-        rgba(85,229,138,0.10);
-
-      filter: blur(10px);
-    }
-
-    .presentation::after {
-      content: "";
-
-      position: absolute;
-
-      width: 250px;
-      height: 250px;
-
-      left: -120px;
-      bottom: -100px;
-
-      border-radius: 50%;
-
-      background:
-        rgba(85,229,138,0.06);
-    }
-
-    .logo {
-      position: relative;
-      z-index: 2;
-
-      color: white;
-
-      text-decoration: none;
-
-      font-size: 22px;
-      font-weight: 800;
-
-      letter-spacing: -0.5px;
-    }
-
-    .logo span {
-      color: #55e58a;
-    }
-
-    .presentation-content {
-      position: relative;
-      z-index: 2;
-    }
-
-    .badge {
-      display: inline-block;
-
-      padding: 7px 11px;
-
-      margin-bottom: 20px;
-
-      border-radius: 50px;
-
-      background:
-        rgba(85,229,138,0.09);
-
-      border:
-        1px solid rgba(85,229,138,0.18);
-
-      color: #55e58a;
-
-      font-size: 9px;
-      font-weight: 800;
-
-      text-transform: uppercase;
-
-      letter-spacing: 1px;
-    }
-
-    .presentation h1 {
-      max-width: 450px;
-
-      font-size: 45px;
-
-      line-height: 1.08;
-
-      letter-spacing: -2px;
-    }
-
-    .presentation h1 span {
-      color: #55e58a;
-    }
-
-    .presentation p {
-      max-width: 440px;
-
-      margin-top: 20px;
-
-      color: #899990;
-
-      font-size: 13px;
-
-      line-height: 1.8;
-    }
-
-    .advantages {
-      position: relative;
-      z-index: 2;
-
-      display: grid;
-
-      gap: 12px;
-    }
-
-    .advantage {
-      display: flex;
-
-      align-items: center;
-
-      gap: 12px;
-
-      color: #aab6af;
-
-      font-size: 11px;
-    }
-
-    .advantage-icon {
-      width: 30px;
-      height: 30px;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 8px;
-
-      background:
-        rgba(85,229,138,0.10);
-
-      color: #55e58a;
-    }
-
-    /* =========================
-       FORMULAIRE
-    ========================= */
-
-    .register-area {
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      padding: 45px;
-    }
-
-    .register-box {
-      width: 100%;
-      max-width: 390px;
-    }
-
-    .register-box h2 {
-      font-size: 29px;
-
-      letter-spacing: -1px;
-    }
-
-    .subtitle {
-      margin-top: 8px;
-
-      color: #718078;
-
-      font-size: 12px;
-
-      line-height: 1.6;
-    }
-
-    .form-group {
-      margin-top: 18px;
-    }
-
-    label {
-      display: block;
-
-      margin-bottom: 7px;
-
-      color: #a8b4ad;
-
-      font-size: 10px;
-
-      font-weight: 700;
-    }
-
-    input {
-      width: 100%;
-
-      height: 46px;
-
-      padding: 0 14px;
-
-      outline: none;
-
-      border:
-        1px solid rgba(255,255,255,0.10);
-
-      border-radius: 9px;
-
-      background:
-        rgba(255,255,255,0.035);
-
-      color: white;
-
-      font-size: 12px;
-
-      transition: 0.25s;
-    }
-
-    input::placeholder {
-      color: #58655e;
-    }
-
-    input:focus {
-      border-color:
-        rgba(85,229,138,0.50);
-
-      background:
-        rgba(85,229,138,0.025);
-
-      box-shadow:
-        0 0 0 3px rgba(85,229,138,0.05);
-    }
-
-    /* =========================
-       TELEPHONE
-    ========================= */
-
-    .phone-box {
-      display: flex;
-
-      gap: 8px;
-    }
-
-    .country-code {
-      width: 70px;
-
-      flex-shrink: 0;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      border:
-        1px solid rgba(85,229,138,0.25);
-
-      border-radius: 9px;
-
-      background:
-        rgba(85,229,138,0.06);
-
-      color: #55e58a;
-
-      font-size: 12px;
-
-      font-weight: 800;
-    }
-
-    .phone-box input {
-      flex: 1;
-    }
-
-    /* =========================
-       MOT DE PASSE
-    ========================= */
-
-    .password-info {
-      margin-top: 6px;
-
-      color: #59665e;
-
-      font-size: 9px;
-    }
-
-    /* =========================
-       CODE INVITATION
-    ========================= */
-
-    .invitation {
-      color: #59665e;
-
-      font-size: 9px;
-
-      font-weight: 400;
-    }
-
-    /* =========================
-       BOUTON
-    ========================= */
-
-    .submit {
-      width: 100%;
-
-      height: 48px;
-
-      margin-top: 23px;
-
-      border: none;
-
-      border-radius: 9px;
-
-      background: #55e58a;
-
-      color: #041008;
-
-      font-size: 12px;
-
-      font-weight: 800;
-
-      cursor: pointer;
-
-      transition: 0.25s;
-    }
-
-    .submit:hover {
-      background: #72ee9d;
-
-      transform: translateY(-2px);
-
-      box-shadow:
-        0 12px 30px rgba(85,229,138,0.18);
-    }
-
-    /* =========================
-       CONNEXION
-    ========================= */
-
-    .login-link {
-      margin-top: 22px;
-
-      text-align: center;
-
-      color: #718078;
-
-      font-size: 11px;
-    }
-
-    .login-link a {
-      color: #55e58a;
-
-      font-weight: 700;
-
-      text-decoration: none;
-    }
-
-    .login-link a:hover {
-      text-decoration: underline;
-    }
-
-    .security {
-      margin-top: 20px;
-
-      text-align: center;
-
-      color: #4f5d55;
-
-      font-size: 9px;
-    }
-
-    /* =========================
-       MOBILE
-    ========================= */
-
-    @media(max-width: 800px) {
-
-      body {
-        padding: 15px;
-      }
-
-      .page {
-        display: block;
-
-        min-height: auto;
-      }
-
-      .presentation {
-        min-height: 300px;
-
-        padding: 30px;
-      }
-
-      .presentation h1 {
-        font-size: 32px;
-      }
-
-      .advantages {
-        display: none;
-      }
-
-      .register-area {
-        padding: 35px 25px;
-      }
-
-    }
-
-    @media(max-width: 450px) {
-
-      .presentation {
-        padding: 25px;
-      }
-
-      .presentation h1 {
-        font-size: 28px;
-      }
-
-      .register-area {
-        padding: 30px 20px;
-      }
-
-      .register-box h2 {
-        font-size: 25px;
-      }
-
-      .country-code {
-        width: 65px;
-      }
-
-    }
-
-  </style>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Créer un compte - Housing Investment</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
 </head>
 
 
-<body>
+<body class="auth-page">
 
 
-  <div class="page">
+<div class="auth-box">
 
+    <!-- RETOUR -->
 
-    <!-- =========================
-         PRESENTATION
-    ========================= -->
-
-    <section class="presentation">
-
-      <a
+    <a
         href="index.html"
-        class="logo"
-      >
-        VOTRE<span>PLATEFORME</span>
-      </a>
+        class="back"
+    >
+        ← Retour à l'accueil
+    </a>
 
 
-      <div class="presentation-content">
+    <!-- TITRE -->
 
-        <div class="badge">
-          Nouveau membre
-        </div>
+    <h1>
+        Créer un compte
+    </h1>
 
-
-        <h1>
-          Créez votre
-          <span>compte.</span>
-        </h1>
-
-
-        <p>
-          Rejoignez la plateforme et accédez
-          à votre espace personnel pour suivre
-          vos opérations et vos investissements.
-        </p>
-
-      </div>
+    <p class="muted">
+        Rejoignez Housing Investment
+        et accédez à votre espace personnel.
+    </p>
 
 
-      <div class="advantages">
+    <!-- MESSAGE -->
 
-        <div class="advantage">
-
-          <div class="advantage-icon">
-            ✓
-          </div>
-
-          Inscription simple et rapide
-
-        </div>
+    <div
+        id="message"
+        class="message hidden"
+    ></div>
 
 
-        <div class="advantage">
+    <!-- FORMULAIRE -->
 
-          <div class="advantage-icon">
-            ◈
-          </div>
-
-          Espace personnel
-
-        </div>
+    <form
+        id="registerForm"
+        novalidate
+    >
 
 
-        <div class="advantage">
+        <!-- NOM -->
 
-          <div class="advantage-icon">
-            🔒
-          </div>
+        <label for="name">
+            Nom complet
+        </label>
 
-          Accès protégé
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         FORMULAIRE
-    ========================= -->
-
-    <section class="register-area">
-
-      <div class="register-box">
-
-
-        <h2>
-          Créer un compte
-        </h2>
-
-
-        <p class="subtitle">
-          Remplissez les informations ci-dessous
-          pour créer votre compte.
-        </p>
-
-
-        <form
-          id="registerForm"
-          onsubmit="return registerUser(event)"
+        <input
+            id="name"
+            name="name"
+            type="text"
+            placeholder="Exemple : Jean Kouassi"
+            autocomplete="name"
+            required
         >
 
 
-          <!-- NOM COMPLET -->
+        <!-- TELEPHONE -->
 
-          <div class="form-group">
+        <label for="phone">
+            Téléphone ou identifiant
+        </label>
 
-            <label for="registerName">
-              Nom complet
-            </label>
+        <input
+            id="phone"
+            name="phone"
+            type="text"
+            placeholder="Exemple : 0700000000"
+            autocomplete="username"
+            required
+        >
+
+
+        <!-- MOT DE PASSE -->
+
+        <label for="password">
+            Mot de passe
+        </label>
+
+        <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Minimum 6 caractères"
+            autocomplete="new-password"
+            required
+        >
+
+
+        <!-- CONFIRMATION -->
+
+        <label for="confirmPassword">
+            Confirmer le mot de passe
+        </label>
+
+        <input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            placeholder="Répétez votre mot de passe"
+            autocomplete="new-password"
+            required
+        >
+
+
+        <!-- CONDITIONS -->
+
+        <label class="terms">
 
             <input
-              type="text"
-              id="registerName"
-              name="name"
-              placeholder="Ex : KOUASSI Jean"
-              autocomplete="name"
-              required
-            >
-
-          </div>
-
-
-          <!-- TELEPHONE -->
-
-          <div class="form-group">
-
-            <label for="registerPhone">
-              Numéro de téléphone
-            </label>
-
-
-            <div class="phone-box">
-
-              <div class="country-code">
-                +225
-              </div>
-
-              <input
-                type="tel"
-                id="registerPhone"
-                name="phone"
-                placeholder="07 00 00 00 00"
-                autocomplete="tel"
-                inputmode="numeric"
-                maxlength="10"
-                pattern="[0-9]{10}"
+                id="terms"
+                type="checkbox"
                 required
-              >
-
-            </div>
-
-          </div>
-
-
-          <!-- MOT DE PASSE -->
-
-          <div class="form-group">
-
-            <label for="registerPassword">
-              Mot de passe
-            </label>
-
-            <input
-              type="password"
-              id="registerPassword"
-              name="password"
-              placeholder="Créer un mot de passe"
-              autocomplete="new-password"
-              minlength="6"
-              required
             >
 
-            <div class="password-info">
-              Minimum 6 caractères.
-            </div>
+            <span>
+                J'accepte les conditions
+                d'utilisation de la plateforme.
+            </span>
 
-          </div>
-
-
-          <!-- CONFIRMATION -->
-
-          <div class="form-group">
-
-            <label for="confirmPassword">
-              Confirmer le mot de passe
-            </label>
-
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              placeholder="Confirmer votre mot de passe"
-              autocomplete="new-password"
-              minlength="6"
-              required
-            >
-
-          </div>
+        </label>
 
 
-          <!-- CODE INVITATION -->
+        <!-- BOUTON -->
 
-          <div class="form-group">
-
-            <label for="invitationCode">
-
-              Code d'invitation
-
-              <span class="invitation">
-                (facultatif)
-              </span>
-
-            </label>
-
-            <input
-              type="text"
-              id="invitationCode"
-              name="invitationCode"
-              placeholder="Entrez votre code si vous en avez un"
-              autocomplete="off"
-            >
-
-          </div>
-
-
-          <!-- BOUTON -->
-
-          <button
+        <button
             type="submit"
-            class="submit"
-          >
+            class="btn full"
+        >
             Créer mon compte
-          </button>
+        </button>
 
 
-        </form>
+    </form>
 
 
-        <!-- LIEN CONNEXION -->
+    <!-- CONNEXION -->
 
-        <div class="login-link">
+    <p class="switch">
 
-          Vous avez déjà un compte ?
+        Vous avez déjà un compte ?
 
-          <a href="login.html">
+        <a href="login.html">
             Se connecter
-          </a>
+        </a>
 
-        </div>
-
-
-        <div class="security">
-          🔒 Vos informations sont associées à votre compte.
-        </div>
+    </p>
 
 
-      </div>
-
-    </section>
-
-  </div>
+</div>
 
 
-  <!-- =================================================
-       SCRIPT PRINCIPAL
-       ================================================= -->
+<!-- SCRIPT -->
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
+
+
+<script>
+
+document
+    .getElementById("registerForm")
+    .addEventListener(
+        "submit",
+        function(event) {
+
+            const terms =
+                document.getElementById("terms");
+
+            if (!terms.checked) {
+
+                event.preventDefault();
+
+                showMessage(
+                    "Veuillez accepter les conditions d'utilisation."
+                );
+
+                return;
+
+            }
+
+            registerUser(event);
+
+        }
+    );
+
+</script>
 
 
 </body>
+
 </html>
