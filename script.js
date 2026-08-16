@@ -1,435 +1,697 @@
-// ===============================
-// UTILISATEUR
-// ===============================
-
-let user = JSON.parse(localStorage.getItem("investUser"));
-
-if (!user) {
-    user = {
-        name: "Utilisateur",
-        phone: "",
-        email: "",
-        balance: 0,
-        earnings: 0,
-        investments: [],
-        history: []
-    };
-
-    localStorage.setItem("investUser", JSON.stringify(user));
-}
+/* =====================================================
+   VOTRE PLATEFORME
+   SCRIPT PRINCIPAL
+   ===================================================== */
 
 
-// ===============================
-// INITIALISATION
-// ===============================
+/* =====================================================
+   OUTILS
+   ===================================================== */
 
-document.addEventListener("DOMContentLoaded", function () {
+function getUsers() {
 
-    loadUser();
+    try {
 
-    showSection("packs");
+        return JSON.parse(
+            localStorage.getItem("users")
+        ) || [];
 
-});
+    } catch (error) {
 
+        return [];
 
-// ===============================
-// CHARGER UTILISATEUR
-// ===============================
-
-function loadUser() {
-
-    document.getElementById("userName").textContent =
-        user.name || "Utilisateur";
-
-    document.getElementById("balance").textContent =
-        formatMoney(user.balance);
-
-    document.getElementById("earnings").textContent =
-        formatMoney(user.earnings);
-
-    document.getElementById("investmentCount").textContent =
-        user.investments.length;
-
-    if (document.getElementById("profileName")) {
-        document.getElementById("profileName").value =
-            user.name || "";
-
-        document.getElementById("profilePhone").value =
-            user.phone || "";
-
-        document.getElementById("profileEmail").value =
-            user.email || "";
-    }
-
-    displayInvestments();
-    displayHistory();
-}
-
-
-// ===============================
-// FORMATAGE ARGENT
-// ===============================
-
-function formatMoney(amount) {
-
-    return Number(amount).toLocaleString("fr-FR");
-
-}
-
-
-// ===============================
-// AFFICHER UNE SECTION
-// ===============================
-
-function showSection(sectionId) {
-
-    const sections =
-        document.querySelectorAll(".dashboard-section");
-
-    sections.forEach(function(section) {
-        section.classList.add("hidden");
-    });
-
-    const selected =
-        document.getElementById(sectionId);
-
-    if (selected) {
-        selected.classList.remove("hidden");
     }
 
 }
 
 
-// ===============================
-// INVESTISSEMENT
-// ===============================
-
-function invest(amount, dailyGain) {
-
-    if (user.balance < amount) {
-
-        alert(
-            "Solde insuffisant.\n\n" +
-            "Vous devez effectuer un dépôt de " +
-            formatMoney(amount) +
-            " FCFA avant d'investir."
-        );
-
-        showSection("deposit");
-
-        return;
-    }
-
-    const confirmation = confirm(
-        "Confirmer votre investissement de " +
-        formatMoney(amount) +
-        " FCFA ?"
-    );
-
-    if (!confirmation) {
-        return;
-    }
-
-    user.balance -= amount;
-
-    const investment = {
-
-        id: Date.now(),
-
-        amount: amount,
-
-        dailyGain: dailyGain,
-
-        date: new Date().toLocaleString("fr-FR"),
-
-        status: "Actif"
-
-    };
-
-    user.investments.push(investment);
-
-    user.history.push({
-
-        type: "Investissement",
-
-        amount: amount,
-
-        date: new Date().toLocaleString("fr-FR")
-
-    });
-
-    saveUser();
-
-    alert("Investissement enregistré avec succès.");
-
-    loadUser();
-
-    showSection("investments");
-
-}
-
-
-// ===============================
-// DEPOT
-// ===============================
-
-function makeDeposit() {
-
-    const input =
-        document.getElementById("depositAmount");
-
-    const amount = Number(input.value);
-
-    if (!amount || amount <= 0) {
-
-        alert("Veuillez entrer un montant valide.");
-
-        return;
-    }
-
-    user.balance += amount;
-
-    user.history.push({
-
-        type: "Dépôt",
-
-        amount: amount,
-
-        date: new Date().toLocaleString("fr-FR")
-
-    });
-
-    saveUser();
-
-    input.value = "";
-
-    alert(
-        "Dépôt simulé de " +
-        formatMoney(amount) +
-        " FCFA."
-    );
-
-    loadUser();
-
-}
-
-
-// ===============================
-// RETRAIT
-// ===============================
-
-function makeWithdrawal() {
-
-    const input =
-        document.getElementById("withdrawAmount");
-
-    const amount = Number(input.value);
-
-    if (!amount || amount <= 0) {
-
-        alert("Veuillez entrer un montant valide.");
-
-        return;
-    }
-
-    if (amount > user.balance) {
-
-        alert("Solde insuffisant.");
-
-        return;
-    }
-
-    user.balance -= amount;
-
-    user.history.push({
-
-        type: "Retrait",
-
-        amount: amount,
-
-        date: new Date().toLocaleString("fr-FR")
-
-    });
-
-    saveUser();
-
-    input.value = "";
-
-    alert(
-        "Demande de retrait simulée : " +
-        formatMoney(amount) +
-        " FCFA."
-    );
-
-    loadUser();
-
-}
-
-
-// ===============================
-// AFFICHER INVESTISSEMENTS
-// ===============================
-
-function displayInvestments() {
-
-    const container =
-        document.getElementById("investmentList");
-
-    if (!container) return;
-
-    if (user.investments.length === 0) {
-
-        container.innerHTML =
-            "<p>Aucun investissement pour le moment.</p>";
-
-        return;
-    }
-
-    container.innerHTML = "";
-
-    user.investments.forEach(function(inv) {
-
-        const card =
-            document.createElement("div");
-
-        card.className = "investment-card";
-
-        card.innerHTML = `
-
-            <h3>Investissement</h3>
-
-            <p>
-                Montant :
-                <strong>
-                    ${formatMoney(inv.amount)} FCFA
-                </strong>
-            </p>
-
-            <p>
-                Gain journalier :
-                <strong>
-                    ${formatMoney(inv.dailyGain)} FCFA
-                </strong>
-            </p>
-
-            <p>Date : ${inv.date}</p>
-
-            <p>
-                Statut :
-                <strong>${inv.status}</strong>
-            </p>
-
-        `;
-
-        container.appendChild(card);
-
-    });
-
-}
-
-
-// ===============================
-// HISTORIQUE
-// ===============================
-
-function displayHistory() {
-
-    const container =
-        document.getElementById("historyList");
-
-    if (!container) return;
-
-    if (user.history.length === 0) {
-
-        container.innerHTML =
-            "<p>Aucune opération enregistrée.</p>";
-
-        return;
-    }
-
-    container.innerHTML = "";
-
-    [...user.history]
-        .reverse()
-        .forEach(function(item) {
-
-            const row =
-                document.createElement("div");
-
-            row.className = "history-item";
-
-            row.innerHTML = `
-
-                <strong>${item.type}</strong>
-
-                <span>
-                    ${formatMoney(item.amount)}
-                    FCFA
-                </span>
-
-                <small>${item.date}</small>
-
-            `;
-
-            container.appendChild(row);
-
-        });
-
-}
-
-
-// ===============================
-// PROFIL
-// ===============================
-
-function saveProfile() {
-
-    user.name =
-        document.getElementById("profileName").value.trim();
-
-    user.phone =
-        document.getElementById("profilePhone").value.trim();
-
-    user.email =
-        document.getElementById("profileEmail").value.trim();
-
-    if (!user.name) {
-
-        alert("Veuillez entrer votre nom.");
-
-        return;
-    }
-
-    saveUser();
-
-    document.getElementById("profileMessage").textContent =
-        "Profil enregistré avec succès.";
-
-    loadUser();
-
-}
-
-
-// ===============================
-// SAUVEGARDE
-// ===============================
-
-function saveUser() {
+function saveUsers(users) {
 
     localStorage.setItem(
-        "investUser",
+        "users",
+        JSON.stringify(users)
+    );
+
+}
+
+
+function getCurrentUser() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem("currentUser")
+        );
+
+    } catch (error) {
+
+        return null;
+
+    }
+
+}
+
+
+function saveCurrentUser(user) {
+
+    localStorage.setItem(
+        "currentUser",
         JSON.stringify(user)
     );
 
 }
 
 
-// ===============================
-// DECONNEXION
-// ===============================
-
 function logout() {
+
+    localStorage.removeItem("currentUser");
 
     window.location.href = "login.html";
 
 }
+
+
+/* =====================================================
+   INSCRIPTION
+   ===================================================== */
+
+function registerUser(event) {
+
+    if (event) {
+        event.preventDefault();
+    }
+
+    const name =
+        document.getElementById("registerName")?.value.trim();
+
+    const phone =
+        document.getElementById("registerPhone")?.value.trim();
+
+    const password =
+        document.getElementById("registerPassword")?.value;
+
+    const confirmPassword =
+        document.getElementById("confirmPassword")?.value;
+
+
+    if (!name || !phone || !password) {
+
+        alert(
+            "Veuillez remplir tous les champs."
+        );
+
+        return false;
+
+    }
+
+
+    if (password.length < 6) {
+
+        alert(
+            "Le mot de passe doit contenir au moins 6 caractères."
+        );
+
+        return false;
+
+    }
+
+
+    if (password !== confirmPassword) {
+
+        alert(
+            "Les deux mots de passe ne correspondent pas."
+        );
+
+        return false;
+
+    }
+
+
+    const users = getUsers();
+
+
+    const existingUser =
+        users.find(
+            user => user.phone === phone
+        );
+
+
+    if (existingUser) {
+
+        alert(
+            "Ce numéro est déjà utilisé."
+        );
+
+        return false;
+
+    }
+
+
+    const newUser = {
+
+        id:
+            "USER-" +
+            Date.now(),
+
+        name:
+            name,
+
+        phone:
+            phone,
+
+        password:
+            password,
+
+        balance:
+            0,
+
+        invested:
+            0,
+
+        earnings:
+            0,
+
+        createdAt:
+            new Date().toLocaleString("fr-FR")
+
+    };
+
+
+    users.push(newUser);
+
+    saveUsers(users);
+
+    saveCurrentUser(newUser);
+
+
+    alert(
+        "Compte créé avec succès."
+    );
+
+
+    window.location.href =
+        "dashboard.html";
+
+
+    return false;
+
+}
+
+
+/* =====================================================
+   CONNEXION
+   ===================================================== */
+
+function loginUser(event) {
+
+    if (event) {
+        event.preventDefault();
+    }
+
+
+    const phone =
+        document.getElementById("loginPhone")?.value.trim();
+
+    const password =
+        document.getElementById("loginPassword")?.value;
+
+
+    if (!phone || !password) {
+
+        alert(
+            "Veuillez entrer votre numéro et votre mot de passe."
+        );
+
+        return false;
+
+    }
+
+
+    /* ADMIN */
+
+    if (
+        phone === "admin" &&
+        password === "admin123"
+    ) {
+
+        localStorage.setItem(
+            "adminLogged",
+            "true"
+        );
+
+        window.location.href =
+            "admin.html";
+
+        return false;
+
+    }
+
+
+    /* UTILISATEUR */
+
+    const users = getUsers();
+
+
+    const user =
+        users.find(
+            item =>
+                item.phone === phone &&
+                item.password === password
+        );
+
+
+    if (!user) {
+
+        alert(
+            "Numéro ou mot de passe incorrect."
+        );
+
+        return false;
+
+    }
+
+
+    saveCurrentUser(user);
+
+
+    window.location.href =
+        "dashboard.html";
+
+
+    return false;
+
+}
+
+
+/* =====================================================
+   PROTECTION DU DASHBOARD
+   ===================================================== */
+
+function protectDashboard() {
+
+    const page =
+        window.location.pathname;
+
+
+    if (
+        page.includes("dashboard.html")
+    ) {
+
+        const user =
+            getCurrentUser();
+
+
+        if (!user) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   PROTECTION ADMIN
+   ===================================================== */
+
+function protectAdmin() {
+
+    const page =
+        window.location.pathname;
+
+
+    if (
+        page.includes("admin.html")
+    ) {
+
+        const adminLogged =
+            localStorage.getItem(
+                "adminLogged"
+            );
+
+
+        if (adminLogged !== "true") {
+
+            window.location.href =
+                "login.html";
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   AFFICHAGE DU NOM UTILISATEUR
+   ===================================================== */
+
+function displayUserInformation() {
+
+    const user =
+        getCurrentUser();
+
+
+    if (!user) {
+        return;
+    }
+
+
+    const nameElements =
+        document.querySelectorAll(
+            "[data-user-name]"
+        );
+
+
+    nameElements.forEach(
+        element => {
+
+            element.textContent =
+                user.name;
+
+        }
+    );
+
+
+    const phoneElements =
+        document.querySelectorAll(
+            "[data-user-phone]"
+        );
+
+
+    phoneElements.forEach(
+        element => {
+
+            element.textContent =
+                user.phone;
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   AFFICHAGE DU SOLDE
+   ===================================================== */
+
+function displayBalance() {
+
+    const user =
+        getCurrentUser();
+
+
+    if (!user) {
+        return;
+    }
+
+
+    const balanceElements =
+        document.querySelectorAll(
+            "[data-balance]"
+        );
+
+
+    balanceElements.forEach(
+        element => {
+
+            element.textContent =
+                formatMoney(
+                    user.balance
+                );
+
+        }
+    );
+
+
+    const investedElements =
+        document.querySelectorAll(
+            "[data-invested]"
+        );
+
+
+    investedElements.forEach(
+        element => {
+
+            element.textContent =
+                formatMoney(
+                    user.invested
+                );
+
+        }
+    );
+
+
+    const earningElements =
+        document.querySelectorAll(
+            "[data-earnings]"
+        );
+
+
+    earningElements.forEach(
+        element => {
+
+            element.textContent =
+                formatMoney(
+                    user.earnings
+                );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   FORMAT MONÉTAIRE
+   ===================================================== */
+
+function formatMoney(amount) {
+
+    const number =
+        Number(amount) || 0;
+
+
+    return number.toLocaleString(
+        "fr-FR"
+    ) + " FCFA";
+
+}
+
+
+/* =====================================================
+   DÉPÔT TEMPORAIRE
+   ===================================================== */
+
+function makeDeposit(amount) {
+
+    const user =
+        getCurrentUser();
+
+
+    if (!user) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+
+    amount =
+        Number(amount);
+
+
+    if (
+        !amount ||
+        amount <= 0
+    ) {
+
+        alert(
+            "Montant invalide."
+        );
+
+        return;
+
+    }
+
+
+    /*
+       IMPORTANT :
+
+       Cette fonction est uniquement
+       une préparation locale.
+
+       Elle ne confirme pas un paiement
+       réel et ne crédite pas réellement
+       de l'argent.
+    */
+
+
+    alert(
+        "Demande de dépôt de " +
+        formatMoney(amount) +
+        " enregistrée pour traitement."
+    );
+
+}
+
+
+/* =====================================================
+   RETRAIT TEMPORAIRE
+   ===================================================== */
+
+function makeWithdrawal(amount) {
+
+    const user =
+        getCurrentUser();
+
+
+    if (!user) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+
+    amount =
+        Number(amount);
+
+
+    if (
+        !amount ||
+        amount <= 0
+    ) {
+
+        alert(
+            "Montant invalide."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        amount > Number(user.balance)
+    ) {
+
+        alert(
+            "Solde insuffisant."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Votre demande de retrait a été préparée."
+    );
+
+}
+
+
+/* =====================================================
+   INVESTISSEMENT
+   ===================================================== */
+
+function selectPack(amount) {
+
+    const user =
+        getCurrentUser();
+
+
+    if (!user) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+
+    amount =
+        Number(amount);
+
+
+    if (
+        !amount ||
+        amount <= 0
+    ) {
+
+        alert(
+            "Montant incorrect."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        amount > Number(user.balance)
+    ) {
+
+        alert(
+            "Votre solde disponible est insuffisant."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Vous avez sélectionné le pack de " +
+        formatMoney(amount) +
+        "."
+    );
+
+}
+
+
+/* =====================================================
+   DÉCONNEXION ADMIN
+   ===================================================== */
+
+function logoutAdmin() {
+
+    localStorage.removeItem(
+        "adminLogged"
+    );
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+/* =====================================================
+   INITIALISATION
+   ===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        protectDashboard();
+
+        protectAdmin();
+
+        displayUserInformation();
+
+        displayBalance();
+
+    }
+);
