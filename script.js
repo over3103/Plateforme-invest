@@ -5,7 +5,7 @@
 
 
 /* =====================================================
-   OUTILS
+   STOCKAGE
    ===================================================== */
 
 function getUsers() {
@@ -62,11 +62,67 @@ function saveCurrentUser(user) {
 }
 
 
+/* =====================================================
+   NUMERO DE TELEPHONE
+   Toujours enregistré sous +225XXXXXXXXXX
+   ===================================================== */
+
+function normalizePhone(phone) {
+
+    let value = String(phone || "")
+        .trim()
+        .replace(/\s+/g, "");
+
+    /* enlever le +225 s'il existe */
+
+    if (value.startsWith("+225")) {
+
+        value = value.substring(4);
+
+    }
+
+    /* enlever 225 s'il a été écrit sans + */
+
+    if (
+        value.startsWith("225") &&
+        value.length === 13
+    ) {
+
+        value = value.substring(3);
+
+    }
+
+    /* conserver uniquement les chiffres */
+
+    value = value.replace(/\D/g, "");
+
+    /* garder les 10 chiffres ivoiriens */
+
+    if (value.length > 10) {
+
+        value = value.substring(
+            value.length - 10
+        );
+
+    }
+
+    return "+225" + value;
+
+}
+
+
+/* =====================================================
+   DECONNEXION
+   ===================================================== */
+
 function logout() {
 
-    localStorage.removeItem("currentUser");
+    localStorage.removeItem(
+        "currentUser"
+    );
 
-    window.location.href = "login.html";
+    window.location.href =
+        "login.html";
 
 }
 
@@ -78,26 +134,95 @@ function logout() {
 function registerUser(event) {
 
     if (event) {
+
         event.preventDefault();
+
     }
 
-    const name =
-        document.getElementById("registerName")?.value.trim();
 
-    const phone =
-        document.getElementById("registerPhone")?.value.trim();
+    const nameElement =
+        document.getElementById(
+            "registerName"
+        );
+
+    const phoneElement =
+        document.getElementById(
+            "registerPhone"
+        );
+
+    const passwordElement =
+        document.getElementById(
+            "registerPassword"
+        );
+
+    const confirmElement =
+        document.getElementById(
+            "confirmPassword"
+        );
+
+    const invitationElement =
+        document.getElementById(
+            "invitationCode"
+        );
+
+
+    const name =
+        nameElement
+            ? nameElement.value.trim()
+            : "";
+
+
+    const rawPhone =
+        phoneElement
+            ? phoneElement.value.trim()
+            : "";
+
 
     const password =
-        document.getElementById("registerPassword")?.value;
+        passwordElement
+            ? passwordElement.value
+            : "";
+
 
     const confirmPassword =
-        document.getElementById("confirmPassword")?.value;
+        confirmElement
+            ? confirmElement.value
+            : "";
 
 
-    if (!name || !phone || !password) {
+    const invitationCode =
+        invitationElement
+            ? invitationElement.value.trim()
+            : "";
+
+
+    /* =========================
+       VERIFICATIONS
+       ========================= */
+
+    if (!name) {
 
         alert(
-            "Veuillez remplir tous les champs."
+            "Veuillez entrer votre nom complet."
+        );
+
+        return false;
+
+    }
+
+
+    const phone =
+        normalizePhone(rawPhone);
+
+
+    /* Vérification du numéro ivoirien */
+
+    if (
+        !/^\+225\d{10}$/.test(phone)
+    ) {
+
+        alert(
+            "Veuillez entrer un numéro ivoirien valide de 10 chiffres."
         );
 
         return false;
@@ -116,7 +241,9 @@ function registerUser(event) {
     }
 
 
-    if (password !== confirmPassword) {
+    if (
+        password !== confirmPassword
+    ) {
 
         alert(
             "Les deux mots de passe ne correspondent pas."
@@ -127,25 +254,36 @@ function registerUser(event) {
     }
 
 
-    const users = getUsers();
+    const users =
+        getUsers();
 
+
+    /* =========================
+       UTILISATEUR EXISTANT
+       ========================= */
 
     const existingUser =
         users.find(
-            user => user.phone === phone
+            user =>
+                normalizePhone(user.phone) ===
+                phone
         );
 
 
     if (existingUser) {
 
         alert(
-            "Ce numéro est déjà utilisé."
+            "Ce numéro possède déjà un compte."
         );
 
         return false;
 
     }
 
+
+    /* =========================
+       CREATION
+       ========================= */
 
     const newUser = {
 
@@ -162,6 +300,9 @@ function registerUser(event) {
         password:
             password,
 
+        invitationCode:
+            invitationCode,
+
         balance:
             0,
 
@@ -172,25 +313,42 @@ function registerUser(event) {
             0,
 
         createdAt:
-            new Date().toLocaleString("fr-FR")
+            new Date().toISOString()
 
     };
 
 
-    users.push(newUser);
-
-    saveUsers(users);
-
-    saveCurrentUser(newUser);
-
-
-    alert(
-        "Compte créé avec succès."
+    users.push(
+        newUser
     );
 
 
-    window.location.href =
-        "dashboard.html";
+    saveUsers(
+        users
+    );
+
+
+    saveCurrentUser(
+        newUser
+    );
+
+
+    /* =========================
+       CONFIRMATION
+       ========================= */
+
+    alert(
+        "Compte créé avec succès !"
+    );
+
+
+    /* =========================
+       REDIRECTION
+       ========================= */
+
+    window.location.replace(
+        "dashboard.html"
+    );
 
 
     return false;
@@ -205,21 +363,39 @@ function registerUser(event) {
 function loginUser(event) {
 
     if (event) {
+
         event.preventDefault();
+
     }
 
 
-    const phone =
-        document.getElementById("loginPhone")?.value.trim();
+    const phoneElement =
+        document.getElementById(
+            "loginPhone"
+        );
+
+    const passwordElement =
+        document.getElementById(
+            "loginPassword"
+        );
+
+
+    const rawPhone =
+        phoneElement
+            ? phoneElement.value.trim()
+            : "";
+
 
     const password =
-        document.getElementById("loginPassword")?.value;
+        passwordElement
+            ? passwordElement.value
+            : "";
 
 
-    if (!phone || !password) {
+    if (!rawPhone || !password) {
 
         alert(
-            "Veuillez entrer votre numéro et votre mot de passe."
+            "Veuillez remplir tous les champs."
         );
 
         return false;
@@ -227,10 +403,16 @@ function loginUser(event) {
     }
 
 
-    /* ADMIN */
+    const phone =
+        normalizePhone(rawPhone);
+
+
+    /* =========================
+       ADMINISTRATION
+       ========================= */
 
     if (
-        phone === "admin" &&
+        rawPhone === "admin" &&
         password === "admin123"
     ) {
 
@@ -239,31 +421,37 @@ function loginUser(event) {
             "true"
         );
 
-        window.location.href =
-            "admin.html";
+        window.location.replace(
+            "admin.html"
+        );
 
         return false;
 
     }
 
 
-    /* UTILISATEUR */
+    /* =========================
+       RECHERCHE UTILISATEUR
+       ========================= */
 
-    const users = getUsers();
+    const users =
+        getUsers();
 
 
     const user =
         users.find(
             item =>
-                item.phone === phone &&
-                item.password === password
+                normalizePhone(item.phone) ===
+                phone &&
+                item.password ===
+                password
         );
 
 
     if (!user) {
 
         alert(
-            "Numéro ou mot de passe incorrect."
+            "Numéro de téléphone ou mot de passe incorrect."
         );
 
         return false;
@@ -271,11 +459,18 @@ function loginUser(event) {
     }
 
 
-    saveCurrentUser(user);
+    /* =========================
+       CONNEXION REUSSIE
+       ========================= */
+
+    saveCurrentUser(
+        user
+    );
 
 
-    window.location.href =
-        "dashboard.html";
+    window.location.replace(
+        "dashboard.html"
+    );
 
 
     return false;
@@ -284,7 +479,7 @@ function loginUser(event) {
 
 
 /* =====================================================
-   PROTECTION DU DASHBOARD
+   PROTECTION DASHBOARD
    ===================================================== */
 
 function protectDashboard() {
@@ -294,7 +489,9 @@ function protectDashboard() {
 
 
     if (
-        page.includes("dashboard.html")
+        page.includes(
+            "dashboard.html"
+        )
     ) {
 
         const user =
@@ -303,10 +500,11 @@ function protectDashboard() {
 
         if (!user) {
 
-            window.location.href =
-                "login.html";
+            window.location.replace(
+                "login.html"
+            );
 
-            return;
+            return false;
 
         }
 
@@ -326,7 +524,9 @@ function protectAdmin() {
 
 
     if (
-        page.includes("admin.html")
+        page.includes(
+            "admin.html"
+        )
     ) {
 
         const adminLogged =
@@ -335,10 +535,15 @@ function protectAdmin() {
             );
 
 
-        if (adminLogged !== "true") {
+        if (
+            adminLogged !== "true"
+        ) {
 
-            window.location.href =
-                "login.html";
+            window.location.replace(
+                "login.html"
+            );
+
+            return false;
 
         }
 
@@ -348,7 +553,7 @@ function protectAdmin() {
 
 
 /* =====================================================
-   AFFICHAGE DU NOM UTILISATEUR
+   INFORMATIONS UTILISATEUR
    ===================================================== */
 
 function displayUserInformation() {
@@ -358,46 +563,44 @@ function displayUserInformation() {
 
 
     if (!user) {
+
         return;
+
     }
 
 
-    const nameElements =
-        document.querySelectorAll(
+    document
+        .querySelectorAll(
             "[data-user-name]"
+        )
+        .forEach(
+            element => {
+
+                element.textContent =
+                    user.name;
+
+            }
         );
 
 
-    nameElements.forEach(
-        element => {
-
-            element.textContent =
-                user.name;
-
-        }
-    );
-
-
-    const phoneElements =
-        document.querySelectorAll(
+    document
+        .querySelectorAll(
             "[data-user-phone]"
+        )
+        .forEach(
+            element => {
+
+                element.textContent =
+                    user.phone;
+
+            }
         );
-
-
-    phoneElements.forEach(
-        element => {
-
-            element.textContent =
-                user.phone;
-
-        }
-    );
 
 }
 
 
 /* =====================================================
-   AFFICHAGE DU SOLDE
+   SOLDE
    ===================================================== */
 
 function displayBalance() {
@@ -407,85 +610,79 @@ function displayBalance() {
 
 
     if (!user) {
+
         return;
+
     }
 
 
-    const balanceElements =
-        document.querySelectorAll(
+    document
+        .querySelectorAll(
             "[data-balance]"
+        )
+        .forEach(
+            element => {
+
+                element.textContent =
+                    formatMoney(
+                        user.balance
+                    );
+
+            }
         );
 
 
-    balanceElements.forEach(
-        element => {
-
-            element.textContent =
-                formatMoney(
-                    user.balance
-                );
-
-        }
-    );
-
-
-    const investedElements =
-        document.querySelectorAll(
+    document
+        .querySelectorAll(
             "[data-invested]"
+        )
+        .forEach(
+            element => {
+
+                element.textContent =
+                    formatMoney(
+                        user.invested
+                    );
+
+            }
         );
 
 
-    investedElements.forEach(
-        element => {
-
-            element.textContent =
-                formatMoney(
-                    user.invested
-                );
-
-        }
-    );
-
-
-    const earningElements =
-        document.querySelectorAll(
+    document
+        .querySelectorAll(
             "[data-earnings]"
+        )
+        .forEach(
+            element => {
+
+                element.textContent =
+                    formatMoney(
+                        user.earnings
+                    );
+
+            }
         );
-
-
-    earningElements.forEach(
-        element => {
-
-            element.textContent =
-                formatMoney(
-                    user.earnings
-                );
-
-        }
-    );
 
 }
 
 
 /* =====================================================
-   FORMAT MONÉTAIRE
+   FORMAT FCFA
    ===================================================== */
 
 function formatMoney(amount) {
 
-    const number =
-        Number(amount) || 0;
-
-
-    return number.toLocaleString(
-        "fr-FR"
-    ) + " FCFA";
+    return (
+        Number(amount || 0)
+            .toLocaleString("fr-FR")
+        + " FCFA"
+    );
 
 }
 
 
 /* =====================================================
-   DÉPÔT TEMPORAIRE
+   DEPOT — PROTOTYPE
    ===================================================== */
 
 function makeDeposit(amount) {
@@ -496,8 +693,9 @@ function makeDeposit(amount) {
 
     if (!user) {
 
-        window.location.href =
-            "login.html";
+        window.location.replace(
+            "login.html"
+        );
 
         return;
 
@@ -522,29 +720,17 @@ function makeDeposit(amount) {
     }
 
 
-    /*
-       IMPORTANT :
-
-       Cette fonction est uniquement
-       une préparation locale.
-
-       Elle ne confirme pas un paiement
-       réel et ne crédite pas réellement
-       de l'argent.
-    */
-
-
     alert(
-        "Demande de dépôt de " +
+        "Demande de dépôt préparée pour " +
         formatMoney(amount) +
-        " enregistrée pour traitement."
+        "."
     );
 
 }
 
 
 /* =====================================================
-   RETRAIT TEMPORAIRE
+   RETRAIT — PROTOTYPE
    ===================================================== */
 
 function makeWithdrawal(amount) {
@@ -555,8 +741,9 @@ function makeWithdrawal(amount) {
 
     if (!user) {
 
-        window.location.href =
-            "login.html";
+        window.location.replace(
+            "login.html"
+        );
 
         return;
 
@@ -582,7 +769,8 @@ function makeWithdrawal(amount) {
 
 
     if (
-        amount > Number(user.balance)
+        amount >
+        Number(user.balance || 0)
     ) {
 
         alert(
@@ -595,14 +783,14 @@ function makeWithdrawal(amount) {
 
 
     alert(
-        "Votre demande de retrait a été préparée."
+        "Votre demande de retrait est prête."
     );
 
 }
 
 
 /* =====================================================
-   INVESTISSEMENT
+   INVESTISSEMENT — PROTOTYPE
    ===================================================== */
 
 function selectPack(amount) {
@@ -613,8 +801,9 @@ function selectPack(amount) {
 
     if (!user) {
 
-        window.location.href =
-            "login.html";
+        window.location.replace(
+            "login.html"
+        );
 
         return;
 
@@ -640,11 +829,12 @@ function selectPack(amount) {
 
 
     if (
-        amount > Number(user.balance)
+        amount >
+        Number(user.balance || 0)
     ) {
 
         alert(
-            "Votre solde disponible est insuffisant."
+            "Solde disponible insuffisant."
         );
 
         return;
@@ -653,16 +843,15 @@ function selectPack(amount) {
 
 
     alert(
-        "Vous avez sélectionné le pack de " +
-        formatMoney(amount) +
-        "."
+        "Pack sélectionné : " +
+        formatMoney(amount)
     );
 
 }
 
 
 /* =====================================================
-   DÉCONNEXION ADMIN
+   ADMIN
    ===================================================== */
 
 function logoutAdmin() {
@@ -671,8 +860,9 @@ function logoutAdmin() {
         "adminLogged"
     );
 
-    window.location.href =
-        "login.html";
+    window.location.replace(
+        "login.html"
+    );
 
 }
 
