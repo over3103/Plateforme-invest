@@ -10,7 +10,9 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Créer un compte - Housing Investment</title>
+    <title>
+        Créer un compte | Housing Investment
+    </title>
 
     <link
         rel="stylesheet"
@@ -20,192 +22,566 @@
 </head>
 
 
-<body class="auth-page">
+<body>
 
 
-<div class="auth-box">
+<!-- =================================================
+     HEADER
+================================================= -->
 
-    <!-- RETOUR -->
+<header class="topbar">
 
-    <a
-        href="index.html"
-        class="back"
-    >
-        ← Retour à l'accueil
-    </a>
-
-
-    <!-- TITRE -->
-
-    <h1>
-        Créer un compte
-    </h1>
-
-    <p class="muted">
-        Rejoignez Housing Investment
-        et accédez à votre espace personnel.
-    </p>
+    <div class="logo">
+        HOUSING <span>INVESTMENT</span>
+    </div>
 
 
-    <!-- MESSAGE -->
+    <nav>
 
-    <div
-        id="message"
-        class="message hidden"
-    ></div>
-
-
-    <!-- FORMULAIRE -->
-
-    <form
-        id="registerForm"
-        novalidate
-    >
+        <a href="index.html">
+            Accueil
+        </a>
 
 
-        <!-- NOM -->
-
-        <label for="name">
-            Nom complet
-        </label>
-
-        <input
-            id="name"
-            name="name"
-            type="text"
-            placeholder="Exemple : Jean Kouassi"
-            autocomplete="name"
-            required
+        <a
+            href="login.html"
+            class="btn btn-small"
         >
-
-
-        <!-- TELEPHONE -->
-
-        <label for="phone">
-            Téléphone ou identifiant
-        </label>
-
-        <input
-            id="phone"
-            name="phone"
-            type="text"
-            placeholder="Exemple : 0700000000"
-            autocomplete="username"
-            required
-        >
-
-
-        <!-- MOT DE PASSE -->
-
-        <label for="password">
-            Mot de passe
-        </label>
-
-        <input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="Minimum 6 caractères"
-            autocomplete="new-password"
-            required
-        >
-
-
-        <!-- CONFIRMATION -->
-
-        <label for="confirmPassword">
-            Confirmer le mot de passe
-        </label>
-
-        <input
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            placeholder="Répétez votre mot de passe"
-            autocomplete="new-password"
-            required
-        >
-
-
-        <!-- CONDITIONS -->
-
-        <label class="terms">
-
-            <input
-                id="terms"
-                type="checkbox"
-                required
-            >
-
-            <span>
-                J'accepte les conditions
-                d'utilisation de la plateforme.
-            </span>
-
-        </label>
-
-
-        <!-- BOUTON -->
-
-        <button
-            type="submit"
-            class="btn full"
-        >
-            Créer mon compte
-        </button>
-
-
-    </form>
-
-
-    <!-- CONNEXION -->
-
-    <p class="switch">
-
-        Vous avez déjà un compte ?
-
-        <a href="login.html">
             Se connecter
         </a>
 
+    </nav>
+
+</header>
+
+
+
+<!-- =================================================
+     INSCRIPTION
+================================================= -->
+
+<main class="auth-container">
+
+    <section class="auth-card">
+
+
+        <div class="auth-header">
+
+            <span class="section-tag">
+                NOUVEAU MEMBRE
+            </span>
+
+
+            <h1>
+                Créer un compte
+            </h1>
+
+
+            <p>
+                Rejoignez Housing Investment
+                et accédez à votre espace personnel.
+            </p>
+
+        </div>
+
+
+
+        <!-- MESSAGE -->
+
+        <div
+            id="registerMessage"
+            class="auth-message"
+            style="display:none;"
+        ></div>
+
+
+
+        <!-- FORMULAIRE -->
+
+        <form
+            id="registerForm"
+            autocomplete="on"
+        >
+
+
+            <!-- NOM -->
+
+            <div class="form-group">
+
+                <label for="fullName">
+                    Nom complet
+                </label>
+
+
+                <input
+                    type="text"
+                    id="fullName"
+                    name="name"
+                    placeholder="Votre nom complet"
+                    autocomplete="name"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- TELEPHONE -->
+
+            <div class="form-group">
+
+                <label for="phone">
+                    Numéro de téléphone
+                </label>
+
+
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="Ex : 07 00 00 00 00"
+                    autocomplete="tel"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    Adresse e-mail
+                </label>
+
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Votre adresse e-mail"
+                    autocomplete="email"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- MOT DE PASSE -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Mot de passe
+                </label>
+
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Créer un mot de passe"
+                    autocomplete="new-password"
+                    minlength="6"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- CONFIRMATION -->
+
+            <div class="form-group">
+
+                <label for="confirmPassword">
+                    Confirmer le mot de passe
+                </label>
+
+
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Répéter le mot de passe"
+                    autocomplete="new-password"
+                    minlength="6"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- CONDITIONS -->
+
+            <div class="terms-box">
+
+                <label>
+
+                    <input
+                        type="checkbox"
+                        id="terms"
+                        required
+                    >
+
+                    <span>
+                        J'accepte les conditions
+                        d'utilisation de la plateforme.
+                    </span>
+
+                </label>
+
+            </div>
+
+
+
+            <!-- BOUTON -->
+
+            <button
+                type="submit"
+                class="btn auth-submit"
+            >
+                Créer mon compte
+            </button>
+
+
+        </form>
+
+
+
+        <!-- LIEN CONNEXION -->
+
+        <div class="auth-footer">
+
+            <p>
+                Vous avez déjà un compte ?
+            </p>
+
+
+            <a href="login.html">
+                Se connecter
+            </a>
+
+        </div>
+
+
+    </section>
+
+</main>
+
+
+
+<!-- =================================================
+     FOOTER
+================================================= -->
+
+<footer>
+
+    <div class="footer-logo">
+        HOUSING INVESTMENT
+    </div>
+
+
+    <p>
+        © 2026 Housing Investment.
+        Tous droits réservés.
     </p>
 
+</footer>
 
-</div>
 
 
-<!-- SCRIPT -->
-
-<script src="script.js"></script>
-
+<!-- =================================================
+     JAVASCRIPT INSCRIPTION
+================================================= -->
 
 <script>
 
-document
-    .getElementById("registerForm")
-    .addEventListener(
-        "submit",
-        function(event) {
 
-            const terms =
-                document.getElementById("terms");
+const registerForm =
+    document.getElementById(
+        "registerForm"
+    );
 
-            if (!terms.checked) {
 
-                event.preventDefault();
+const registerMessage =
+    document.getElementById(
+        "registerMessage"
+    );
 
-                showMessage(
-                    "Veuillez accepter les conditions d'utilisation."
-                );
 
-                return;
 
-            }
+/*
+ * Affichage des messages
+ */
 
-            registerUser(event);
+function showRegisterMessage(
+    message,
+    type
+) {
+
+    registerMessage.textContent =
+        message;
+
+
+    registerMessage.style.display =
+        "block";
+
+
+    registerMessage.className =
+        "auth-message " + type;
+
+}
+
+
+
+/*
+ * Soumission du formulaire
+ */
+
+registerForm.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+
+        /*
+         * Récupération des informations
+         */
+
+        const name =
+            document
+                .getElementById("fullName")
+                .value
+                .trim();
+
+
+        const phone =
+            document
+                .getElementById("phone")
+                .value
+                .trim();
+
+
+        const email =
+            document
+                .getElementById("email")
+                .value
+                .trim()
+                .toLowerCase();
+
+
+        const password =
+            document
+                .getElementById("password")
+                .value;
+
+
+        const confirmPassword =
+            document
+                .getElementById("confirmPassword")
+                .value;
+
+
+        const terms =
+            document
+                .getElementById("terms")
+                .checked;
+
+
+
+        /*
+         * Vérification des champs
+         */
+
+        if (
+            !name ||
+            !phone ||
+            !email ||
+            !password ||
+            !confirmPassword
+        ) {
+
+            showRegisterMessage(
+                "Veuillez remplir tous les champs.",
+                "error"
+            );
+
+            return;
 
         }
-    );
+
+
+
+        /*
+         * Vérification du mot de passe
+         */
+
+        if (password.length < 6) {
+
+            showRegisterMessage(
+                "Le mot de passe doit contenir au moins 6 caractères.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+
+        /*
+         * Confirmation du mot de passe
+         */
+
+        if (
+            password !== confirmPassword
+        ) {
+
+            showRegisterMessage(
+                "Les deux mots de passe ne correspondent pas.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+
+        /*
+         * Conditions
+         */
+
+        if (!terms) {
+
+            showRegisterMessage(
+                "Veuillez accepter les conditions d'utilisation.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+
+        /*
+         * Création du compte
+         */
+
+        const user = {
+
+            name: name,
+
+            phone: phone,
+
+            email: email,
+
+            password: password,
+
+            createdAt:
+                new Date().toISOString()
+
+        };
+
+
+
+        /*
+         * Enregistrement du compte
+         */
+
+        try {
+
+            localStorage.setItem(
+                "registeredUser",
+                JSON.stringify(user)
+            );
+
+
+            /*
+             * Connexion automatique
+             */
+
+            localStorage.setItem(
+                "currentUser",
+                JSON.stringify(user)
+            );
+
+
+            /*
+             * Initialisation du compte
+             */
+
+            localStorage.setItem(
+                "userBalance",
+                "0"
+            );
+
+
+            localStorage.setItem(
+                "totalInvested",
+                "0"
+            );
+
+
+            localStorage.setItem(
+                "totalGains",
+                "0"
+            );
+
+
+            localStorage.setItem(
+                "activeInvestments",
+                "0"
+            );
+
+
+
+            /*
+             * Message de réussite
+             */
+
+            showRegisterMessage(
+                "Inscription réussie ! Redirection vers votre espace...",
+                "success"
+            );
+
+
+
+            /*
+             * Redirection
+             */
+
+            setTimeout(
+                function() {
+
+                    window.location.href =
+                        "dashboard.html";
+
+                },
+                1000
+            );
+
+
+        } catch (error) {
+
+            showRegisterMessage(
+                "Impossible d'enregistrer le compte sur cet appareil.",
+                "error"
+            );
+
+        }
+
+    }
+);
+
 
 </script>
 
