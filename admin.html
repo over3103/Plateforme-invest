@@ -1,137 +1,245 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Administration | Votre Plateforme</title>
+    <meta charset="UTF-8">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
+    <title>Administration - Housing Investment</title>
 
-  <style>
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+</head>
 
-    body {
-      font-family: "Inter", sans-serif;
-      background: #07110d;
-      color: white;
-      min-height: 100vh;
-    }
 
-    button,
-    input {
-      font-family: inherit;
-    }
+<body>
 
-    /* =========================
-       SIDEBAR
-    ========================= */
 
-    .sidebar {
-      position: fixed;
-      left: 0;
-      top: 0;
-      bottom: 0;
+<header class="topbar">
 
-      width: 245px;
+    <div class="logo">
+        HOUSING <span>INVESTMENT</span>
+    </div>
 
-      padding: 25px 18px;
 
-      background: #050c08;
+    <nav>
 
-      border-right: 1px solid rgba(255,255,255,0.07);
+        <a href="index.html">
+            Accueil
+        </a>
 
-      z-index: 100;
-    }
+        <a href="dashboard.html">
+            Espace utilisateur
+        </a>
 
-    .logo {
-      display: block;
+        <button
+            class="logout"
+            onclick="logout()"
+        >
+            Déconnexion
+        </button>
 
-      padding: 5px 12px 35px;
+    </nav>
 
-      color: white;
+</header>
 
-      text-decoration: none;
 
-      font-size: 20px;
-      font-weight: 800;
-    }
 
-    .logo span {
-      color: #55e58a;
-    }
+<main class="container">
 
-    .admin-badge {
-      margin: -20px 12px 30px;
 
-      padding: 6px 9px;
+    <!-- TITRE -->
 
-      width: fit-content;
+    <section class="welcome">
 
-      border-radius: 5px;
+        <div>
 
-      background: rgba(85,229,138,0.10);
+            <p class="muted">
+                Administration
+            </p>
 
-      color: #55e58a;
+            <h1>
+                Tableau de bord
+            </h1>
 
-      font-size: 9px;
+        </div>
 
-      font-weight: 800;
 
-      letter-spacing: 1px;
+        <span class="status">
+            Administrateur
+        </span>
 
-      text-transform: uppercase;
-    }
+    </section>
 
-    .menu-title {
-      padding: 0 12px;
 
-      margin-bottom: 12px;
 
-      color: #65746b;
+    <!-- STATISTIQUES -->
 
-      font-size: 10px;
+    <section class="stats">
 
-      font-weight: 800;
 
-      letter-spacing: 1.5px;
+        <div class="stat">
 
-      text-transform: uppercase;
-    }
+            <span>
+                Utilisateurs
+            </span>
 
-    .menu {
-      display: grid;
+            <strong id="totalUsers">
+                0
+            </strong>
 
-      gap: 5px;
-    }
+        </div>
 
-    .menu button,
-    .menu a {
-      width: 100%;
 
-      display: flex;
+        <div class="stat">
 
-      align-items: center;
+            <span>
+                Investissements
+            </span>
 
-      gap: 12px;
+            <strong id="totalInvested">
+                0 FCFA
+            </strong>
 
-      padding: 13px 12px;
+        </div>
 
-      border: none;
 
-      border-radius: 9px;
+        <div class="stat">
 
-      background: transparent;
+            <span>
+                Solde total
+            </span>
 
-      color: #899990;
+            <strong id="totalBalance">
+                0 FCFA
+            </strong>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- UTILISATEURS -->
+
+    <section class="panel">
+
+        <div class="panel-heading">
+
+            <div>
+
+                <p class="section-tag">
+                    UTILISATEURS
+                </p>
+
+                <h2>
+                    Comptes enregistrés
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Nom
+                        </th>
+
+                        <th>
+                            Identifiant
+                        </th>
+
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Solde
+                        </th>
+
+                        <th>
+                            Investissement
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="usersTable">
+
+                    <tr>
+
+                        <td colspan="5">
+                            Chargement...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- INFORMATIONS ADMIN -->
+
+    <section class="panel">
+
+        <h2>
+            Informations
+        </h2>
+
+        <p class="muted">
+
+            Cet espace est réservé à l'administration.
+            Les données affichées actuellement proviennent
+            du prototype local.
+
+        </p>
+
+    </section>
+
+
+</main>
+
+
+
+<script src="script.js"></script>
+
+
+<script>
+
+if (requireAdmin()) {
+
+    loadAdminDashboard();
+
+}
+
+</script>
+
+
+</body>
+
+</html>
