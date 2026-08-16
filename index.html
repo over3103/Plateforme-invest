@@ -1,61 +1,1206 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invest Africa - Accueil</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Votre Plateforme — Investir autrement</title>
+
+  <meta name="description"
+        content="Une plateforme moderne pour découvrir, suivre et gérer vos opportunités d'investissement.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: #07110d;
+      color: #ffffff;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* =========================
+       NAVIGATION
+    ========================= */
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 18px 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      background: rgba(5, 12, 9, 0.75);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: #55e58a;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #d8e2dc;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #55e58a;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      padding: 13px 22px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      transition: 0.3s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-outline {
+      border: 1px solid rgba(255,255,255,0.25);
+      color: white;
+      background: transparent;
+    }
+
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .btn-primary {
+      background: #55e58a;
+      color: #041008;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(85,229,138,0.25);
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 150px 7% 90px;
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(3,10,7,0.97) 0%,
+          rgba(3,10,7,0.82) 45%,
+          rgba(3,10,7,0.35) 100%
+        ),
+        radial-gradient(
+          circle at 75% 35%,
+          rgba(55,190,105,0.25),
+          transparent 35%
+        ),
+        linear-gradient(135deg,#06120c,#10271b);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      right: -150px;
+      bottom: -200px;
+      border-radius: 50%;
+      background: rgba(70,220,125,0.10);
+      filter: blur(20px);
+    }
+
+    .hero-content {
+      max-width: 760px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 22px;
+      padding: 8px 14px;
+      border-radius: 50px;
+      background: rgba(85,229,138,0.10);
+      border: 1px solid rgba(85,229,138,0.25);
+      color: #6df29c;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .hero h1 {
+      font-size: clamp(48px, 7vw, 88px);
+      line-height: 0.98;
+      letter-spacing: -4px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 span {
+      color: #55e58a;
+    }
+
+    .hero p {
+      max-width: 650px;
+      font-size: 19px;
+      color: #c3d0c8;
+      margin-bottom: 35px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .hero-note {
+      margin-top: 28px;
+      font-size: 12px;
+      color: #8d9d94;
+    }
+
+    /* =========================
+       STATS
+    ========================= */
+
+    .stats {
+      padding: 40px 7%;
+      background: #0c1913;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+    }
+
+    .stat {
+      padding: 20px;
+      border-left: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 32px;
+      color: #55e58a;
+      margin-bottom: 5px;
+    }
+
+    .stat span {
+      color: #a9b8af;
+      font-size: 13px;
+    }
+
+    /* =========================
+       SECTIONS
+    ========================= */
+
+    section {
+      padding: 110px 7%;
+    }
+
+    .section-heading {
+      max-width: 750px;
+      margin-bottom: 55px;
+    }
+
+    .section-heading small {
+      color: #55e58a;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(35px,5vw,60px);
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin: 15px 0;
+    }
+
+    .section-heading p {
+      color: #9eafa5;
+      font-size: 16px;
+    }
+
+    /* =========================
+       PACKS
+    ========================= */
+
+    .packs {
+      background: #07110d;
+    }
+
+    .pack-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .pack {
+      position: relative;
+      padding: 30px;
+      min-height: 270px;
+      border-radius: 18px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,0.07),
+          rgba(255,255,255,0.025)
+        );
+      border: 1px solid rgba(255,255,255,0.09);
+      overflow: hidden;
+      transition: 0.35s;
+    }
+
+    .pack::before {
+      content: "";
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      right: -50px;
+      top: -50px;
+      border-radius: 50%;
+      background: rgba(85,229,138,0.10);
+    }
+
+    .pack:hover {
+      transform: translateY(-8px);
+      border-color: rgba(85,229,138,0.40);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+    }
+
+    .pack-number {
+      color: #6df29c;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .pack h3 {
+      margin: 18px 0 10px;
+      font-size: 25px;
+    }
+
+    .pack .amount {
+      font-size: 30px;
+      font-weight: 800;
+    }
+
+    .pack p {
+      color: #99aaa0;
+      font-size: 13px;
+      margin: 12px 0 25px;
+    }
+
+    .pack .btn {
+      width: 100%;
+    }
+
+    /* =========================
+       HOW IT WORKS
+    ========================= */
+
+    .how {
+      background: #0c1913;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 18px;
+    }
+
+    .step {
+      padding: 30px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .step-number {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #55e58a;
+      color: #06100a;
+      font-weight: 800;
+      margin-bottom: 25px;
+    }
+
+    .step h3 {
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      color: #9aaba1;
+      font-size: 14px;
+    }
+
+    /* =========================
+       FEATURE
+    ========================= */
+
+    .feature {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 70px;
+      align-items: center;
+    }
+
+    .feature-visual {
+      min-height: 500px;
+      border-radius: 25px;
+      position: relative;
+      overflow: hidden;
+
+      background:
+        radial-gradient(
+          circle at 50% 30%,
+          rgba(85,229,138,0.25),
+          transparent 30%
+        ),
+        linear-gradient(145deg,#13291d,#07110d);
+
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .dashboard-card {
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      top: 18%;
+      padding: 25px;
+      border-radius: 18px;
+      background: rgba(10,22,15,0.86);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+    }
+
+    .balance {
+      color: #8e9e95;
+      font-size: 13px;
+    }
+
+    .balance strong {
+      display: block;
+      color: white;
+      font-size: 38px;
+      margin-top: 5px;
+    }
+
+    .chart {
+      height: 150px;
+      margin-top: 30px;
+      display: flex;
+      align-items: end;
+      gap: 8px;
+    }
+
+    .bar {
+      flex: 1;
+      border-radius: 6px 6px 0 0;
+      background: #55e58a;
+      opacity: 0.75;
+    }
+
+    .feature-content h2 {
+      font-size: clamp(35px,5vw,58px);
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin: 15px 0 25px;
+    }
+
+    .feature-content p {
+      color: #9eafa5;
+      margin-bottom: 30px;
+    }
+
+    .feature-list {
+      list-style: none;
+      display: grid;
+      gap: 15px;
+    }
+
+    .feature-list li {
+      padding-left: 28px;
+      position: relative;
+      color: #d5dfd9;
+    }
+
+    .feature-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #55e58a;
+      font-weight: 800;
+    }
+
+    /* =========================
+       PARTNERS
+    ========================= */
+
+    .partners {
+      text-align: center;
+      background: #07110d;
+    }
+
+    .partner-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .partner {
+      padding: 18px 35px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      color: #83938a;
+      font-weight: 700;
+    }
+
+    /* =========================
+       CTA
+    ========================= */
+
+    .cta {
+      text-align: center;
+      padding: 120px 7%;
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(85,229,138,0.18),
+          transparent 40%
+        ),
+        #0c1913;
+    }
+
+    .cta h2 {
+      max-width: 800px;
+      margin: auto;
+      font-size: clamp(38px,6vw,68px);
+      line-height: 1;
+      letter-spacing: -3px;
+    }
+
+    .cta p {
+      max-width: 600px;
+      margin: 25px auto 35px;
+      color: #9eafa5;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      padding: 70px 7% 30px;
+      background: #040a07;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 50px;
+      padding-bottom: 50px;
+    }
+
+    footer h3 {
+      margin-bottom: 18px;
+    }
+
+    footer p,
+    footer a {
+      color: #84938b;
+      font-size: 13px;
+    }
+
+    footer a {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    footer a:hover {
+      color: #55e58a;
+    }
+
+    .copyright {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 25px;
+      color: #68766f;
+      font-size: 12px;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media(max-width:900px) {
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-buttons .btn-outline {
+        display: none;
+      }
+
+      .hero {
+        padding-left: 6%;
+        padding-right: 6%;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+      .pack-grid {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+      .steps {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+      .feature {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media(max-width:600px) {
+
+      nav {
+        padding: 15px 5%;
+      }
+
+      .logo {
+        font-size: 19px;
+      }
+
+      .hero {
+        min-height: 92vh;
+        padding-top: 130px;
+      }
+
+      .hero h1 {
+        letter-spacing: -2.5px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      section {
+        padding: 80px 6%;
+      }
+
+      .stats-grid,
+      .pack-grid,
+      .steps,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat {
+        border-left: none;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+      }
+
+      .feature-visual {
+        min-height: 400px;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<header class="header">
-    <div class="logo">INVEST <span>AFRICA</span></div>
-    <nav>
-        <a href="index.html">Accueil</a>
-        <a href="login.html">Connexion</a>
-        <a href="login.html?register=true" class="btn">Créer un compte</a>
-    </nav>
-</header>
+  <!-- =========================
+       NAVIGATION
+  ========================= -->
 
-<section class="hero">
+  <nav>
+
+    <a href="index.html" class="logo">
+      VOTRE<span>PLATEFORME</span>
+    </a>
+
+    <div class="nav-links">
+      <a href="#opportunites">Opportunités</a>
+      <a href="#fonctionnement">Fonctionnement</a>
+      <a href="#plateforme">Plateforme</a>
+      <a href="#partenaires">Partenaires</a>
+    </div>
+
+    <div class="nav-buttons">
+      <a href="login.html" class="btn btn-outline">
+        Connexion
+      </a>
+
+      <a href="login.html" class="btn btn-primary">
+        Commencer
+      </a>
+    </div>
+
+  </nav>
+
+
+  <!-- =========================
+       HERO
+  ========================= -->
+
+  <header class="hero">
+
     <div class="hero-content">
-        <h1>Construisez votre avenir financier</h1>
+
+      <div class="eyebrow">
+        Une nouvelle expérience financière
+      </div>
+
+      <h1>
+        Construisez votre
+        <span>avenir.</span>
+      </h1>
+
+      <p>
+        Découvrez une plateforme moderne conçue pour vous permettre
+        d'explorer des opportunités, suivre votre portefeuille et
+        gérer vos opérations depuis un seul espace.
+      </p>
+
+      <div class="hero-actions">
+
+        <a href="login.html" class="btn btn-primary">
+          Créer mon compte →
+        </a>
+
+        <a href="#opportunites" class="btn btn-outline">
+          Découvrir les opportunités
+        </a>
+
+      </div>
+
+      <div class="hero-note">
+        Investissez uniquement selon vos objectifs et votre niveau de risque.
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       STATISTIQUES
+  ========================= -->
+
+  <section class="stats">
+
+    <div class="stats-grid">
+
+      <div class="stat">
+        <strong>9</strong>
+        <span>niveaux disponibles</span>
+      </div>
+
+      <div class="stat">
+        <strong>24/7</strong>
+        <span>accès à votre espace</span>
+      </div>
+
+      <div class="stat">
+        <strong>100%</strong>
+        <span>suivi depuis votre tableau de bord</span>
+      </div>
+
+      <div class="stat">
+        <strong>1</strong>
+        <span>espace pour gérer votre portefeuille</span>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       OPPORTUNITÉS
+  ========================= -->
+
+  <section class="packs" id="opportunites">
+
+    <div class="section-heading">
+
+      <small>Nos opportunités</small>
+
+      <h2>
+        Choisissez selon vos objectifs.
+      </h2>
+
+      <p>
+        Une présentation simple et transparente des différentes
+        possibilités disponibles sur la plateforme.
+      </p>
+
+    </div>
+
+
+    <div class="pack-grid">
+
+      <article class="pack">
+        <span class="pack-number">Niveau 01</span>
+        <h3>Essentiel</h3>
+        <div class="amount">3 000 FCFA</div>
         <p>
-            Une plateforme moderne permettant de gérer vos investissements
-            simplement et en toute transparence.
+          Pour découvrir la plateforme et commencer progressivement.
+        </p>
+        <a href="login.html" class="btn btn-primary">
+          Découvrir
+        </a>
+      </article>
+
+
+      <article class="pack">
+        <span class="pack-number">Niveau 02</span>
+        <h3>Progression</h3>
+        <div class="amount">10 000 FCFA</div>
+        <p>
+          Une solution adaptée à une première stratégie structurée.
+        </p>
+        <a href="login.html" class="btn btn-primary">
+          Découvrir
+        </a>
+      </article>
+
+
+      <article class="pack">
+        <span class="pack-number">Niveau 03</span>
+        <h3>Expansion</h3>
+        <div class="amount">20 000 FCFA</div>
+        <p>
+          Une possibilité destinée aux utilisateurs souhaitant aller plus loin.
+        </p>
+        <a href="login.html" class="btn btn-primary">
+          Découvrir
+        </a>
+      </article>
+
+
+      <article class="pack">
+        <span class="pack-number">Niveau 04</span>
+        <h3>Avancé</h3>
+        <div class="amount">45 000 FCFA</div>
+        <p>
+          Une formule destinée aux stratégies de portefeuille plus importantes.
+        </p>
+        <a href="login.html" class="btn btn-primary">
+          Découvrir
+        </a>
+      </article>
+
+
+      <article class="pack">
+        <span class="pack-number">Niveau 05</span>
+        <h3>Premium</h3>
+        <div class="amount">100 000 FCFA</div>
+        <p>
+          Pour les utilisateurs recherchant une exposition plus importante.
+        </p>
+        <a href="login.html" class="btn btn-primary">
+          Découvrir
+        </a>
+      </article>
+
+
+      <article class="pack">
+        <span class="pack-number">Niveau 06</span>
+        <h3>Pro</h3>
+        <div class="amount">200 000 FCFA</div>
+        <p>
+          Une formule destinée aux portefeuilles de taille supérieure.
+        </p>
+        <a href="login.html" class="btn btn-primary">
+          Découvrir
+        </a>
+      </article>
+
+
+      <article class="pack">
+        <span class="pack-number">Niveau 07</span>
+        <h3>Expert</h3>
+        <div class="amount">400 000 FCFA</div>
+        <p>
+          Pour les stratégies nécessitant une capacité d'investissement
+          plus importante.
+        </p>
+        <a href="login.html" class="btn btn-primary">
+          Découvrir
+        </a>
+      </article>
+
+
+      <article class="pack">
+        <span class="pack-number">Niveau 08</span>
+        <h3>Elite</h3>
+        <div class="amount">800 000 FCFA</div>
+        <p>
+          Une formule supérieure pour les investisseurs expérimentés.
+        </p>
+        <a href="login.html" class="btn btn-primary">
+          Découvrir
+        </a>
+      </article>
+
+
+      <article class="pack">
+        <span class="pack-number">Niveau 09</span>
+        <h3>Institutionnel</h3>
+        <div class="amount">1 000 000 FCFA</div>
+        <p>
+          Une formule réservée aux montants d'investissement importants,
+          selon les conditions applicables.
+        </p>
+        <a href="login.html" class="btn btn-primary">
+          Découvrir
+        </a>
+      </article>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       FONCTIONNEMENT
+  ========================= -->
+
+  <section class="how" id="fonctionnement">
+
+    <div class="section-heading">
+
+      <small>Comment ça marche</small>
+
+      <h2>
+        Simple. Clair. Accessible.
+      </h2>
+
+      <p>
+        Nous voulons que chaque utilisateur comprenne exactement
+        comment utiliser la plateforme.
+      </p>
+
+    </div>
+
+
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-number">01</div>
+        <h3>Créer un compte</h3>
+        <p>
+          Inscrivez-vous et accédez à votre espace personnel.
+        </p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">02</div>
+        <h3>Alimenter votre compte</h3>
+        <p>
+          Effectuez vos opérations conformément aux moyens de paiement
+          disponibles.
+        </p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">03</div>
+        <h3>Choisir une opportunité</h3>
+        <p>
+          Consultez les conditions avant de sélectionner une offre.
+        </p>
+      </div>
+
+      <div class="step">
+        <div class="step-number">04</div>
+        <h3>Suivre votre portefeuille</h3>
+        <p>
+          Consultez vos opérations, votre solde et votre historique
+          depuis votre tableau de bord.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       ESPACE UTILISATEUR
+  ========================= -->
+
+  <section id="plateforme">
+
+    <div class="feature">
+
+      <div class="feature-visual">
+
+        <div class="dashboard-card">
+
+          <div class="balance">
+            SOLDE DU PORTEFEUILLE
+          </div>
+
+          <div class="balance">
+            <strong>•••••• FCFA</strong>
+          </div>
+
+          <div class="chart">
+
+            <div class="bar" style="height:35%"></div>
+            <div class="bar" style="height:50%"></div>
+            <div class="bar" style="height:42%"></div>
+            <div class="bar" style="height:65%"></div>
+            <div class="bar" style="height:58%"></div>
+            <div class="bar" style="height:80%"></div>
+            <div class="bar" style="height:72%"></div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="feature-content">
+
+        <small class="eyebrow">
+          Votre espace personnel
+        </small>
+
+        <h2>
+          Toutes vos opérations au même endroit.
+        </h2>
+
+        <p>
+          Le futur tableau de bord permettra de visualiser
+          clairement vos informations et vos opérations.
         </p>
 
-        <div class="hero-buttons">
-            <a href="login.html?register=true" class="btn">Créer un compte</a>
-            <a href="login.html" class="btn secondary">Se connecter</a>
-        </div>
+        <ul class="feature-list">
+
+          <li>Solde disponible</li>
+
+          <li>Investissements en cours</li>
+
+          <li>Dépôts et retraits</li>
+
+          <li>Historique des opérations</li>
+
+          <li>Suivi des performances</li>
+
+        </ul>
+
+      </div>
+
     </div>
-</section>
 
-<section class="features">
-    <h2>Une plateforme simple et accessible</h2>
+  </section>
 
-    <div class="cards">
-        <div class="card">
-            <h3>💰 Investissement</h3>
-            <p>Choisissez le pack qui correspond à votre budget.</p>
-        </div>
 
-        <div class="card">
-            <h3>📊 Suivi</h3>
-            <p>Consultez facilement vos investissements et vos gains.</p>
-        </div>
+  <!-- =========================
+       PARTENAIRES
+  ========================= -->
 
-        <div class="card">
-            <h3>🔐 Sécurité</h3>
-            <p>Votre espace personnel est séparé de l'espace administrateur.</p>
-        </div>
+  <section class="partners" id="partenaires">
+
+    <div class="section-heading" style="margin-left:auto;margin-right:auto;">
+
+      <small>Écosystème</small>
+
+      <h2>
+        Des partenariats construits sur la confiance.
+      </h2>
+
+      <p>
+        Les partenaires affichés ici seront ajoutés uniquement après
+        confirmation de leur collaboration avec la plateforme.
+      </p>
+
     </div>
-</section>
 
-<footer>
-    <p>© 2026 Invest Africa — Tous droits réservés.</p>
-</footer>
+
+    <div class="partner-row">
+
+      <div class="partner">PARTENAIRE 01</div>
+      <div class="partner">PARTENAIRE 02</div>
+      <div class="partner">PARTENAIRE 03</div>
+      <div class="partner">PARTENAIRE 04</div>
+      <div class="partner">PARTENAIRE 05</div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       CTA
+  ========================= -->
+
+  <section class="cta">
+
+    <h2>
+      Votre prochaine étape commence ici.
+    </h2>
+
+    <p>
+      Créez votre espace personnel et découvrez la nouvelle
+      expérience de la plateforme.
+    </p>
+
+    <a href="login.html" class="btn btn-primary">
+      Créer mon compte →
+    </a>
+
+  </section>
+
+
+  <!-- =========================
+       FOOTER
+  ========================= -->
+
+  <footer>
+
+    <div class="footer-grid">
+
+      <div>
+
+        <a href="index.html" class="logo">
+          VOTRE<span>PLATEFORME</span>
+        </a>
+
+        <p style="margin-top:18px;max-width:320px;">
+          Une plateforme numérique conçue pour simplifier
+          l'accès aux opportunités financières et le suivi
+          des opérations.
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <h3>Plateforme</h3>
+
+        <a href="#opportunites">Opportunités</a>
+        <a href="#fonctionnement">Fonctionnement</a>
+        <a href="#plateforme">Espace personnel</a>
+
+      </div>
+
+
+      <div>
+
+        <h3>Compte</h3>
+
+        <a href="login.html">Connexion</a>
+        <a href="login.html">Créer un compte</a>
+
+      </div>
+
+
+      <div>
+
+        <h3>Informations</h3>
+
+        <a href="#">Conditions</a>
+        <a href="#">Confidentialité</a>
+        <a href="#">Contact</a>
+
+      </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+      © 2026 Votre Plateforme — Tous droits réservés.
+
+      <br><br>
+
+      Les informations présentées sur cette plateforme ne constituent
+      pas automatiquement une garantie de rendement. Consultez les
+      conditions et risques applicables avant toute décision financière.
+
+    </div>
+
+  </footer>
+
 
 </body>
 </html>
