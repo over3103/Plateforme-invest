@@ -161,4 +161,802 @@
 
       position: relative;
 
-      z-index:
+      z-index: 2;
+
+      color: white;
+
+      text-decoration: none;
+
+      font-size: 22px;
+
+      font-weight: 800;
+
+      letter-spacing: -0.5px;
+
+    }
+
+
+    .logo span {
+
+      color: #55e58a;
+
+    }
+
+
+    .presentation-content {
+
+      position: relative;
+
+      z-index: 2;
+
+    }
+
+
+    .badge {
+
+      display: inline-block;
+
+      padding: 7px 11px;
+
+      margin-bottom: 20px;
+
+      border-radius: 50px;
+
+      background:
+        rgba(85,229,138,0.09);
+
+      border:
+        1px solid rgba(85,229,138,0.18);
+
+      color: #55e58a;
+
+      font-size: 9px;
+
+      font-weight: 800;
+
+      text-transform: uppercase;
+
+      letter-spacing: 1px;
+
+    }
+
+
+    .presentation h1 {
+
+      max-width: 470px;
+
+      font-size: 45px;
+
+      line-height: 1.08;
+
+      letter-spacing: -2px;
+
+    }
+
+
+    .presentation h1 span {
+
+      color: #55e58a;
+
+    }
+
+
+    .presentation p {
+
+      max-width: 470px;
+
+      margin-top: 20px;
+
+      color: #899990;
+
+      font-size: 13px;
+
+      line-height: 1.8;
+
+    }
+
+
+    .features {
+
+      position: relative;
+
+      z-index: 2;
+
+      display: grid;
+
+      gap: 12px;
+
+    }
+
+
+    .feature {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      color: #aab6af;
+
+      font-size: 11px;
+
+    }
+
+
+    .feature-icon {
+
+      width: 30px;
+
+      height: 30px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border-radius: 8px;
+
+      background:
+        rgba(85,229,138,0.10);
+
+      color: #55e58a;
+
+    }
+
+
+    /* =========================
+       FORMULAIRE
+    ========================= */
+
+    .login-area {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 50px;
+
+      background:
+        rgba(255,255,255,0.025);
+
+    }
+
+
+    .login-box {
+
+      width: 100%;
+
+      max-width: 370px;
+
+    }
+
+
+    .login-box h2 {
+
+      font-size: 29px;
+
+      letter-spacing: -1px;
+
+    }
+
+
+    .login-subtitle {
+
+      margin-top: 8px;
+
+      color: #718078;
+
+      font-size: 12px;
+
+      line-height: 1.6;
+
+    }
+
+
+    .form-group {
+
+      margin-top: 22px;
+
+    }
+
+
+    label {
+
+      display: block;
+
+      margin-bottom: 8px;
+
+      color: #a8b4ad;
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+    }
+
+
+    input {
+
+      width: 100%;
+
+      height: 48px;
+
+      padding: 0 14px;
+
+      outline: none;
+
+      border: 1px solid rgba(255,255,255,0.10);
+
+      border-radius: 9px;
+
+      background:
+        rgba(255,255,255,0.035);
+
+      color: white;
+
+      font-size: 12px;
+
+      transition: 0.25s;
+
+    }
+
+
+    input::placeholder {
+
+      color: #58655e;
+
+    }
+
+
+    input:focus {
+
+      border-color:
+        rgba(85,229,138,0.50);
+
+      background:
+        rgba(85,229,138,0.025);
+
+      box-shadow:
+        0 0 0 3px rgba(85,229,138,0.05);
+
+    }
+
+
+    .password-box {
+
+      position: relative;
+
+    }
+
+
+    .password-box input {
+
+      padding-right: 50px;
+
+    }
+
+
+    .show-password {
+
+      position: absolute;
+
+      right: 10px;
+
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      width: 35px;
+
+      height: 35px;
+
+      border: none;
+
+      border-radius: 7px;
+
+      background: transparent;
+
+      color: #738179;
+
+      cursor: pointer;
+
+    }
+
+
+    .show-password:hover {
+
+      color: #55e58a;
+
+    }
+
+
+    .options {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      margin-top: 14px;
+
+      font-size: 10px;
+
+    }
+
+
+    .remember {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      color: #7d8a83;
+
+    }
+
+
+    .remember input {
+
+      width: 14px;
+
+      height: 14px;
+
+      accent-color: #55e58a;
+
+    }
+
+
+    .forgot {
+
+      color: #55e58a;
+
+      text-decoration: none;
+
+    }
+
+
+    .submit {
+
+      width: 100%;
+
+      height: 48px;
+
+      margin-top: 25px;
+
+      border: none;
+
+      border-radius: 9px;
+
+      background: #55e58a;
+
+      color: #041008;
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      transition: 0.25s;
+
+    }
+
+
+    .submit:hover {
+
+      background: #72ee9d;
+
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 12px 30px rgba(85,229,138,0.18);
+
+    }
+
+
+    .register {
+
+      margin-top: 25px;
+
+      text-align: center;
+
+      color: #718078;
+
+      font-size: 11px;
+
+    }
+
+
+    .register a {
+
+      color: #55e58a;
+
+      font-weight: 700;
+
+      text-decoration: none;
+
+    }
+
+
+    .security {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 7px;
+
+      margin-top: 25px;
+
+      color: #4f5d55;
+
+      font-size: 9px;
+
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media(max-width: 800px) {
+
+      body {
+
+        padding: 15px;
+
+      }
+
+
+      .page {
+
+        display: block;
+
+        min-height: auto;
+
+      }
+
+
+      .presentation {
+
+        min-height: 300px;
+
+        padding: 30px;
+
+      }
+
+
+      .presentation h1 {
+
+        font-size: 32px;
+
+      }
+
+
+      .features {
+
+        display: none;
+
+      }
+
+
+      .login-area {
+
+        padding: 35px 25px;
+
+      }
+
+    }
+
+
+    @media(max-width: 450px) {
+
+      .presentation {
+
+        padding: 25px;
+
+      }
+
+
+      .presentation h1 {
+
+        font-size: 28px;
+
+      }
+
+
+      .login-area {
+
+        padding: 30px 20px;
+
+      }
+
+
+      .login-box h2 {
+
+        font-size: 25px;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <div class="page">
+
+
+    <!-- =========================
+         PRESENTATION
+    ========================= -->
+
+    <section class="presentation">
+
+
+      <a
+        href="index.html"
+        class="logo"
+      >
+        VOTRE<span>PLATEFORME</span>
+      </a>
+
+
+      <div class="presentation-content">
+
+        <div class="badge">
+          Espace sécurisé
+        </div>
+
+
+        <h1>
+          Bienvenue dans votre
+          <span>espace personnel.</span>
+        </h1>
+
+
+        <p>
+          Connectez-vous pour accéder à votre
+          tableau de bord, suivre vos opérations
+          et consulter votre activité.
+        </p>
+
+      </div>
+
+
+      <div class="features">
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            ✓
+          </div>
+
+          Interface simple et moderne
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            ◈
+          </div>
+
+          Suivi de vos opérations
+
+        </div>
+
+
+        <div class="feature">
+
+          <div class="feature-icon">
+            🔒
+          </div>
+
+          Accès personnel protégé
+
+        </div>
+
+      </div>
+
+
+    </section>
+
+
+    <!-- =========================
+         CONNEXION
+    ========================= -->
+
+    <section class="login-area">
+
+
+      <div class="login-box">
+
+
+        <h2>
+          Se connecter
+        </h2>
+
+
+        <p class="login-subtitle">
+          Entrez vos informations pour accéder
+          à votre compte.
+        </p>
+
+
+        <form
+          onsubmit="return loginUser(event)"
+        >
+
+
+          <div class="form-group">
+
+            <label for="loginPhone">
+              Numéro de téléphone
+            </label>
+
+            <input
+              type="tel"
+              id="loginPhone"
+              placeholder="Ex : 07 00 00 00 00"
+              autocomplete="tel"
+              required
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label for="loginPassword">
+              Mot de passe
+            </label>
+
+
+            <div class="password-box">
+
+              <input
+                type="password"
+                id="loginPassword"
+                placeholder="Votre mot de passe"
+                autocomplete="current-password"
+                required
+              >
+
+
+              <button
+                type="button"
+                class="show-password"
+                onclick="togglePassword()"
+              >
+                ◉
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <div class="options">
+
+            <label class="remember">
+
+              <input
+                type="checkbox"
+                id="remember"
+              >
+
+              Se souvenir de moi
+
+            </label>
+
+
+            <a
+              href="#"
+              class="forgot"
+              onclick="forgotPassword(event)"
+            >
+              Mot de passe oublié ?
+            </a>
+
+          </div>
+
+
+          <button
+            type="submit"
+            class="submit"
+          >
+            Se connecter
+          </button>
+
+
+        </form>
+
+
+        <div class="register">
+
+          Vous n'avez pas encore de compte ?
+
+          <a href="index.html#register">
+            Créer un compte
+          </a>
+
+        </div>
+
+
+        <div class="security">
+
+          🔒 Votre espace personnel
+
+        </div>
+
+
+      </div>
+
+
+    </section>
+
+
+  </div>
+
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================= -->
+
+  <script src="script.js"></script>
+
+
+  <script>
+
+    function togglePassword() {
+
+      const input =
+        document.getElementById(
+          "loginPassword"
+        );
+
+      if (
+        input.type === "password"
+      ) {
+
+        input.type = "text";
+
+      } else {
+
+        input.type = "password";
+
+      }
+
+    }
+
+
+    function forgotPassword(event) {
+
+      event.preventDefault();
+
+      alert(
+        "La récupération du mot de passe sera activée lorsque le système de vérification sera connecté."
+      );
+
+    }
+
+  </script>
+
+
+</body>
+</html>
