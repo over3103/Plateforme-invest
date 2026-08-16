@@ -1,350 +1,435 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Tableau de bord | Votre Plateforme</title>
+    <meta charset="UTF-8">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
+    <title>Mon espace - Housing Investment</title>
 
-  <style>
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+</head>
 
-    body {
-      font-family: "Inter", sans-serif;
-      background: #07110d;
-      color: white;
-      min-height: 100vh;
-    }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+<body>
 
-    button {
-      font-family: inherit;
-    }
 
-    /* =========================
-       SIDEBAR
-    ========================= */
+<!-- =========================
+     BARRE DE NAVIGATION
+========================= -->
 
-    .sidebar {
-      position: fixed;
-      left: 0;
-      top: 0;
-      bottom: 0;
+<header class="topbar">
 
-      width: 245px;
+    <div class="logo">
+        HOUSING <span>INVESTMENT</span>
+    </div>
 
-      padding: 25px 18px;
 
-      background: #050c08;
+    <nav>
 
-      border-right: 1px solid rgba(255,255,255,0.07);
+        <a href="index.html">
+            Accueil
+        </a>
 
-      z-index: 100;
-    }
+        <button
+            class="logout"
+            onclick="logout()"
+        >
+            Déconnexion
+        </button>
 
-    .logo {
-      display: block;
+    </nav>
 
-      padding: 5px 12px 35px;
+</header>
 
-      font-size: 20px;
-      font-weight: 800;
-    }
 
-    .logo span {
-      color: #55e58a;
-    }
 
-    .menu-title {
-      padding: 0 12px;
+<!-- =========================
+     ESPACE UTILISATEUR
+========================= -->
 
-      margin-bottom: 12px;
+<main class="container">
 
-      color: #65746b;
 
-      font-size: 10px;
+    <!-- BIENVENUE -->
 
-      text-transform: uppercase;
+    <section class="welcome">
 
-      letter-spacing: 1.5px;
+        <div>
 
-      font-weight: 800;
-    }
+            <p class="muted">
+                Bienvenue dans votre espace
+            </p>
 
-    .menu {
-      display: grid;
-      gap: 5px;
-    }
+            <h1 id="userName">
+                Utilisateur
+            </h1>
 
-    .menu a {
-      display: flex;
+        </div>
 
-      align-items: center;
 
-      gap: 12px;
+        <span class="status">
+            Compte actif
+        </span>
 
-      padding: 13px 12px;
+    </section>
 
-      border-radius: 9px;
 
-      color: #899990;
 
-      font-size: 13px;
+    <!-- =========================
+         STATISTIQUES
+    ========================= -->
 
-      transition: 0.25s;
-    }
+    <section class="stats">
 
-    .menu a:hover,
-    .menu a.active {
-      background: rgba(85,229,138,0.10);
 
-      color: #55e58a;
-    }
+        <div class="stat">
 
-    .menu-icon {
-      width: 22px;
+            <span>
+                Solde disponible
+            </span>
 
-      text-align: center;
+            <strong id="balance">
+                0 FCFA
+            </strong>
 
-      font-size: 16px;
-    }
+        </div>
 
-    .logout {
-      position: absolute;
 
-      bottom: 25px;
+        <div class="stat">
 
-      left: 18px;
-      right: 18px;
+            <span>
+                Total investi
+            </span>
 
-      display: flex;
+            <strong id="invested">
+                0 FCFA
+            </strong>
 
-      align-items: center;
+        </div>
 
-      gap: 12px;
 
-      padding: 13px 12px;
+        <div class="stat">
 
-      border-radius: 9px;
+            <span>
+                Gains
+            </span>
 
-      color: #899990;
+            <strong id="earnings">
+                0 FCFA
+            </strong>
 
-      font-size: 13px;
-    }
+        </div>
 
-    .logout:hover {
-      color: #ff7d7d;
 
-      background: rgba(255,80,80,0.07);
-    }
+    </section>
 
-    /* =========================
-       MAIN
-    ========================= */
 
-    .main {
-      margin-left: 245px;
 
-      min-height: 100vh;
+    <!-- =========================
+         ACTIONS
+    ========================= -->
 
-      padding: 30px 4%;
-    }
+    <section class="panel">
 
-    /* =========================
-       TOPBAR
-    ========================= */
+        <h2>
+            Mon compte
+        </h2>
 
-    .topbar {
-      display: flex;
 
-      justify-content: space-between;
+        <div class="account-grid">
 
-      align-items: center;
 
-      margin-bottom: 35px;
-    }
+            <div>
 
-    .welcome h1 {
-      font-size: 27px;
+                <span>
+                    Identifiant
+                </span>
 
-      letter-spacing: -1px;
-    }
+                <strong id="userPhone">
+                    —
+                </strong>
 
-    .welcome p {
-      margin-top: 5px;
+            </div>
 
-      color: #74837b;
 
-      font-size: 13px;
-    }
+            <div>
 
-    .user-area {
-      display: flex;
+                <span>
+                    Date d'inscription
+                </span>
 
-      align-items: center;
+                <strong id="createdAt">
+                    —
+                </strong>
 
-      gap: 12px;
-    }
+            </div>
 
-    .notification {
-      width: 40px;
-      height: 40px;
 
-      display: flex;
+        </div>
 
-      align-items: center;
-      justify-content: center;
 
-      border-radius: 10px;
+    </section>
 
-      border: 1px solid rgba(255,255,255,0.08);
 
-      background: rgba(255,255,255,0.03);
 
-      color: #9aa9a0;
+    <!-- =========================
+         PACKS
+    ========================= -->
 
-      cursor: pointer;
-    }
+    <section class="panel">
 
-    .avatar {
-      width: 40px;
-      height: 40px;
+        <div class="panel-heading">
 
-      display: flex;
+            <div>
 
-      align-items: center;
-      justify-content: center;
+                <p class="section-tag">
+                    INVESTISSEMENT
+                </p>
 
-      border-radius: 50%;
+                <h2>
+                    Choisissez votre niveau
+                </h2>
 
-      background: #55e58a;
+            </div>
 
-      color: #041008;
+        </div>
 
-      font-size: 13px;
 
-      font-weight: 800;
-    }
+        <div class="dashboard-packs">
 
-    /* =========================
-       BALANCE
-    ========================= */
 
-    .balance-grid {
-      display: grid;
+            <div class="mini-pack">
 
-      grid-template-columns: 1.6fr 1fr 1fr;
+                <span>
+                    Niveau 01
+                </span>
 
-      gap: 17px;
+                <strong>
+                    3 000 FCFA
+                </strong>
 
-      margin-bottom: 25px;
-    }
+                <button
+                    onclick="selectPack(3000)"
+                >
+                    Choisir
+                </button>
 
-    .card {
-      padding: 25px;
+            </div>
 
-      border-radius: 16px;
 
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255,255,255,0.065),
-          rgba(255,255,255,0.025)
-        );
+            <div class="mini-pack">
 
-      border: 1px solid rgba(255,255,255,0.08);
-    }
+                <span>
+                    Niveau 02
+                </span>
 
-    .balance-card {
-      position: relative;
+                <strong>
+                    10 000 FCFA
+                </strong>
 
-      overflow: hidden;
+                <button
+                    onclick="selectPack(10000)"
+                >
+                    Choisir
+                </button>
 
-      background:
-        radial-gradient(
-          circle at 85% 15%,
-          rgba(85,229,138,0.20),
-          transparent 35%
-        ),
-        linear-gradient(
-          145deg,
-          #10251a,
-          #0a1710
-        );
-    }
+            </div>
 
-    .balance-card::after {
-      content: "";
 
-      position: absolute;
+            <div class="mini-pack">
 
-      width: 170px;
-      height: 170px;
+                <span>
+                    Niveau 03
+                </span>
 
-      right: -70px;
-      bottom: -100px;
+                <strong>
+                    20 000 FCFA
+                </strong>
 
-      border-radius: 50%;
+                <button
+                    onclick="selectPack(20000)"
+                >
+                    Choisir
+                </button>
 
-      background: rgba(85,229,138,0.07);
-    }
+            </div>
 
-    .card-label {
-      color: #899990;
 
-      font-size: 11px;
+            <div class="mini-pack">
 
-      text-transform: uppercase;
+                <span>
+                    Niveau 04
+                </span>
 
-      letter-spacing: 1px;
+                <strong>
+                    45 000 FCFA
+                </strong>
 
-      font-weight: 700;
-    }
+                <button
+                    onclick="selectPack(45000)"
+                >
+                    Choisir
+                </button>
 
-    .balance {
-      margin-top: 10px;
+            </div>
 
-      font-size: 37px;
 
-      font-weight: 800;
+            <div class="mini-pack">
 
-      letter-spacing: -1px;
-    }
+                <span>
+                    Niveau 05
+                </span>
 
-    .balance small {
-      font-size: 16px;
+                <strong>
+                    100 000 FCFA
+                </strong>
 
-      color: #a0afa7;
+                <button
+                    onclick="selectPack(100000)"
+                >
+                    Choisir
+                </button>
 
-      font-weight: 600;
-    }
+            </div>
 
-    .balance-change {
-      margin-top: 12px;
 
-      color: #55e58a;
+            <div class="mini-pack">
 
-      font-size: 12px;
-    }
+                <span>
+                    Niveau 06
+                </span>
 
-    .stat-value {
-      margin-top: 12px;
+                <strong>
+                    200 000 FCFA
+                </strong>
 
-      font-size:
+                <button
+                    onclick="selectPack(200000)"
+                >
+                    Choisir
+                </button>
+
+            </div>
+
+
+            <div class="mini-pack">
+
+                <span>
+                    Niveau 07
+                </span>
+
+                <strong>
+                    400 000 FCFA
+                </strong>
+
+                <button
+                    onclick="selectPack(400000)"
+                >
+                    Choisir
+                </button>
+
+            </div>
+
+
+            <div class="mini-pack premium">
+
+                <span>
+                    Niveau 08 — PREMIUM
+                </span>
+
+                <strong>
+                    800 000 FCFA
+                </strong>
+
+                <button
+                    onclick="selectPack(800000)"
+                >
+                    Choisir
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         HISTORIQUE
+    ========================= -->
+
+    <section class="panel">
+
+        <h2>
+            Historique des opérations
+        </h2>
+
+
+        <div id="history">
+
+            <p class="muted">
+                Aucune opération enregistrée.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         INFORMATIONS
+    ========================= -->
+
+    <section class="warning">
+
+        <strong>
+            Information
+        </strong>
+
+        <p>
+            Cette version est actuellement un prototype.
+            Les opérations financières réelles ne sont pas
+            exécutées depuis cette interface.
+        </p>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =========================
+     SCRIPT
+========================= -->
+
+<script src="script.js"></script>
+
+
+<script>
+
+if (requireUser()) {
+
+    loadDashboard();
+
+}
+
+</script>
+
+
+</body>
+
+</html>
